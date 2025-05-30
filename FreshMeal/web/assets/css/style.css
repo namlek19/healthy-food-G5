@@ -1,0 +1,152 @@
+.body {
+    font-family: 'Poppins', sans-serif;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    background-color: #fff;
+    color: #333;
+}
+
+.container {
+    width: 90%;
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+header {
+    padding: 20px 0;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.logo {
+    font-size: 24px;
+    font-weight: 600;
+    color: #2ecc71;
+}
+
+.logo img{
+    width: 160px;
+    height: auto;
+}
+
+nav ul {
+    list-style: none;
+    display: flex;
+    gap: 20px;
+}
+
+nav a {
+    text-decoration: none;
+    font-family: sans-serif;
+    color: #333;
+    font-weight: 500;
+}
+
+.cart img{
+    width: 18px;
+    height: auto;
+}
+
+.auth-buttons a {
+    background-color: #2ecc71;
+    font-family: sans-serif;
+    color: #fff;
+    text-align: center;
+    padding: 5px;
+    border-radius: 5px;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.search-bar{
+    background-color: #f0fff5;
+    padding: 10px;
+}
+
+.search-bar input{
+    position: relative;
+    left: 75%;
+    color: #333;
+    font-size: 16px;
+    background: transparent;
+    width: 200px;
+    height: 20px;
+    padding: 10px;
+    border: 3px solid #2ecc71;
+    outline: none;
+    border-radius: 35px;
+    transition: all 0.5s;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2),
+    0 6px 20px 0 #2ecc71;
+}
+
+.search-bar input::placeholder{
+    color: #777;
+    opacity: 0;
+    transition: opacity 150ms ease-out;
+}
+
+.search-bar input:focus::placeholder{
+    opacity: 1;
+}
+
+.search-bar input:hover{
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2),
+    0 6px 20px 0 #cecadf;
+}
+input:focus,
+input:not(:placeholder-shown){
+    width: 250px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2),
+    0 6px 20px 0 #FFBB70;
+}
+.hero {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 80px 0;
+}
+
+.hero-text {
+    max-width: 50%;
+}
+
+.hero-text h1 {
+    font-size: 48px;
+    margin-bottom: 20px;
+    color: #27ae60;
+}
+
+.hero-text p {
+    font-size: 18px;
+    margin-bottom: 30px;
+}
+
+.cta-button {
+    background-color: #27ae60;
+    color: #fff;
+    padding: 12px 30px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.hero-image img {
+    width: 400px;
+    height: 400px;
+    border-radius: 20px;
+    object-fit: cover;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+footer {
+    text-align: center;
+    padding: 20px;
+    background-color: #f8f8f8;
+    color: #777;
+    margin-top: 40px;
+}
