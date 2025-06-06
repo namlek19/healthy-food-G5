@@ -1,9 +1,3 @@
-<%-- 
-    Document   : index
-    Created on : May 30, 2025, 9:13:24 AM
-    Author     : ducna
---%>
-
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html lang="en">
