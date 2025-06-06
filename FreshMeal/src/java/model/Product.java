@@ -112,4 +112,9 @@ public class Product {
         this.calories = calories;
     }
 
+    @Override
+    public String toString() {
+        return "Product{" + "productID=" + productID + ", name=" + name + ", description=" + description + ", nutritionInfo=" + nutritionInfo + ", origin=" + origin + ", imageURL=" + imageURL + ", storageInstructions=" + storageInstructions + ", price=" + price + ", categoryID=" + categoryID + ", calories=" + calories + '}';
+    }
+
 }
