@@ -4,8 +4,16 @@
         <servlet-name>productlistservlet</servlet-name>
         <servlet-class>controller.productlistservlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>BlogListServlet</servlet-name>
+        <servlet-class>controller.BlogListServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>productlistservlet</servlet-name>
         <url-pattern>/productlistservlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>BlogListServlet</servlet-name>
+        <url-pattern>/blog</url-pattern>
     </servlet-mapping>
 </web-app>
