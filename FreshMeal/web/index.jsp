@@ -22,7 +22,7 @@
             </div>
             <nav>
                 <ul>
-                    <li><a href="#">Home</a></li>
+                    <li><a href="index.jsp">Home</a></li>
                     <li><a href="#">Order</a></li>
                     <li><a href="#">Menu</a></li>
                     <li><a href="#">Blog</a></li>
@@ -33,8 +33,8 @@
                 <img src="assets/images/shopping-cart.png">
             </button>
             <div class="auth-buttons">
-                <a href="#" class="auth-button">Sign In</a>
-                <a href="#" class="auth-button">Sign Up</a>
+                <a href="login.jsp" class="auth-button">Sign In</a>
+                <a href="login.jsp?action=signup" class="auth-button">Sign Up</a>
             </div>
             
         </div>
