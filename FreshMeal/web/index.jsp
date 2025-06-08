@@ -33,7 +33,27 @@
                 </div>
 
             </div>
-        </header>
+
+            <nav>
+                <ul>
+                    <li><a href="index.jsp">Home</a></li>
+                    <li><a href="#">Order</a></li>
+                    <li><a href="#">Menu</a></li>
+                    <li><a href="#">Blog</a></li>
+                    <li><a href="#">About Us</a></li>
+                </ul>
+            </nav>
+            <button class="cart">
+                <img src="assets/images/shopping-cart.png">
+            </button>
+            <div class="auth-buttons">
+                <a href="login.jsp" class="auth-button">Sign In</a>
+                <a href="login.jsp?action=signup" class="auth-button">Sign Up</a>
+            </div>
+            
+        </div>
+    </header>
+    
 
         <div class="search-bar">
             <form action="search">
