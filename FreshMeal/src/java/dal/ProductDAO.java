@@ -7,7 +7,9 @@ import java.util.ArrayList;
 import java.util.List;
 import model.Product;
 
+
 public class ProductDAO extends DBContext {
+
 
     Connection conn = null;
     PreparedStatement ps = null;
@@ -39,6 +41,7 @@ public class ProductDAO extends DBContext {
         }
         return list;
     }
+
    
     public Product getProductById(int id) {
         String sql = "SELECT * FROM Product WHERE ProductID = ?";
@@ -64,6 +67,7 @@ public class ProductDAO extends DBContext {
         }
         return null;
     }
+
     public static void main(String[] args) {
         ProductDAO dao = new ProductDAO();
         List<Product> list = dao.getAllProduct();
@@ -72,3 +76,4 @@ public class ProductDAO extends DBContext {
         }
     }
 }
+
