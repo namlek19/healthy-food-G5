@@ -1,4 +1,4 @@
-package dao;
+package dal;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -6,13 +6,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-/**
- *
- * @author VU VAN HUY
- */
 public class DBContext {
     private final String serverName = "localhost";
-    private final String dbName = "SWPproject";
+    private final String dbName = "SWPproject8";
     private final String portNumber = "1433";
     private final String userID = "sa";
     private final String password = "123";
@@ -33,5 +29,14 @@ public class DBContext {
         if (con != null && !con.isClosed()) {
             con.close();
         }
-    }    
+    }  
+    public static void main(String[] args) {
+        try {
+            System.out.println(new DBContext().getConnection());
+        } catch (Exception e) {
+        }
+    }
 }
+    
+    
+

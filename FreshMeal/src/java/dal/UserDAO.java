@@ -1,11 +1,12 @@
-package dao;
+package dal;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import model.User;
-import dao.DBContext;
+import dal.DBContext;
+
 
 public class UserDAO {
     private Connection conn = null;
