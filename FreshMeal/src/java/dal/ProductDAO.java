@@ -7,7 +7,9 @@ import java.util.ArrayList;
 import java.util.List;
 import model.Product;
 
-public class ProductDAO {
+
+public class ProductDAO extends DBContext {
+
 
     Connection conn = null;
     PreparedStatement ps = null;
@@ -33,10 +35,37 @@ public class ProductDAO {
                         rs.getInt("categoryID"),
                         rs.getInt("calories")
                 ));
+
             }
         } catch (Exception e) {
         }
         return list;
+    }
+
+   
+    public Product getProductById(int id) {
+        String sql = "SELECT * FROM Product WHERE ProductID = ?";
+        try (Connection conn = getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, id);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                return new Product(
+                        rs.getInt("productID"),
+                        rs.getString("name"),
+                        rs.getString("description"),
+                        rs.getString("nutritionInfo"),
+                        rs.getString("origin"),
+                        rs.getString("imageURL"),
+                        rs.getString("storageInstructions"),
+                        rs.getDouble("price"),
+                        rs.getInt("categoryID"),
+                        rs.getInt("calories")
+                );
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     public static void main(String[] args) {
@@ -47,3 +76,4 @@ public class ProductDAO {
         }
     }
 }
+
