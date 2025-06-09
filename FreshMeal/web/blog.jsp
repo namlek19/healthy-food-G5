@@ -125,6 +125,7 @@
 </head>
 <body>
 
+    
     <div class="sidebar">
         <h2>BLOG</h2>
         <ul>
