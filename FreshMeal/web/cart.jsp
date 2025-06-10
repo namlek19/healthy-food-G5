@@ -63,7 +63,11 @@
             </div>
         </header>
         <h2>Giỏ hàng của bạn</h2>
-        
+        <%
+            List<CartItem> cart = (List<CartItem>) session.getAttribute("cart");
+            double total = 0;
+            if (cart != null && !cart.isEmpty()) {
+        %>
         <table>
             <tr>
                 <th>Mã SP</th>
@@ -133,6 +137,9 @@
         <p class="empty">Giỏ hàng trống.</p>
         <% } %>
 
-        
+        <div class="back">
+            <a href="productList.jsp">Quay lại mua sắm</a>
+        </div>
+
     </body>
 </html>
