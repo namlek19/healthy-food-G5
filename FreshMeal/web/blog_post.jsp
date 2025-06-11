@@ -1,11 +1,12 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<!DOCTYPE html>
 <html>
     <head>
-        <title>Chỉnh sửa Blog</title>
+        <meta charset="UTF-8">
+        <title>Đăng bài viết mới</title>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
         <style>
-            /* Bắt đầu khối CSS layout chung */
+            /* --- Bắt đầu CSS từ blog.jsp --- */
             body {
                 font-family: Arial, sans-serif;
                 background-color: #f0f2f5;
@@ -57,7 +58,7 @@
                 align-items: center;
             }
 
-            /* CSS cho phần upload ảnh */
+            /* CSS gốc của blog_post.jsp cho phần upload ảnh */
             .image-upload-wrapper {
                 width: 200px;
                 height: 150px;
@@ -85,14 +86,8 @@
                 border-color: #3399ff;
                 background: #e6f0ff;
             }
-            #previewImage {
-                display: block;
-                max-width:200px;
-                max-height:150px;
-                border-radius:10px;
-            }
 
-            /* CSS cho Form */
+            /* === KHU VỰC ĐÃ SỬA === */
             .main-container form {
                 background-color: #ffffff;
                 padding: 20px;
@@ -100,21 +95,9 @@
                 box-shadow: 0 2px 4px rgba(0,0,0,0.1);
                 max-width: 700px;
                 width: 100%;
-                text-align: left; /* Căn trái nội dung trong form */
+                text-align: left; /* Căn trái lại nội dung trong form */
             }
 
-            /* CSS cho các input và button bên trong form */
-            .main-container label {
-                display: block;
-                margin-bottom: 8px;
-            }
-            .main-container input[type="text"], .main-container textarea {
-                width: 98%;
-                padding: 8px;
-                margin-bottom: 10px;
-                border: 1px solid #ccc;
-                border-radius: 4px;
-            }
             .main-container button {
                 padding: 10px 15px;
                 background-color: #4CAF50;
@@ -130,8 +113,8 @@
         <div class="sidebar">
             <h2>BLOG</h2>
             <ul>
-                <li><a href="${pageContext.request.contextPath}/blog" class="active">Blog List</a></li>
-                <li><a href="blogpost">Blog Post</a></li>
+                <li><a href="${pageContext.request.contextPath}/blog">Blog List</a></li>
+                <li><a href="blogpost" class="active">Blog Post</a></li>
             </ul>
             <h2>MENU</h2>
             <ul>
@@ -141,35 +124,26 @@
         </div>
 
         <div class="main-container">
-            <h2>Chỉnh sửa bài Blog</h2>
+            <h2>Đăng bài viết mới</h2>
+            <form action="blogpost" method="post">
+                <label>Tiêu đề:</label><br>
+                <textarea name="title" rows="3" required style="width: 98%; padding: 8px; margin-bottom: 10px; resize: vertical;"></textarea><br><br>
 
-            <c:if test="${not empty blog}">
-                <form action="blog" method="post">
-                    <input type="hidden" name="action" value="update">
-                    <input type="hidden" name="id" value="${blog.blogID}">
+                <label>Nội dung:</label><br>
+                <textarea name="description" rows="10" required style="width: 98%; padding: 8px; margin-bottom: 10px;"></textarea><br><br>
 
-                    <label for="title">Tiêu đề:</label>
-                    <textarea id="title" name="title" rows="3" required style="resize: vertical;">${blog.title}</textarea>
-
-                    <label>Ảnh bài viết:</label>
-                    <div class="image-upload-wrapper" id="imageDropArea" title="Click, kéo thả hoặc Ctrl+V ảnh">
-                        <span class="plus-icon" id="plusIcon" style="${empty blog.imageURL ? '' : 'display:none;'}">+</span>
-                        <input type="file" id="imageInput" accept="image/*" style="display:none;">
-                        <img id="previewImage" src="${blog.imageURL}" style="${empty blog.imageURL ? 'display:none;' : ''}" />
-                    </div>
-                    <input type="hidden" name="imageURL" id="imageURL" value="${blog.imageURL}">
-
-                    <label for="description">Nội dung:</label>
-                    <textarea id="description" name="description" rows="10" required>${blog.description}</textarea>
-
-                    <button type="submit">Cập nhật</button>
-                </form>
-            </c:if>
-            <c:if test="${empty blog}">
-                <p>Không tìm thấy bài blog để chỉnh sửa.</p>
-            </c:if>
-
-            <p style="margin-top: 20px;"><a href="blog">Quay lại danh sách</a></p>
+                <label>Ảnh bài viết:</label><br>
+                <div class="image-upload-wrapper" id="imageDropArea">
+                    <span class="plus-icon" id="plusIcon">+</span>
+                    <input type="file" id="imageInput" accept="image/*" style="display:none;">
+                    <img id="previewImage" style="display:none;max-width:200px;max-height:150px;border-radius:10px;" />
+                </div>
+                <input type="hidden" name="imageURL" id="imageURL">
+                <br>
+                <button type="submit">Đăng bài</button>
+            </form>
+            <br>
+            <a href="blog">Quay lại danh sách bài viết</a>
         </div>
 
         <script>
@@ -179,55 +153,74 @@
             const previewImage = document.getElementById('previewImage');
             const imageURLInput = document.getElementById('imageURL');
 
-            imageDropArea.addEventListener('click', () => imageInput.click());
-            imageInput.addEventListener('change', function () {
-                if (imageInput.files && imageInput.files[0])
-                    previewLocalImage(imageInput.files[0]);
+            // Bấm vào ô dấu cộng để chọn ảnh
+            imageDropArea.addEventListener('click', () => {
+                imageInput.click();
             });
+
+            // Chọn file
+            imageInput.addEventListener('change', function () {
+                if (imageInput.files && imageInput.files[0]) {
+                    previewLocalImage(imageInput.files[0]);
+                }
+            });
+
+            // Xử lý kéo thả
             imageDropArea.addEventListener('dragover', e => {
                 e.preventDefault();
                 imageDropArea.classList.add('dragover');
             });
             imageDropArea.addEventListener('dragleave', e => {
                 e.preventDefault();
-                imageDropArea.classList.remove('dragleave');
+                imageDropArea.classList.remove('dragover');
             });
             imageDropArea.addEventListener('drop', function (e) {
                 e.preventDefault();
-                imageDropArea.classList.remove('dragleave');
-                if (e.dataTransfer.files && e.dataTransfer.files[0])
+                imageDropArea.classList.remove('dragover');
+                if (e.dataTransfer.files && e.dataTransfer.files[0]) {
                     previewLocalImage(e.dataTransfer.files[0]);
+                }
             });
+
+            // Xử lý dán ảnh (Ctrl+V)
             document.addEventListener('paste', function (e) {
                 const items = (e.clipboardData || window.clipboardData).items;
                 for (let item of items) {
-                    if (item.type.indexOf('image') !== -1)
-                        previewLocalImage(item.getAsFile());
+                    if (item.type.indexOf('image') !== -1) {
+                        const file = item.getAsFile();
+                        previewLocalImage(file);
+                    }
                 }
             });
+
             function previewLocalImage(file) {
-                if (plusIcon)
-                    plusIcon.style.display = 'none';
+                plusIcon.style.display = 'none';
+                // Xóa preview cũ nếu có
+                const existingPreview = document.getElementById('previewImage');
+                if (existingPreview) {
+                    imageDropArea.innerHTML = ""; // Xóa hết nội dung cũ
+                    imageDropArea.appendChild(plusIcon); // Thêm lại icon cộng
+                }
 
-                // Cần xóa và tạo lại ảnh preview để tránh lỗi
-                let currentPreview = document.getElementById('previewImage');
-                if (currentPreview)
-                    currentPreview.remove();
+                plusIcon.style.display = 'none';
+                const tempPreview = document.createElement('img');
+                tempPreview.id = 'previewImage';
+                tempPreview.style.display = 'none';
+                tempPreview.style.maxWidth = '200px';
+                tempPreview.style.maxHeight = '150px';
+                tempPreview.style.borderRadius = '10px';
+                imageDropArea.appendChild(tempPreview);
 
-                const newPreview = document.createElement('img');
-                newPreview.id = 'previewImage';
-                imageDropArea.appendChild(newPreview);
 
-                imageDropArea.innerHTML = "Đang xử lý ảnh...";
                 const reader = new FileReader();
                 reader.onload = function (e) {
-                    imageDropArea.innerHTML = "";
-                    newPreview.src = e.target.result;
-                    imageDropArea.appendChild(newPreview);
-                    imageURLInput.value = e.target.result;
+                    tempPreview.src = e.target.result;
+                    tempPreview.style.display = 'block';
+                    imageURLInput.value = e.target.result; // base64 của ảnh
                 };
                 reader.readAsDataURL(file);
             }
         </script>
+
     </body>
 </html>
