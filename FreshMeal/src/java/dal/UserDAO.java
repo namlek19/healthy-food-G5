@@ -7,7 +7,6 @@ import java.sql.SQLException;
 import model.User;
 import dal.DBContext;
 
-
 public class UserDAO {
     private Connection conn = null;
     private PreparedStatement ps = null;
@@ -217,5 +216,32 @@ public class UserDAO {
             }
         }
         return null;
+    }
+    
+    public boolean updateUser(User user) {
+        try {
+            String query = "UPDATE Users SET FullName = ?, City = ?, District = ?, Address = ?, HeightCm = ?, WeightKg = ? WHERE UserID = ?";
+            conn = db.getConnection();
+            ps = conn.prepareStatement(query);
+            ps.setString(1, user.getFullName());
+            ps.setString(2, user.getCity());
+            ps.setString(3, user.getDistrict());
+            ps.setString(4, user.getAddress());
+            ps.setFloat(5, user.getHeightCm());
+            ps.setFloat(6, user.getWeightKg());
+            ps.setInt(7, user.getUserID());
+            return ps.executeUpdate() > 0;
+        } catch (Exception e) {
+            System.out.println("Error in updateUser: " + e.getMessage());
+            return false;
+        } finally {
+            try {
+                if (db != null) {
+                    db.closeConnection(conn, ps, rs);
+                }
+            } catch (SQLException e) {
+                System.out.println("Error closing resources: " + e.getMessage());
+            }
+        }
     }
 } 
