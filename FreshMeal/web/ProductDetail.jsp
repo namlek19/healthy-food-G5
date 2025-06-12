@@ -1,16 +1,15 @@
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ page import="model.User" %>
 <%@ page import="model.Product" %>
-<%@ page import="dal.ProductDAO" %>
-<%@ page import="java.util.List" %>
-
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%
+    Product product = (Product) request.getAttribute("product");
+%>
 <!DOCTYPE html>
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>product list</title>
+        <title>Product Detail</title>
         <link rel="stylesheet" href="assets/css/style.css">
         <link rel="stylesheet" href="assets/css/productlist.css">
         <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
@@ -88,59 +87,85 @@
             </div>
         </header>
 
-        <div class="search-bar">
-            <form action="search">
-                <input type="text" placeholder="Searching for food..." required />        
-            </form>
-        </div>
 
-        <div class="container">
-            <form method="get" action="productlistcontrol">
-                <div class="row justify-content-center g-3 mb-4">
-                    <div class="col-md-4">
-                        <select class="form-select" name="category">
-                            <option value="">Tất cả danh mục</option>
-                            <option value="1">Món chính</option>
-                            <option value="2">Món phụ</option>
-                            <option value="3">Tráng miệng</option>
-                            <option value="4">Đồ uống</option>
-                        </select>
-                    </div>
-                    <div class="col-md-2">
-                        <button type="submit" class="btn btn-primary w-100">Lọc</button>
-                    </div>
-                </div>
-            </form>
-        </div> 
-        <div class="container mb-3 text-center">
-            <h5 class="fw-bold text-success">${categoryName}</h5>
-        </div>
+        <div class="container mt-4">
+            <!-- Tên món trên cùng -->
+            <% if (product == null) { %>
+            <div class="alert alert-danger">
+                Sản phẩm không tồn tại hoặc đã bị xóa!
+            </div>
+            <% } else { %>
 
-        <div class="container">
-            <c:forEach var="p" items="${productList}" varStatus="status">
-                <c:if test="${status.index % 3 == 0}">
-                    <div class="row mb-4">
-                    </c:if>
-
-                    <div class="col-md-4 mb-4 d-flex">
-                        <div class="card h-100 shadow-sm w-100">
-                            <img src="${p.imageURL}" class="card-img-top custom-size" alt="Ảnh món ăn">
-                            <div class="card-body d-flex flex-column">
-                                <h5 class="card-title text-truncate">${p.name}</h5>
-                                <p class="card-text text-truncate">Calories: ${p.calories} kcal</p>
-                                <p class="fw-bold text-success">
-                                    Giá: <fmt:formatNumber value="${p.price}" type="number" maxFractionDigits="0"/> VNĐ
-                                </p>
-                                <a href="productdetail?id=${p.productID}" class="btn btn-success mt-auto w-100">Xem chi tiết</a>
+            <h2 class="fw-bold mb-4 text-success"><%= product.getName() %></h2>
+            <div class="row">
+                <!-- Phần chính: col-md-9 -->
+                <div class="col-md-9">
+                    <div class="card mb-3">
+                        <!-- Ảnh lớn trên cùng -->
+                        <img src="<%= product.getImageURL() %>" 
+                             class="card-img-top"
+                             alt="Ảnh món ăn"
+                             style="width:100%; height:550px; object-fit:cover; border-top-left-radius: .5rem; border-top-right-radius: .5rem;">
+                        <div class="card-body">
+                            <h5 class="card-title">Mô tả</h5>
+                            <p class="card-text"><%= product.getDescription() %></p>
+                            <!-- 3 cột: Giá, Thêm vào giỏ, Mua ngay -->
+                            <div class="row mt-4 align-items-center">
+                                <div class="col-md-4 mb-2">
+                                    <h5 class="text-success">
+                                        <fmt:formatNumber value="<%= product.getPrice() %>" type="number" maxFractionDigits="0"/> VNĐ
+                                    </h5>
+                                </div>
+                                <div class="col-md-4 mb-2">
+                                    <form action="cart" method="post">
+                                        <input type="hidden" name="id" value="<%= product.getProductID() %>">
+                                        <button type="submit" class="btn btn-outline-success w-100">Thêm vào giỏ</button>
+                                    </form>
+                                </div>
+                                <div class="col-md-4 mb-2">
+                                    <form action="checkout" method="post">
+                                        <input type="hidden" name="id" value="<%= product.getProductID() %>">
+                                        <button type="submit" class="btn btn-success w-100">Mua ngay</button>
+                                    </form>
+                                </div>
                             </div>
                         </div>
                     </div>
+                </div>
 
-                    <c:if test="${status.index % 3 == 2 || status.last}">
+                <!-- Phần phụ: col-md-3 -->
+                <div class="col-md-3">
+                    <div class="card mb-3">
+                        <div class="card-body">
+                            <h6 class="fw-bold mb-3 text-success">Danh mục</h6>
+                            <%
+                                String catName = "Khác";
+                                switch(product.getCategoryID()) {
+                                    case 1: catName = "Món chính"; break;
+                                    case 2: catName = "Món phụ"; break;
+                                    case 3: catName = "Tráng miệng"; break;
+                                    case 4: catName = "Đồ uống"; break;
+                                }
+                            %>
+                            <p><%= catName %></p>
+
+                            <h6 class="fw-bold mt-4">Nutrition Info</h6>
+                            <p><%= product.getNutritionInfo() %></p>
+
+                            <h6 class="fw-bold mt-4">Nguồn gốc</h6>
+                            <p><%= product.getOrigin() %></p>
+
+                            <h6 class="fw-bold mt-4">Calories</h6>
+                            <p><%= product.getCalories() %> kcal</p>
+                        </div>
                     </div>
-                </c:if>
-            </c:forEach>
-        </div>       
+                </div>
+            </div>
+            <% } %>
+        </div>
+
+
+
         <footer class="bg-light text-center py-4 mt-5">
             <div class="container">
                 <p class="mb-0 text-muted">&copy; 2025 HealthyFood. All rights reserved.</p>

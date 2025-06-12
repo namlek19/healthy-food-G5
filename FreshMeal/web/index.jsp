@@ -57,9 +57,9 @@
                 </div>
                 <nav>
                     <ul class="nav">
-                        <li class="nav-item"><a href="ProductList.jsp" class="nav-link text-dark" href="#">Product</a></li>
-                        <li class="nav-item"><a href="MenuCus.jsp" class="nav-link text-dark" href="#">Menu</a></li>
-                        <li class="nav-item"><a href="blogcus.jsp" class="nav-link text-dark" href="#">Blog</a></li>
+                        <li class="nav-item"><a href="productlistcontrol?category=" class="nav-link text-dark" >Product</a></li>
+                        <li class="nav-item"><a href="MenuCus.jsp" class="nav-link text-dark" >Menu</a></li>
+                        <li class="nav-item"><a href="blogcus.jsp" class="nav-link text-dark" >Blog</a></li>
                     </ul>
                 </nav>
                 
@@ -87,18 +87,27 @@
             </form>
         </div>
 
-        <section class="hero">
-            <div class="container">
+        <section class="hero py-5">
+    <div class="container">
+        <div class="row align-items-center">
+            <!-- Cột chữ bên trái -->
+            <div class="col-md-6">
                 <div class="hero-text">
                     <h1>Healthy Food for a Healthy Life</h1>
                     <p>Eat fresh, stay healthy, and live better with our curated healthy meals delivered to your door.</p>
                     <a href="#" class="cta-button">Explore Menu</a>
                 </div>
-                <div class="hero-image">
-                    <img src="assets/images/homepage.jpg" alt="Healthy Food">
+            </div>
+
+            <!-- Cột ảnh bên phải -->
+            <div class="col-md-6">
+                <div class="hero-image text-center">
+                    <img src="assets/images/homepage.jpg" alt="Healthy Food" class="img-fluid">
                 </div>
             </div>
-        </section>
+        </div>
+    </div>
+</section>
         <section class="latest-products">
             <div class="container">
                 <h2 class="section-title">Newest Healthy Dishes</h2>
