@@ -49,8 +49,4 @@
         <servlet-name>BlogPostServlet</servlet-name>
         <url-pattern>/blogpost</url-pattern>
     </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>ProductListServlet</servlet-name>
-        <url-pattern>/</url-pattern>
-    </servlet-mapping>
 </web-app>
