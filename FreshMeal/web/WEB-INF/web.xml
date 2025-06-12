@@ -10,11 +10,6 @@
         <servlet-name>ForgotPasswordServlet</servlet-name>
         <servlet-class>controller.ForgotPasswordServlet</servlet-class>
     </servlet>
-    <!-- Product List Servlet -->
-    <servlet>
-        <servlet-name>ProductListServlet</servlet-name>
-        <servlet-class>controller.productlistservlet</servlet-class>
-    </servlet>
     <!-- Blog List Servlet -->
     <servlet>
         <servlet-name>BlogListServlet</servlet-name>
@@ -29,24 +24,16 @@
         <servlet-name>ProductListServlet</servlet-name>
         <servlet-class>controller.ProductListServlet</servlet-class>
     </servlet>
-    <servlet-mapping>
-        <servlet-name>LoginServlet</servlet-name>
-        <url-pattern>/login</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>ForgotPasswordServlet</servlet-name>
-        <url-pattern>/forgotpassword</url-pattern>
-    </servlet-mapping>
+    <servlet>
+        <servlet-name>ProductDetailServlet</servlet-name>
+        <servlet-class>controller.ProductDetailServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>ProductListServlet</servlet-name>
-        <url-pattern>/productlistservlet</url-pattern>
+        <url-pattern>/productlistcontrol</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>BlogListServlet</servlet-name>
-        <url-pattern>/blog</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>BlogPostServlet</servlet-name>
-        <url-pattern>/blogpost</url-pattern>
+        <servlet-name>ProductDetailServlet</servlet-name>
+        <url-pattern>/productdetail</url-pattern>
     </servlet-mapping>
 </web-app>
