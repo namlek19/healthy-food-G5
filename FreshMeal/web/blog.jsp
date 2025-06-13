@@ -1,9 +1,14 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+
+<%
+    request.setAttribute("currentPage", "bloglist");
+%>
+
 <!DOCTYPE html>
 <%
-    session.setAttribute("userID", 1); // Đây là Marky Nguyễn
+    Integer myUserID = (Integer) request.getAttribute("myUserID");
 %>
 
 <html>
@@ -11,7 +16,10 @@
         <meta charset="UTF-8">
         <title>Danh sách Blog</title>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
-        <style>
+        
+    </head>
+    
+    <style>
             body {
                 font-family: Arial, sans-serif;
                 background-color: #f0f2f5;
@@ -19,24 +27,37 @@
                 display: flex; /* Sử dụng Flexbox cho layout 2 cột */
             }
             .sidebar {
-                background-color: #ffffff;
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 220px;
+                height: 100vh;
+                background-color: #A9F89D;
                 padding: 20px;
-                width: 220px; /* Tăng chiều rộng một chút */
-                min-height: 100vh;
                 border-right: 1px solid #ddd;
                 box-sizing: border-box;
+                z-index: 100;
             }
             .sidebar h2 {
+                background-color: #F8FFF7;
                 margin-top: 0;
                 color: #333;
                 margin-bottom: 20px;
                 font-size: 1.2em;
+                padding: 10px 24px;
+                border-radius: 32px;
+                font-weight: bold;
+                display: block;
+                width: 75%;          /* hoặc 80%, 90% tuỳ ý */
+                margin: 0 auto 20px auto;  /* Căn giữa theo chiều ngang */
+                text-align: center;        /* Căn giữa chữ */
             }
             .sidebar ul {
                 list-style: none;
                 padding: 0;
                 margin: 0;
                 margin-bottom: 30px; /* Khoảng cách giữa các nhóm menu */
+                font-weight: bold;
             }
             .sidebar ul li {
                 margin-bottom: 10px;
@@ -57,10 +78,12 @@
             .main-container {
                 flex: 1; /* Phần nội dung chính sẽ chiếm hết không gian còn lại */
                 padding: 20px;
+                margin-left: 220px;
+                padding: 20px;
             }
             .post-container {
                 position: relative;
-                background-color: white;
+                background-color: #BEF0CF;
                 border: 1px solid #ddd;
                 border-radius: 8px;
                 margin: 0 auto 20px auto; /* Căn giữa và thêm khoảng cách */
@@ -130,19 +153,60 @@
                 white-space: pre-wrap;
                 word-wrap: break-word;
             }
+
+            .blog-img-full {
+                display: block;
+                width: 100%;      /* luôn chiếm full chiều ngang post-container */
+                height: auto;
+                max-height: 500px;    /* hoặc giá trị bạn muốn, để không bị quá dài */
+                object-fit: cover;    /* hoặc contain nếu muốn ảnh không bị crop */
+                border-radius: 8px;
+                background: #f4f4f4;
+                margin: 0 auto;
+            }
+
         </style>
-    </head>
+    
     <body>
 
         <div class="sidebar">
             <h2>BLOG</h2>
             <ul>
-                <li><a href="${pageContext.request.contextPath}/blog" class="active">Blog List</a></li>
-                <li><a href="blogpost">Blog Post</a></li> </ul>
-            <h2>MENU</h2>
-            <ul>
-                <li><a href="#">Menu List</a></li>
-                <li><a href="#">Menu Post</a></li>
+                <li>
+                    <a href="${pageContext.request.contextPath}/blog"
+                       class="<c:if test='${currentPage eq "bloglist"}'>active</c:if>">
+                           Blog List
+                       </a>
+                    </li>
+                    <li>
+                        <a href="blogpost"
+                           class="<c:if test='${currentPage eq "blogpost"}'>active</c:if>">
+                            Blog Post
+                        </a>
+                    </li>
+                    <li>
+                        <a href="blogmanage"
+                           class="<c:if test='${currentPage eq "blogmanage"}'>active</c:if>">
+                            Blog Manage
+                        </a>
+                    </li>
+                </ul>
+
+
+                <h2>MENU</h2>
+                <ul>
+                    <li><a href="#">Menu List</a></li>
+                    <li><a href="#">Menu Post</a></li>
+                    <li><a href="#">Menu Manage</a></li>
+                </ul>
+
+                <!-- Thêm nút logout ở đây -->
+                <ul>
+                    <li>
+                        <a href="${pageContext.request.contextPath}/login?action=logout" style="color:red;">
+                        <i class="fas fa-sign-out-alt"></i> Logout
+                    </a>
+                </li>
             </ul>
         </div>
 
@@ -159,17 +223,21 @@
                         <i class="fas fa-star star-icon"></i>
                         <a href="blogpost">Blog Post</a>
                     </div>
-                    <div class="post-actions">
-                        <button class="menu-button" onclick="toggleMenu(event)">&#8942;</button>
-                        <div class="dropdown-content">
-                            <a href="${pageContext.request.contextPath}/blog?action=edit&id=${blog.blogID}">Chỉnh sửa</a>
-                            <form action="${pageContext.request.contextPath}/blog" method="post" onsubmit="return confirm('Bạn có chắc chắn muốn xóa bài viết này không?');">
-                                <input type="hidden" name="action" value="delete">
-                                <input type="hidden" name="id" value="${blog.blogID}">
-                                <button type="submit">Xóa</button>
-                            </form>
+                    <c:if test="${myUserID != null && myUserID == blog.nutritionistID}">
+                        <div class="post-actions">
+                            <button class="menu-button" onclick="toggleMenu(event)">&#8942;</button>
+                            <div class="dropdown-content">
+                                <a href="${pageContext.request.contextPath}/blog?action=edit&id=${blog.blogID}">Chỉnh sửa</a>
+                                <form action="${pageContext.request.contextPath}/blog" method="post" onsubmit="return confirm('Bạn có chắc chắn muốn xóa bài viết này không?');">
+                                    <input type="hidden" name="action" value="delete">
+                                    <input type="hidden" name="id" value="${blog.blogID}">
+                                    <button type="submit">Xóa</button>
+                                </form>
+                            </div>
                         </div>
-                    </div>
+                    </c:if>
+
+
 
                     <h3 class="preserve-whitespace">${blog.title}</h3>
                     <p><b>Người đăng:</b> ${blog.nutritionistName}</p>
@@ -177,8 +245,9 @@
                     <p class="preserve-whitespace">${blog.description}</p>
 
                     <c:if test="${not empty blog.imageURL}">
-                        <img src="${blog.imageURL}" width="100%" style="border-radius: 8px;"/>
+                        <img src="${blog.imageURL}" class="blog-img-full"/>
                     </c:if>
+
 
                     <!-- Thêm link xem chi tiết ở đây -->
                     <p style="margin-top: 10px;">
@@ -219,6 +288,7 @@
                 }
             }
         </script>
+
 
     </body>
 </html>
