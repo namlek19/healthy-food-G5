@@ -138,8 +138,7 @@
         <% } %>
 
         <div class="back">
-            <a href="productList.jsp">Quay lại mua sắm</a>
+           <a href="index.jsp">Quay lại mua sắm</a>
         </div>
-
     </body>
 </html>
