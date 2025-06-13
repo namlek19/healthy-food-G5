@@ -3,7 +3,7 @@
 <html>
     <head>
         <title>Giỏ Hàng</title>
-        <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/style.css">
+        <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/checkout.css">
         <link rel="stylesheet" href="assets/css/anhtdcss.css">
         <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
         <style>
