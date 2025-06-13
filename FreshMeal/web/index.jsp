@@ -1,4 +1,11 @@
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%-- 
+    Document   : index
+    Created on : May 30, 2025, 9:13:24 AM
+    Author     : ducna
+--%>
+
+<%@ page import="model.User" %>
+<%@ page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -23,48 +30,29 @@
                         <li><a href="#">About Us</a></li>
                     </ul>
                 </nav>
-                <a href="cart.jsp" class="cart" title="Giỏ hàng">
-                    <img src="assets/images/shopping-cart.png" alt="Cart" />
-                </a>
-
+                <button class="cart">
+                    <img src="assets/images/shopping-cart.png">
+                </button>
                 <div class="auth-buttons">
-                    <a href="#" class="auth-button">Sign In</a>
-                    <a href="#" class="auth-button">Sign Up</a>
+                    <% User user = (User) session.getAttribute("user"); %>
+                    <% if (user == null) { %>
+                        <a href="login.jsp" class="auth-button">Sign In</a>
+                        <a href="login.jsp?action=signup" class="auth-button">Sign Up</a>
+                    <% } else { %>
+                        <a href="profile.jsp" class="auth-button">Hello, <%= user.getFirstName() != null && !user.getFirstName().isEmpty() ? user.getFirstName() : user.getFullName() %></a>
+                        <a href="login?action=logout" class="auth-button">Logout</a>
+                    <% } %>
                 </div>
-
             </div>
-
-            <nav>
-                <ul>
-                    <li><a href="index.jsp">Home</a></li>
-                    <li><a href="#">Order</a></li>
-                    <li><a href="#">Menu</a></li>
-                    <li><a href="#">Blog</a></li>
-                    <li><a href="#">About Us</a></li>
-                </ul>
-            </nav>
-            <button class="cart">
-                <img src="assets/images/shopping-cart.png">
-            </button>
-            <div class="auth-buttons">
-                <a href="login.jsp" class="auth-button">Sign In</a>
-                <a href="login.jsp?action=signup" class="auth-button">Sign Up</a>
-            </div>
-            
-        </div>
-    </header>
-    
+        </header>
 
         <div class="search-bar">
             <form action="search">
-                <input type="text" placeholder="Search food name..." required />        
+                <input type="text" placeholder="Searching for food..." required />        
             </form>
-
         </div>
 
         <section class="hero">
-
-
             <div class="container">
                 <div class="hero-text">
                     <h1>Healthy Food for a Healthy Life</h1>
@@ -76,9 +64,47 @@
                 </div>
             </div>
         </section>
+
         <footer>
             <div class="container">
-                <p>&copy; 2025 HealthyFood. All rights reserved.</p>
+                <div class="footer-grid">
+                    <!-- Logo and Description -->
+                    <div>
+                        <img src="assets/images/logo.png" alt="FreshMeal" class="footer-logo">
+                        <p class="footer-description">
+                            Healthy food provides essential nutrients for the body and helps prevent diseases while supporting energy and maintaining a healthy weight!
+                        </p>
+                    </div>
+
+                    <!-- Quick links -->
+                    <div>
+                        <h4 class="footer-heading">Quick links</h4>
+                        <ul class="footer-links">
+                            <li><a href="index.jsp">Home</a></li>
+                            <li><a href="#">Order</a></li>
+                            <li><a href="#">Blog</a></li>
+                        </ul>
+                    </div>
+
+                    <!-- Quick links -->
+                    <div>
+                        <h4 class="footer-heading">Quick links</h4>
+                        <ul class="footer-links">
+                            <li><a href="#">Trending</a></li>
+                            <li><a href="#">About Us</a></li>
+                            <li><a href="#">Contact</a></li>
+                        </ul>
+                    </div>
+
+                    <!-- Legal -->
+                    <div>
+                        <h4 class="footer-heading">Legal</h4>
+                        <ul class="footer-links">
+                            <li><a href="#">Term Of Use</a></li>
+                            <li><a href="#">Privacy & Cookie</a></li>
+                        </ul>
+                    </div>
+                </div>
             </div>
         </footer>
     </body>
