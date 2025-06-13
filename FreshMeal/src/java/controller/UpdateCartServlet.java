@@ -1,57 +1,80 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
- */
-
 package controller;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
-import jakarta.servlet.http.HttpServlet;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
+import jakarta.servlet.http.*;
 import java.util.List;
-import model.CartItem;
+import model.*;
+import dal.CartDAO;
 
-/**
- *
- * @author admin
- */
 @WebServlet(name="UpdateCartServlet", urlPatterns={"/UpdateCartServlet"})
 public class UpdateCartServlet extends HttpServlet {
+
+    private final CartDAO cartDAO = new CartDAO();
+
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String action = request.getParameter("action");
         int productId = Integer.parseInt(request.getParameter("id"));
 
         HttpSession session = request.getSession();
-        List<CartItem> cart = (List<CartItem>) session.getAttribute("cart");
+        User user = (User) session.getAttribute("user");
 
-        if (cart != null) {
-            for (int i = 0; i < cart.size(); i++) {
-                CartItem item = cart.get(i);
-                if (item.getProduct().getProductID() == productId) {
-                    switch (action) {
-                        case "inc":
-                            item.setQuantity(item.getQuantity() + 1);
-                            break;
-                        case "dec":
-                            if (item.getQuantity() > 1) {
-                                item.setQuantity(item.getQuantity() - 1);
-                            }
-                            break;
-                        case "remove":
-                            cart.remove(i);
-                            break;
+        if (user != null) {
+            // ✅ Đã login → xử lý trên database
+            try {
+                List<CartItem> dbCart = cartDAO.getCartItemsByUser(user.getUserID());
+                for (CartItem item : dbCart) {
+                    if (item.getProduct().getProductID() == productId) {
+                        switch (action) {
+                            case "inc":
+                                cartDAO.addOrUpdateCartItem(user.getUserID(), productId, 1);
+                                break;
+                            case "dec":
+                                if (item.getQuantity() > 1) {
+                                    cartDAO.addOrUpdateCartItem(user.getUserID(), productId, -1);
+                                }
+                                break;
+                            case "remove":
+                                cartDAO.removeItem(user.getUserID(), productId);
+                                break;
+                        }
+                        break;
                     }
-                    break;
                 }
+                // Cập nhật lại session cart
+                session.setAttribute("cart", cartDAO.getCartItemsByUser(user.getUserID()));
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+        } else {
+            // 👤 Guest → xử lý trong session
+            List<CartItem> guestCart = (List<CartItem>) session.getAttribute("guest_cart");
+            if (guestCart != null) {
+                for (int i = 0; i < guestCart.size(); i++) {
+                    CartItem item = guestCart.get(i);
+                    if (item.getProduct().getProductID() == productId) {
+                        switch (action) {
+                            case "inc":
+                                item.setQuantity(item.getQuantity() + 1);
+                                break;
+                            case "dec":
+                                if (item.getQuantity() > 1) {
+                                    item.setQuantity(item.getQuantity() - 1);
+                                }
+                                break;
+                            case "remove":
+                                guestCart.remove(i);
+                                break;
+                        }
+                        break;
+                    }
+                }
+                session.setAttribute("guest_cart", guestCart);
             }
         }
 
-        session.setAttribute("cart", cart);
         response.sendRedirect("cart.jsp");
     }
 }

@@ -2,8 +2,8 @@ package controller;
 
 import model.*;
 import dal.ProductDAO;
+import dal.CartDAO;
 import jakarta.servlet.http.HttpSession;
-
 import jakarta.servlet.*;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.*;
@@ -13,15 +13,34 @@ import java.util.*;
 @WebServlet("/CartServlet")
 public class CartServlet extends HttpServlet {
     private ProductDAO productDAO;
+    private CartDAO cartDAO;
 
     @Override
     public void init() {
         productDAO = new ProductDAO();
+        cartDAO = new CartDAO();
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        int productId = Integer.parseInt(request.getParameter("id"));
-        int quantity = Integer.parseInt(request.getParameter("quantity"));
+        String idParam = request.getParameter("id");
+        String quantityParam = request.getParameter("quantity");
+        String redirect = request.getParameter("redirect");
+
+        if (idParam == null || idParam.isEmpty()) {
+            response.sendRedirect("index.jsp");
+            return;
+        }
+
+        int productId = Integer.parseInt(idParam);
+        int quantity = 1; // mặc định
+
+        if (quantityParam != null) {
+            try {
+                quantity = Integer.parseInt(quantityParam);
+            } catch (NumberFormatException e) {
+                quantity = 1;
+            }
+        }
 
         Product product = productDAO.getProductById(productId);
         if (product == null) {
@@ -30,21 +49,40 @@ public class CartServlet extends HttpServlet {
         }
 
         HttpSession session = request.getSession();
-        List<CartItem> cart = (List<CartItem>) session.getAttribute("cart");
-        if (cart == null) cart = new ArrayList<>();
+        User user = (User) session.getAttribute("user");
 
-        boolean found = false;
-        for (CartItem item : cart) {
-            if (item.getProduct().getProductID() == product.getProductID()) {
-                item.setQuantity(item.getQuantity() + quantity);
-                found = true;
-                break;
+        if (user != null) {
+            // ĐÃ LOGIN → lưu giỏ vào DATABASE
+            try {
+                cartDAO.addOrUpdateCartItem(user.getUserID(), productId, quantity);
+                List<CartItem> dbCart = cartDAO.getCartItemsByUser(user.getUserID());
+                session.setAttribute("cart", dbCart); // sync lại session nếu cần dùng
+            } catch (Exception e) {
+                e.printStackTrace();
             }
+        } else {
+            // ❗GUEST → dùng session như cũ
+            List<CartItem> guestCart = (List<CartItem>) session.getAttribute("guest_cart");
+            if (guestCart == null) guestCart = new ArrayList<>();
+
+            boolean found = false;
+            for (CartItem item : guestCart) {
+                if (item.getProduct().getProductID() == product.getProductID()) {
+                    item.setQuantity(item.getQuantity() + quantity);
+                    found = true;
+                    break;
+                }
+            }
+            if (!found) guestCart.add(new CartItem(product, quantity));
+            session.setAttribute("guest_cart", guestCart);
         }
 
-        if (!found) cart.add(new CartItem(product, quantity));
-        session.setAttribute("cart", cart);
+        session.setAttribute("msg", "✔ Đã thêm vào giỏ hàng!");
 
-        response.sendRedirect("cart.jsp");
+        if (redirect != null && !redirect.isEmpty()) {
+            response.sendRedirect(redirect);
+        } else {
+            response.sendRedirect("cart.jsp");
+        }
     }
 }

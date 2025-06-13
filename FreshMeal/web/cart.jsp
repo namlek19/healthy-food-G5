@@ -30,9 +30,7 @@
                 text-align: center;
                 margin-top: 20px;
             }
-
         </style>
-
     </head>
     <body>
         <header>
@@ -56,15 +54,30 @@
                         <img src="assets/images/shopping-cart.png" alt="Cart" />
                     </a>
                     <div class="auth-buttons">
-                        <a href="#" class="auth-button">Sign In</a>
-                        <a href="#" class="auth-button">Sign Up</a>
+                        <%
+                            User user = (User) session.getAttribute("user");
+                            if (user == null) {
+                        %>
+                            <a href="login.jsp" class="auth-button">Sign In</a>
+                            <a href="login.jsp?action=signup" class="auth-button">Sign Up</a>
+                        <%
+                            } else {
+                        %>
+                            <a href="profile.jsp" class="auth-button">Chào, <%= user.getFirstName() != null ? user.getFirstName() : user.getFullName() %></a>
+                            <a href="login?action=logout" class="auth-button">Logout</a>
+                        <%
+                            }
+                        %>
                     </div>
                 </div>
             </div>
         </header>
+
         <h2>Giỏ hàng của bạn</h2>
         <%
-            List<CartItem> cart = (List<CartItem>) session.getAttribute("cart");
+            List<CartItem> cart = (List<CartItem>) session.getAttribute(
+                session.getAttribute("user") != null ? "cart" : "guest_cart"
+            );
             double total = 0;
             if (cart != null && !cart.isEmpty()) {
         %>
@@ -79,18 +92,19 @@
                 <th>Xóa</th>
             </tr>
             <%
-                    for (CartItem item : cart) {
-                        Product p = item.getProduct();
-                        double subtotal = item.getTotalPrice();
-                        total += subtotal;
+                for (CartItem item : cart) {
+                    Product p = item.getProduct();
+                    double subtotal = item.getTotalPrice();
+                    total += subtotal;
             %>
             <tr>
                 <td><%= p.getProductID() %></td>
                 <td><%= p.getName() %></td>
-                <td><%
-    String imgUrl = p.getImageURL();
-    boolean isOnline = imgUrl.startsWith("http");
-    String finalImgUrl = isOnline ? imgUrl : "assets/images/" + imgUrl.replace("/images/", "");
+                <td>
+                    <%
+                        String imgUrl = p.getImageURL();
+                        boolean isOnline = imgUrl != null && imgUrl.startsWith("http");
+                        String finalImgUrl = isOnline ? imgUrl : "assets/images/" + imgUrl.replace("/images/", "");
                     %>
                     <img src="<%= finalImgUrl %>" alt="<%= p.getName() %>" width="60"/>
                 </td>
@@ -108,7 +122,6 @@
                         <button type="submit">+</button>
                     </form>
                 </td>
-
                 <td><%= subtotal %> đ</td>
                 <td>
                     <form action="UpdateCartServlet" method="post">
@@ -138,7 +151,7 @@
         <% } %>
 
         <div class="back">
-           <a href="index.jsp">Quay lại mua sắm</a>
+           <a href="productlistcontrol?category=">Quay lại mua sắm</a>
         </div>
     </body>
 </html>

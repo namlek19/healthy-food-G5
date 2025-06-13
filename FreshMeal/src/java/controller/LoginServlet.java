@@ -1,53 +1,56 @@
 package controller;
 
+import dal.CartDAO;
 import dal.UserDAO;
-import java.io.IOException;
+import model.User;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-import model.User;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.*;
+import model.CartItem;
 
 @WebServlet(name = "LoginServlet", urlPatterns = {"/login"})
 public class LoginServlet extends HttpServlet {
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
+
         String action = request.getParameter("action");
         System.out.println("DEBUG: Received action: " + action);
-        
+
         try {
             if (action == null) {
                 // Display login page
                 request.getRequestDispatcher("login.jsp").forward(request, response);
                 return;
             }
-            
+
             switch (action) {
                 case "checkEmail":
                     handleCheckEmail(request, response);
                     break;
-                    
+
                 case "register":
                     handleRegistration(request, response);
                     break;
-                    
+
                 case "login":
                     handleLogin(request, response);
                     break;
-                    
+
                 case "logout":
                     handleLogout(request, response);
                     break;
-                    
+
                 case "googleLogin":
                     handleGoogleLogin(request, response);
                     break;
-                    
+
                 default:
                     // Invalid action, redirect to login page
                     response.sendRedirect("login.jsp");
@@ -60,33 +63,37 @@ public class LoginServlet extends HttpServlet {
             response.sendRedirect("login.jsp");
         }
     }
-    
+
     private void handleCheckEmail(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String email = request.getParameter("email");
         UserDAO userDAO = new UserDAO();
         boolean exists = userDAO.checkEmailExists(email);
         response.getWriter().write("{\"exists\": " + exists + "}");
     }
-    
+
     private void handleLogin(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String email = request.getParameter("email");
         String password = request.getParameter("password");
-        
+
         // Validate input
         if (email == null || email.trim().isEmpty() || password == null || password.trim().isEmpty()) {
             request.getSession().setAttribute("errorMessage", "Email and password are required");
             response.sendRedirect("login.jsp");
             return;
         }
-        
+
         try {
             UserDAO userDAO = new UserDAO();
             User user = userDAO.checkLogin(email, password);
-            
+
             if (user != null) {
                 // Login successful
                 HttpSession session = request.getSession();
                 session.setAttribute("user", user);
+                CartDAO cartDAO = new CartDAO();
+                List<CartItem> dbCart = cartDAO.getCartItemsByUser(user.getUserID());
+                session.setAttribute("cart", dbCart);
+
                 response.sendRedirect("index.jsp");
             } else {
                 // Login failed
@@ -100,7 +107,7 @@ public class LoginServlet extends HttpServlet {
             response.sendRedirect("login.jsp");
         }
     }
-    
+
     private void handleLogout(HttpServletRequest request, HttpServletResponse response) throws IOException {
         HttpSession session = request.getSession(false);
         if (session != null) {
@@ -108,20 +115,34 @@ public class LoginServlet extends HttpServlet {
         }
         response.sendRedirect("index.jsp");
     }
-    
+
     private void handleGoogleLogin(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        response.setContentType("application/json");
+        PrintWriter out = response.getWriter();
+
         try {
             String email = request.getParameter("email");
             String fullName = request.getParameter("fullName");
-            
+            String googleId = request.getParameter("googleId");
+            String imageUrl = request.getParameter("imageUrl");
+            String idToken = request.getParameter("idToken");
+
+            // Validate required parameters
+            if (email == null || email.trim().isEmpty()
+                    || fullName == null || fullName.trim().isEmpty()
+                    || googleId == null || googleId.trim().isEmpty()) {
+                throw new Exception("Missing required Google Sign-In data");
+            }
+
             UserDAO userDAO = new UserDAO();
             User user = userDAO.findUserByEmail(email);
-            
+
             if (user == null) {
                 // Create new user for first-time Google login
                 user = new User();
                 user.setEmail(email);
                 user.setFullName(fullName);
+
                 // Set default values for required fields
                 user.setCity("");
                 user.setDistrict("");
@@ -130,35 +151,55 @@ public class LoginServlet extends HttpServlet {
                 user.setWeightKg(0);
                 user.setBmi(0);
                 user.setBmiCategory("Not Set");
-                // For Google users, we set a placeholder password
-                user.setPasswordHash("GOOGLE_AUTH_USER");
-                
+                // For Google users, we set a secure random password
+                String securePassword = generateSecurePassword();
+                user.setPasswordHash(securePassword);
+
                 if (!userDAO.registerUser(user)) {
-                    response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-                    response.getWriter().write("{\"success\": false, \"message\": \"Failed to create user account\"}");
-                    return;
+                    throw new Exception("Failed to create user account");
                 }
+            } else {
+                // Update existing user's Google-related info
+
             }
-            
-            // Set session
+
+            // Set session attributes
             HttpSession session = request.getSession();
             session.setAttribute("user", user);
-            
-            response.getWriter().write("{\"success\": true}");
+            session.setAttribute("isGoogleUser", true);
+
+            // Return success response
+            out.write("{\"success\": true}");
+
         } catch (Exception e) {
             System.out.println("DEBUG: Error in Google login: " + e.getMessage());
             e.printStackTrace();
             response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-            response.getWriter().write("{\"success\": false, \"message\": \"" + e.getMessage() + "\"}");
+            out.write("{\"success\": false, \"message\": \"" + escapeJsonString(e.getMessage()) + "\"}");
         }
     }
-    
+
+    private String generateSecurePassword() {
+        // Generate a secure random password for Google users
+        return UUID.randomUUID().toString();
+    }
+
+    private String escapeJsonString(String input) {
+        if (input == null) {
+            return "";
+        }
+        return input.replace("\"", "\\\"")
+                .replace("\n", "\\n")
+                .replace("\r", "\\r")
+                .replace("\t", "\\t");
+    }
+
     private boolean isValidPassword(String password) {
         // Check if password is null or less than 8 characters
         if (password == null || password.length() < 8) {
             return false;
         }
-        
+
         // Check if password contains at least one number
         boolean hasNumber = false;
         for (char c : password.toCharArray()) {
@@ -167,13 +208,13 @@ public class LoginServlet extends HttpServlet {
                 break;
             }
         }
-        
+
         return hasNumber;
     }
 
     private void handleRegistration(HttpServletRequest request, HttpServletResponse response) throws IOException {
         System.out.println("\nDEBUG: Starting registration process");
-        
+
         try {
             // Log raw request parameters for debugging
             System.out.println("DEBUG: Raw request parameters:");
@@ -182,7 +223,7 @@ public class LoginServlet extends HttpServlet {
                 String paramName = paramNames.nextElement();
                 System.out.println(paramName + ": " + request.getParameter(paramName));
             }
-            
+
             // Get and validate all parameters first
             Map<String, String> params = new HashMap<>();
             params.put("firstName", request.getParameter("firstName"));
@@ -219,8 +260,8 @@ public class LoginServlet extends HttpServlet {
 
             // Validate password
             if (!isValidPassword(params.get("password"))) {
-                request.getSession().setAttribute("errorMessage", 
-                    "Password must be at least 8 characters long and contain at least one number");
+                request.getSession().setAttribute("errorMessage",
+                        "Password must be at least 8 characters long and contain at least one number");
                 response.sendRedirect("login.jsp?action=signup");
                 return;
             }
@@ -231,7 +272,7 @@ public class LoginServlet extends HttpServlet {
             try {
                 heightCm = Float.parseFloat(params.get("heightCm"));
                 weightKg = Float.parseFloat(params.get("weightKg"));
-                
+
                 // Validate reasonable ranges
                 if (heightCm < 1 || heightCm > 300) {
                     throw new NumberFormatException("Height must be between 1 and 300 cm");
@@ -248,7 +289,7 @@ public class LoginServlet extends HttpServlet {
             }
 
             // Calculate BMI category based on the formula
-            float bmi = weightKg / ((heightCm/100) * (heightCm/100));
+            float bmi = weightKg / ((heightCm / 100) * (heightCm / 100));
             String bmiCategory = calculateBMICategory(bmi);
             System.out.println("DEBUG: Calculated BMI: " + bmi + ", Category: " + bmiCategory);
 
@@ -296,11 +337,17 @@ public class LoginServlet extends HttpServlet {
             response.sendRedirect("login.jsp?action=signup");
         }
     }
-    
+
     private String calculateBMICategory(float bmi) {
-        if (bmi < 18.5) return "Underweight";
-        if (bmi < 25) return "Normal";
-        if (bmi < 30) return "Overweight";
+        if (bmi < 18.5) {
+            return "Underweight";
+        }
+        if (bmi < 25) {
+            return "Normal";
+        }
+        if (bmi < 30) {
+            return "Overweight";
+        }
         return "Obese";
     }
 
@@ -320,4 +367,4 @@ public class LoginServlet extends HttpServlet {
     public String getServletInfo() {
         return "Login Servlet handles user authentication and registration";
     }
-} 
+}

@@ -125,6 +125,11 @@
             .show {
                 display: block;
             }
+
+            .preserve-whitespace {
+                white-space: pre-wrap;
+                word-wrap: break-word;
+            }
         </style>
     </head>
     <body>
@@ -166,10 +171,10 @@
                         </div>
                     </div>
 
-                    <h3>${blog.title}</h3>
+                    <h3 class="preserve-whitespace">${blog.title}</h3>
                     <p><b>Người đăng:</b> ${blog.nutritionistName}</p>
                     <p><b>Ngày đăng:</b> <fmt:formatDate value="${blog.createdAt}" pattern="dd/MM/yyyy HH:mm"/></p>
-                    <p>${blog.description}</p>
+                    <p class="preserve-whitespace">${blog.description}</p>
 
                     <c:if test="${not empty blog.imageURL}">
                         <img src="${blog.imageURL}" width="100%" style="border-radius: 8px;"/>
