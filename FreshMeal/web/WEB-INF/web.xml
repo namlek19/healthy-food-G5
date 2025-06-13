@@ -60,4 +60,8 @@
         <servlet-name>BlogManageServlet</servlet-name>
         <url-pattern>/blogmanage</url-pattern>
     </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>LoginServlet</servlet-name>
+        <url-pattern>/login</url-pattern>
+    </servlet-mapping>
 </web-app>

@@ -1,4 +1,8 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%
+    request.setAttribute("currentPage", "blogpost");
+%>
+
 <!DOCTYPE html>
 <html>
     <head>
@@ -14,24 +18,37 @@
                 display: flex;
             }
             .sidebar {
-                background-color: #ffffff;
-                padding: 20px;
+                position: fixed;
+                top: 0;
+                left: 0;
                 width: 220px;
-                min-height: 100vh;
+                height: 100vh;
+                background-color: #A9F89D;
+                padding: 20px;
                 border-right: 1px solid #ddd;
                 box-sizing: border-box;
+                z-index: 100;
             }
             .sidebar h2 {
+                background-color: #F8FFF7;
                 margin-top: 0;
                 color: #333;
                 margin-bottom: 20px;
                 font-size: 1.2em;
+                padding: 10px 24px;
+                border-radius: 32px;
+                font-weight: bold;
+                display: block;
+                width: 75%;          /* hoặc 80%, 90% tuỳ ý */
+                margin: 0 auto 20px auto;  /* Căn giữa theo chiều ngang */
+                text-align: center;        /* Căn giữa chữ */
             }
             .sidebar ul {
                 list-style: none;
                 padding: 0;
                 margin: 0;
                 margin-bottom: 30px;
+                font-weight: bold;
             }
             .sidebar ul li {
                 margin-bottom: 10px;
@@ -56,6 +73,9 @@
                 display: flex;
                 flex-direction: column;
                 align-items: center;
+                margin-left: 220px;
+                padding: 20px;
+                background-color: #BEF0CF;
             }
 
             /* CSS gốc của blog_post.jsp cho phần upload ảnh */
@@ -113,13 +133,41 @@
         <div class="sidebar">
             <h2>BLOG</h2>
             <ul>
-                <li><a href="${pageContext.request.contextPath}/blog">Blog List</a></li>
-                <li><a href="blogpost" class="active">Blog Post</a></li>
+                <li>
+                    <a href="${pageContext.request.contextPath}/blog"
+                       class="<c:if test='${currentPage eq "bloglist"}'>active</c:if>">
+                        Blog List
+                    </a>
+                </li>
+                <li>
+                    <a href="blogpost"
+                       class="${currentPage eq 'blogpost' ? 'active' : ''}">
+                        Blog Post
+                    </a>
+
+                </li>
+                <li>
+                    <a href="blogmanage"
+                       class="<c:if test='${currentPage eq "blogmanage"}'>active</c:if>">
+                        Blog Manage
+                    </a>
+                </li>
             </ul>
+
             <h2>MENU</h2>
             <ul>
                 <li><a href="#">Menu List</a></li>
                 <li><a href="#">Menu Post</a></li>
+                <li><a href="#">Menu Manage</a></li>
+            </ul>
+
+            <!-- Thêm nút logout ở đây -->
+            <ul>
+                <li>
+                    <a href="${pageContext.request.contextPath}/login?action=logout" style="color:red;">
+                        <i class="fas fa-sign-out-alt"></i> Logout
+                    </a>
+                </li>
             </ul>
         </div>
 
@@ -153,19 +201,24 @@
             const previewImage = document.getElementById('previewImage');
             const imageURLInput = document.getElementById('imageURL');
 
-            // Bấm vào ô dấu cộng để chọn ảnh
+// Bấm vào ô dấu cộng để chọn ảnh
             imageDropArea.addEventListener('click', () => {
                 imageInput.click();
             });
 
-            // Chọn file
+// Chọn file
             imageInput.addEventListener('change', function () {
                 if (imageInput.files && imageInput.files[0]) {
-                    previewLocalImage(imageInput.files[0]);
+                    resizeAndConvert(imageInput.files[0], 900, function (dataURL) {
+                        plusIcon.style.display = 'none';
+                        previewImage.src = dataURL;
+                        previewImage.style.display = 'block';
+                        imageURLInput.value = dataURL; // base64 đã resize
+                    });
                 }
             });
 
-            // Xử lý kéo thả
+// Kéo thả file
             imageDropArea.addEventListener('dragover', e => {
                 e.preventDefault();
                 imageDropArea.classList.add('dragover');
@@ -178,48 +231,51 @@
                 e.preventDefault();
                 imageDropArea.classList.remove('dragover');
                 if (e.dataTransfer.files && e.dataTransfer.files[0]) {
-                    previewLocalImage(e.dataTransfer.files[0]);
+                    resizeAndConvert(e.dataTransfer.files[0], 900, function (dataURL) {
+                        plusIcon.style.display = 'none';
+                        previewImage.src = dataURL;
+                        previewImage.style.display = 'block';
+                        imageURLInput.value = dataURL;
+                    });
                 }
             });
 
-            // Xử lý dán ảnh (Ctrl+V)
+// Dán ảnh (Ctrl+V)
             document.addEventListener('paste', function (e) {
                 const items = (e.clipboardData || window.clipboardData).items;
                 for (let item of items) {
                     if (item.type.indexOf('image') !== -1) {
                         const file = item.getAsFile();
-                        previewLocalImage(file);
+                        resizeAndConvert(file, 900, function (dataURL) {
+                            plusIcon.style.display = 'none';
+                            previewImage.src = dataURL;
+                            previewImage.style.display = 'block';
+                            imageURLInput.value = dataURL;
+                        });
                     }
                 }
             });
 
-            function previewLocalImage(file) {
-                plusIcon.style.display = 'none';
-                // Xóa preview cũ nếu có
-                const existingPreview = document.getElementById('previewImage');
-                if (existingPreview) {
-                    imageDropArea.innerHTML = ""; // Xóa hết nội dung cũ
-                    imageDropArea.appendChild(plusIcon); // Thêm lại icon cộng
-                }
-
-                plusIcon.style.display = 'none';
-                const tempPreview = document.createElement('img');
-                tempPreview.id = 'previewImage';
-                tempPreview.style.display = 'none';
-                tempPreview.style.maxWidth = '200px';
-                tempPreview.style.maxHeight = '150px';
-                tempPreview.style.borderRadius = '10px';
-                imageDropArea.appendChild(tempPreview);
-
-
+// Hàm resize
+            function resizeAndConvert(file, maxWidth = 900, callback) {
                 const reader = new FileReader();
                 reader.onload = function (e) {
-                    tempPreview.src = e.target.result;
-                    tempPreview.style.display = 'block';
-                    imageURLInput.value = e.target.result; // base64 của ảnh
+                    const img = new Image();
+                    img.onload = function () {
+                        let canvas = document.createElement('canvas');
+                        let scale = Math.min(maxWidth / img.width, 1); // chỉ scale nếu ảnh lớn
+                        canvas.width = img.width * scale;
+                        canvas.height = img.height * scale;
+                        let ctx = canvas.getContext('2d');
+                        ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+                        let dataURL = canvas.toDataURL('image/jpeg', 0.85);
+                        callback(dataURL);
+                    };
+                    img.src = e.target.result;
                 };
                 reader.readAsDataURL(file);
             }
+
         </script>
 
     </body>
