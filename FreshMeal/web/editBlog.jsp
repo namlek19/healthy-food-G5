@@ -13,24 +13,37 @@
                 display: flex;
             }
             .sidebar {
-                background-color: #ffffff;
-                padding: 20px;
+                position: fixed;
+                top: 0;
+                left: 0;
                 width: 220px;
-                min-height: 100vh;
+                height: 100vh;
+                background-color: #A9F89D;
+                padding: 20px;
                 border-right: 1px solid #ddd;
                 box-sizing: border-box;
+                z-index: 100;
             }
             .sidebar h2 {
+                background-color: #F8FFF7;
                 margin-top: 0;
                 color: #333;
                 margin-bottom: 20px;
                 font-size: 1.2em;
+                padding: 10px 24px;
+                border-radius: 32px;
+                font-weight: bold;
+                display: block;
+                width: 75%;          /* hoặc 80%, 90% tuỳ ý */
+                margin: 0 auto 20px auto;  /* Căn giữa theo chiều ngang */
+                text-align: center;        /* Căn giữa chữ */
             }
             .sidebar ul {
                 list-style: none;
                 padding: 0;
                 margin: 0;
                 margin-bottom: 30px;
+                font-weight: bold;
             }
             .sidebar ul li {
                 margin-bottom: 10px;
@@ -55,6 +68,9 @@
                 display: flex;
                 flex-direction: column;
                 align-items: center;
+                margin-left: 220px;
+                padding: 20px;
+                background-color: #BEF0CF
             }
 
             /* CSS cho phần upload ảnh */
@@ -131,12 +147,14 @@
             <h2>BLOG</h2>
             <ul>
                 <li><a href="${pageContext.request.contextPath}/blog" class="active">Blog List</a></li>
-                <li><a href="blogpost">Blog Post</a></li>
+                <li><a href="blogpost">Blog Post</a></li> 
+                <li><a href="blogmanage">Blog Manage</a></li>  
             </ul>
             <h2>MENU</h2>
             <ul>
                 <li><a href="#">Menu List</a></li>
                 <li><a href="#">Menu Post</a></li>
+                <li><a href="#">Menu Manage</a></li>
             </ul>
         </div>
 
