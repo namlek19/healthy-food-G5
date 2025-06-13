@@ -110,25 +110,33 @@
                             <h5 class="card-title">Mô tả</h5>
                             <p class="card-text"><%= product.getDescription() %></p>
                             <!-- 3 cột: Giá, Thêm vào giỏ, Mua ngay -->
-                            <div class="row mt-4 align-items-center">
-                                <div class="col-md-4 mb-2">
-                                    <h5 class="text-success">
-                                        <fmt:formatNumber value="<%= product.getPrice() %>" type="number" maxFractionDigits="0"/> VNĐ
-                                    </h5>
-                                </div>
-                                <div class="col-md-4 mb-2">
-                                    <form action="cart" method="post">
-                                        <input type="hidden" name="id" value="<%= product.getProductID() %>">
-                                        <button type="submit" class="btn btn-outline-success w-100">Thêm vào giỏ</button>
-                                    </form>
-                                </div>
-                                <div class="col-md-4 mb-2">
-                                    <form action="checkout" method="post">
-                                        <input type="hidden" name="id" value="<%= product.getProductID() %>">
-                                        <button type="submit" class="btn btn-success w-100">Mua ngay</button>
-                                    </form>
-                                </div>
-                            </div>
+                         <div class="row mt-4 align-items-center">
+    <div class="col-md-4 mb-2">
+        <h5 class="text-success">
+            <fmt:formatNumber value="<%= product.getPrice() %>" type="number" maxFractionDigits="0"/> VNĐ
+        </h5>
+    </div>
+
+    <!-- Thêm vào giỏ -->
+    <div class="col-md-4 mb-2">
+        <form action="CartServlet" method="post">
+            <input type="hidden" name="id" value="<%= product.getProductID() %>">
+            <input type="hidden" name="action" value="add">
+            <input type="hidden" name="redirect" value="productdetail?id=<%= product.getProductID() %>">
+            <button type="submit" class="btn btn-outline-success w-100">Thêm vào giỏ</button>
+        </form>
+    </div>
+
+    <!-- Mua ngay -->
+    <div class="col-md-4 mb-2">
+        <form action="CartServlet" method="post">
+            <input type="hidden" name="id" value="<%= product.getProductID() %>">
+            <input type="hidden" name="action" value="add">
+            <input type="hidden" name="redirect" value="cart.jsp">
+            <button type="submit" class="btn btn-success w-100">Mua ngay</button>
+        </form>
+    </div>
+</div>
                         </div>
                     </div>
                 </div>
@@ -172,4 +180,17 @@
             </div>
         </footer>
     </body>
+    <%
+    String msg = (String) session.getAttribute("msg");
+    if (msg != null) {
+%>
+<div class="alert alert-success alert-dismissible fade show" role="alert" style="margin-top: 15px;">
+    <%= msg %>
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+</div>
+<%
+        session.removeAttribute("msg");
+    }
+%>
+
 </html>

@@ -9,7 +9,13 @@ import java.sql.SQLException;
 public class DBContext {
     private final String serverName = "localhost";
 
+
+
     private final String dbName = "SWPproject";
+
+
+  
+
 
 
     private final String portNumber = "1433";
