@@ -32,6 +32,10 @@
         <servlet-name>BlogDetailServlet</servlet-name>
         <servlet-class>controller.BlogDetailServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>BlogManageServlet</servlet-name>
+        <servlet-class>controller.BlogManageServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>ProductListServlet</servlet-name>
         <url-pattern>/productlistcontrol</url-pattern>
@@ -51,5 +55,9 @@
     <servlet-mapping>
         <servlet-name>BlogDetailServlet</servlet-name>
         <url-pattern>/blogdetail</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>BlogManageServlet</servlet-name>
+        <url-pattern>/blogmanage</url-pattern>
     </servlet-mapping>
 </web-app>
