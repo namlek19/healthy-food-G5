@@ -1,6 +1,7 @@
 package model;
 
 import java.util.Date;
+import java.util.List;
 
 public class Order {
     private int orderID;
@@ -11,7 +12,7 @@ public class Order {
     private double totalAmount;
     private Date orderDate;
     private String status;
-
+    private List<OrderItem> items;
     public Order() {
     }
 
@@ -88,6 +89,14 @@ public class Order {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public List<OrderItem> getItems() {
+        return items;
+    }
+
+    public void setItems(List<OrderItem> items) {
+        this.items = items;
     }
 
     
