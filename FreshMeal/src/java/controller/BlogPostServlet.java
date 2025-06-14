@@ -77,12 +77,14 @@ public class BlogPostServlet extends HttpServlet {
         String imageURL = request.getParameter("imageURL");
         System.out.println("imageURL = " + imageURL); // debug
 
-        // Gợi ý cho tương lai: Lấy ID của chuyên gia dinh dưỡng từ session
-        // HttpSession session = request.getSession();
-        // User loggedInUser = (User) session.getAttribute("account");
-        // int nutritionistID = loggedInUser.getUserID(); 
-        // Tạm thời vẫn gán cứng để test
-        int nutritionistID = 1;
+        // Lấy userID từ session (đúng chuẩn)
+        Integer nutritionistID = (Integer) request.getSession().getAttribute("userID");
+
+        // Nếu chưa login hoặc không có userID thì redirect về login
+        if (nutritionistID == null) {
+            response.sendRedirect("login.jsp");
+            return;
+        }
 
         // Kiểm tra đầu vào (tùy chọn nhưng nên có)
         if (title != null && !title.trim().isEmpty() && description != null && !description.trim().isEmpty()) {

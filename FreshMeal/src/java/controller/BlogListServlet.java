@@ -21,6 +21,10 @@ public class BlogListServlet extends HttpServlet {
         String action = request.getParameter("action");
         BlogDAO blogDAO = new BlogDAO();
 
+        // Lấy user hiện tại từ session
+        jakarta.servlet.http.HttpSession session = request.getSession(false);
+        model.User currentUser = (session != null) ? (model.User) session.getAttribute("user") : null;
+
         if (action != null && action.equals("edit")) {
             try {
                 int id = Integer.parseInt(request.getParameter("id"));
@@ -33,9 +37,13 @@ public class BlogListServlet extends HttpServlet {
                 response.sendRedirect(request.getContextPath() + "/blog");
             }
         } else {
-            // Action mặc định: Hiển thị danh sách blog
+            // Hiển thị danh sách blog cho mọi user
             List<Blog> blogs = blogDAO.getAllBlogs();
             request.setAttribute("blogs", blogs);
+            // Truyền userID vào request (để jsp dùng)
+            if (currentUser != null) {
+                request.setAttribute("myUserID", currentUser.getUserID());
+            }
             RequestDispatcher rd = request.getRequestDispatcher("blog.jsp");
             rd.forward(request, response);
         }
@@ -46,7 +54,7 @@ public class BlogListServlet extends HttpServlet {
             throws ServletException, IOException {
         // Thêm dòng này để xử lý tiếng Việt khi cập nhật bài viết
         request.setCharacterEncoding("UTF-8");
-        
+
         String action = request.getParameter("action");
         BlogDAO blogDAO = new BlogDAO();
 
@@ -60,20 +68,20 @@ public class BlogListServlet extends HttpServlet {
                     String title = request.getParameter("title");
                     String imageURL = request.getParameter("imageURL");
                     String description = request.getParameter("description");
-                    
+
                     Blog blog = new Blog();
                     blog.setBlogID(id);
                     blog.setTitle(title);
                     blog.setImageURL(imageURL);
                     blog.setDescription(description);
-                    
+
                     blogDAO.updateBlog(blog);
                 }
             } catch (NumberFormatException e) {
                 e.printStackTrace();
             }
         }
-        
+
         // 3. Sửa lại lệnh chuyển hướng để nó tạo ra URL tuyệt đối và chính xác
         response.sendRedirect(request.getContextPath() + "/blog");
     }
