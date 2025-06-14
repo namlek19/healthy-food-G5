@@ -1,6 +1,5 @@
 package controller;
 
-import dal.CartDAO;
 import dal.UserDAO;
 import model.User;
 import jakarta.servlet.ServletException;
@@ -12,7 +11,6 @@ import jakarta.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.*;
-import model.CartItem;
 
 @WebServlet(name = "LoginServlet", urlPatterns = {"/login"})
 public class LoginServlet extends HttpServlet {
@@ -87,14 +85,35 @@ public class LoginServlet extends HttpServlet {
             User user = userDAO.checkLogin(email, password);
 
             if (user != null) {
-                // Login successful
                 HttpSession session = request.getSession();
                 session.setAttribute("user", user);
-                CartDAO cartDAO = new CartDAO();
-                List<CartItem> dbCart = cartDAO.getCartItemsByUser(user.getUserID());
-                session.setAttribute("cart", dbCart);
-
-                response.sendRedirect("index.jsp");
+                session.setAttribute("userID", user.getUserID());
+                session.setAttribute("roleID", user.getRoleID());
+                if (user.getRoleID() == 5) {
+                    // Nutritionist: chuyển thẳng vào trang blog list
+                    response.sendRedirect(request.getContextPath() + "/blog");
+                } 
+//                else if (user.getRoleID() == 1) {
+//                    // Admin:
+//                    response.sendRedirect(request.getContextPath() + "/abcde");
+//                } 
+//               
+//                else if (user.getRoleID() == 3) {
+//                    // Manager
+//                    response.sendRedirect(request.getContextPath() + "/abcde");
+//                } 
+//                else if (user.getRoleID() == 4) {
+//                    // Seller
+//                    response.sendRedirect(request.getContextPath() + "/abcde");
+//                } 
+//                else if (user.getRoleID() == 6) {
+//                    // Shipper
+//                    response.sendRedirect(request.getContextPath() + "/abcde");
+//                } 
+                else {
+                    // Các role khác vào homepage như thường
+                    response.sendRedirect("index.jsp");
+                }
             } else {
                 // Login failed
                 request.getSession().setAttribute("errorMessage", "Invalid email or password");
