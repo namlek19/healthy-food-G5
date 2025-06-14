@@ -1,7 +1,7 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
-
+<link rel="stylesheet" href="assets/css/blog.css">
 <%
     request.setAttribute("currentPage", "bloglist");
 %>
@@ -16,157 +16,109 @@
         <meta charset="UTF-8">
         <title>Danh sách Blog</title>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
-        
+
     </head>
-    
+
     <style>
-            body {
-                font-family: Arial, sans-serif;
-                background-color: #f0f2f5;
-                margin: 0;
-                display: flex; /* Sử dụng Flexbox cho layout 2 cột */
-            }
-            .sidebar {
-                position: fixed;
-                top: 0;
-                left: 0;
-                width: 220px;
-                height: 100vh;
-                background-color: #A9F89D;
-                padding: 20px;
-                border-right: 1px solid #ddd;
-                box-sizing: border-box;
-                z-index: 100;
-            }
-            .sidebar h2 {
-                background-color: #F8FFF7;
-                margin-top: 0;
-                color: #333;
-                margin-bottom: 20px;
-                font-size: 1.2em;
-                padding: 10px 24px;
-                border-radius: 32px;
-                font-weight: bold;
-                display: block;
-                width: 75%;          /* hoặc 80%, 90% tuỳ ý */
-                margin: 0 auto 20px auto;  /* Căn giữa theo chiều ngang */
-                text-align: center;        /* Căn giữa chữ */
-            }
-            .sidebar ul {
-                list-style: none;
-                padding: 0;
-                margin: 0;
-                margin-bottom: 30px; /* Khoảng cách giữa các nhóm menu */
-                font-weight: bold;
-            }
-            .sidebar ul li {
-                margin-bottom: 10px;
-            }
-            .sidebar ul li a {
-                display: block;
-                padding: 10px 15px;
-                text-decoration: none;
-                color: #555;
-                border-radius: 5px;
-                transition: background-color 0.2s ease-in-out;
-            }
-            .sidebar ul li a.active, /* Lớp để đánh dấu mục đang được chọn */
-            .sidebar ul li a:hover {
-                background-color: #e9ecef;
-                color: #000;
-            }
-            .main-container {
-                flex: 1; /* Phần nội dung chính sẽ chiếm hết không gian còn lại */
-                padding: 20px;
-                margin-left: 220px;
-                padding: 20px;
-            }
-            .post-container {
-                position: relative;
-                background-color: #BEF0CF;
-                border: 1px solid #ddd;
-                border-radius: 8px;
-                margin: 0 auto 20px auto; /* Căn giữa và thêm khoảng cách */
-                padding: 20px;
-                max-width: 700px;
-                box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-            }
-            .blog-post-header {
-                display: flex;
-                align-items: center;
-                margin-bottom: 15px;
-            }
-            .blog-post-header a {
-                text-decoration: none;
-                color: #5cb85c; /* Đã sửa lỗi chú thích */
-                font-weight: bold;
-            }
-            .star-icon {
-                color: #f0ad4e; /* Đã sửa lỗi chú thích */
-                margin-right: 8px;
-                font-size: 1.2em;
-            }
-            .post-actions {
-                position: absolute;
-                top: 15px;
-                right: 15px;
-            }
-            .menu-button {
-                background: none;
-                border: none;
-                font-size: 20px;
-                cursor: pointer;
-                padding: 5px;
-                line-height: 1;
-            }
-            .dropdown-content {
-                display: none;
-                position: absolute;
-                right: 0;
-                background-color: white;
-                min-width: 120px;
-                box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-                z-index: 1;
-                border-radius: 5px;
-                overflow: hidden;
-            }
-            .dropdown-content a, .dropdown-content button {
-                color: black;
-                padding: 10px 15px;
-                text-decoration: none;
-                display: block;
-                text-align: left;
-                width: 100%;
-                border: none;
-                background: none;
-                cursor: pointer;
-                font-size: 14px;
-            }
-            .dropdown-content a:hover, .dropdown-content button:hover {
-                background-color: #f1f1f1;
-            }
-            .show {
-                display: block;
-            }
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f2f5;
+            margin: 0;
+            display: flex; /* Sử dụng Flexbox cho layout 2 cột */
+        }
 
-            .preserve-whitespace {
-                white-space: pre-wrap;
-                word-wrap: break-word;
-            }
+        .main-container {
+            flex: 1; /* Phần nội dung chính sẽ chiếm hết không gian còn lại */
+            padding: 20px;
+            margin-left: 220px;
+            padding: 20px;
+        }
+        .post-container {
+            position: relative;
+            background-color: #BEF0CF;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            margin: 0 auto 20px auto; /* Căn giữa và thêm khoảng cách */
+            padding: 20px;
+            max-width: 700px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .blog-post-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        .blog-post-header a {
+            text-decoration: none;
+            color: #5cb85c; /* Đã sửa lỗi chú thích */
+            font-weight: bold;
+        }
+        .star-icon {
+            color: #f0ad4e; /* Đã sửa lỗi chú thích */
+            margin-right: 8px;
+            font-size: 1.2em;
+        }
+        .post-actions {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+        }
+        .menu-button {
+            background: none;
+            border: none;
+            font-size: 20px;
+            cursor: pointer;
+            padding: 5px;
+            line-height: 1;
+        }
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            right: 0;
+            background-color: white;
+            min-width: 120px;
+            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+            z-index: 1;
+            border-radius: 5px;
+            overflow: hidden;
+        }
+        .dropdown-content a, .dropdown-content button {
+            color: black;
+            padding: 10px 15px;
+            text-decoration: none;
+            display: block;
+            text-align: left;
+            width: 100%;
+            border: none;
+            background: none;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        .dropdown-content a:hover, .dropdown-content button:hover {
+            background-color: #f1f1f1;
+        }
+        .show {
+            display: block;
+        }
 
-            .blog-img-full {
-                display: block;
-                width: 100%;      /* luôn chiếm full chiều ngang post-container */
-                height: auto;
-                max-height: 500px;    /* hoặc giá trị bạn muốn, để không bị quá dài */
-                object-fit: cover;    /* hoặc contain nếu muốn ảnh không bị crop */
-                border-radius: 8px;
-                background: #f4f4f4;
-                margin: 0 auto;
-            }
+        .preserve-whitespace {
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
 
-        </style>
-    
+        .blog-img-full {
+            display: block;
+            width: 100%;      /* luôn chiếm full chiều ngang post-container */
+            height: auto;
+            max-height: 500px;    /* hoặc giá trị bạn muốn, để không bị quá dài */
+            object-fit: cover;    /* hoặc contain nếu muốn ảnh không bị crop */
+            border-radius: 8px;
+            background: #f4f4f4;
+            margin: 0 auto;
+        }
+
+    </style>
+
     <body>
 
         <div class="sidebar">
@@ -287,6 +239,27 @@
                     }
                 }
             }
+
+
+            // ======= LƯU VỊ TRÍ KHI CHUYỂN TRANG =======
+            document.querySelectorAll('a[href*="blogdetail"]').forEach(link => {
+                link.addEventListener('click', function () {
+                    // Lưu lại vị trí scroll hiện tại vào sessionStorage
+                    sessionStorage.setItem('bloglist-scroll', window.scrollY);
+                });
+            });
+
+// ======= KHI LOAD LẠI TRANG, ĐƯA VỀ VỊ TRÍ CŨ =======
+            window.addEventListener('load', function () {
+                const lastScroll = sessionStorage.getItem('bloglist-scroll');
+                if (lastScroll) {
+                    window.scrollTo(0, parseInt(lastScroll));
+                    // Xóa để lần sau vào bloglist từ chỗ khác sẽ lại ở top
+                    sessionStorage.removeItem('bloglist-scroll');
+                }
+            });
+            
+            
         </script>
 
 

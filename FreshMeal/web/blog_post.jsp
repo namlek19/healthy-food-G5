@@ -2,7 +2,7 @@
 <%
     request.setAttribute("currentPage", "blogpost");
 %>
-
+<link rel="stylesheet" href="assets/css/blog.css">
 <!DOCTYPE html>
 <html>
     <head>
@@ -16,55 +16,6 @@
                 background-color: #f0f2f5;
                 margin: 0;
                 display: flex;
-            }
-            .sidebar {
-                position: fixed;
-                top: 0;
-                left: 0;
-                width: 220px;
-                height: 100vh;
-                background-color: #A9F89D;
-                padding: 20px;
-                border-right: 1px solid #ddd;
-                box-sizing: border-box;
-                z-index: 100;
-            }
-            .sidebar h2 {
-                background-color: #F8FFF7;
-                margin-top: 0;
-                color: #333;
-                margin-bottom: 20px;
-                font-size: 1.2em;
-                padding: 10px 24px;
-                border-radius: 32px;
-                font-weight: bold;
-                display: block;
-                width: 75%;          /* hoặc 80%, 90% tuỳ ý */
-                margin: 0 auto 20px auto;  /* Căn giữa theo chiều ngang */
-                text-align: center;        /* Căn giữa chữ */
-            }
-            .sidebar ul {
-                list-style: none;
-                padding: 0;
-                margin: 0;
-                margin-bottom: 30px;
-                font-weight: bold;
-            }
-            .sidebar ul li {
-                margin-bottom: 10px;
-            }
-            .sidebar ul li a {
-                display: block;
-                padding: 10px 15px;
-                text-decoration: none;
-                color: #555;
-                border-radius: 5px;
-                transition: background-color 0.2s ease-in-out;
-            }
-            .sidebar ul li a.active,
-            .sidebar ul li a:hover {
-                background-color: #e9ecef;
-                color: #000;
             }
 
             .main-container {
@@ -160,11 +111,11 @@
                 <li><a href="#">Menu Post</a></li>
                 <li><a href="#">Menu Manage</a></li>
             </ul>
-
+            
             <!-- Thêm nút logout ở đây -->
-            <ul>
-                <li>
-                    <a href="${pageContext.request.contextPath}/login?action=logout" style="color:red;">
+                <ul>
+                    <li>
+                        <a href="${pageContext.request.contextPath}/login?action=logout" style="color:red;">
                         <i class="fas fa-sign-out-alt"></i> Logout
                     </a>
                 </li>
@@ -196,85 +147,85 @@
 
         <script>
             const imageInput = document.getElementById('imageInput');
-            const imageDropArea = document.getElementById('imageDropArea');
-            const plusIcon = document.getElementById('plusIcon');
-            const previewImage = document.getElementById('previewImage');
-            const imageURLInput = document.getElementById('imageURL');
+const imageDropArea = document.getElementById('imageDropArea');
+const plusIcon = document.getElementById('plusIcon');
+const previewImage = document.getElementById('previewImage');
+const imageURLInput = document.getElementById('imageURL');
 
 // Bấm vào ô dấu cộng để chọn ảnh
-            imageDropArea.addEventListener('click', () => {
-                imageInput.click();
-            });
+imageDropArea.addEventListener('click', () => {
+    imageInput.click();
+});
 
 // Chọn file
-            imageInput.addEventListener('change', function () {
-                if (imageInput.files && imageInput.files[0]) {
-                    resizeAndConvert(imageInput.files[0], 900, function (dataURL) {
-                        plusIcon.style.display = 'none';
-                        previewImage.src = dataURL;
-                        previewImage.style.display = 'block';
-                        imageURLInput.value = dataURL; // base64 đã resize
-                    });
-                }
-            });
+imageInput.addEventListener('change', function () {
+    if (imageInput.files && imageInput.files[0]) {
+        resizeAndConvert(imageInput.files[0], 900, function(dataURL) {
+            plusIcon.style.display = 'none';
+            previewImage.src = dataURL;
+            previewImage.style.display = 'block';
+            imageURLInput.value = dataURL; // base64 đã resize
+        });
+    }
+});
 
 // Kéo thả file
-            imageDropArea.addEventListener('dragover', e => {
-                e.preventDefault();
-                imageDropArea.classList.add('dragover');
-            });
-            imageDropArea.addEventListener('dragleave', e => {
-                e.preventDefault();
-                imageDropArea.classList.remove('dragover');
-            });
-            imageDropArea.addEventListener('drop', function (e) {
-                e.preventDefault();
-                imageDropArea.classList.remove('dragover');
-                if (e.dataTransfer.files && e.dataTransfer.files[0]) {
-                    resizeAndConvert(e.dataTransfer.files[0], 900, function (dataURL) {
-                        plusIcon.style.display = 'none';
-                        previewImage.src = dataURL;
-                        previewImage.style.display = 'block';
-                        imageURLInput.value = dataURL;
-                    });
-                }
-            });
+imageDropArea.addEventListener('dragover', e => {
+    e.preventDefault();
+    imageDropArea.classList.add('dragover');
+});
+imageDropArea.addEventListener('dragleave', e => {
+    e.preventDefault();
+    imageDropArea.classList.remove('dragover');
+});
+imageDropArea.addEventListener('drop', function (e) {
+    e.preventDefault();
+    imageDropArea.classList.remove('dragover');
+    if (e.dataTransfer.files && e.dataTransfer.files[0]) {
+        resizeAndConvert(e.dataTransfer.files[0], 900, function(dataURL) {
+            plusIcon.style.display = 'none';
+            previewImage.src = dataURL;
+            previewImage.style.display = 'block';
+            imageURLInput.value = dataURL;
+        });
+    }
+});
 
 // Dán ảnh (Ctrl+V)
-            document.addEventListener('paste', function (e) {
-                const items = (e.clipboardData || window.clipboardData).items;
-                for (let item of items) {
-                    if (item.type.indexOf('image') !== -1) {
-                        const file = item.getAsFile();
-                        resizeAndConvert(file, 900, function (dataURL) {
-                            plusIcon.style.display = 'none';
-                            previewImage.src = dataURL;
-                            previewImage.style.display = 'block';
-                            imageURLInput.value = dataURL;
-                        });
-                    }
-                }
+document.addEventListener('paste', function (e) {
+    const items = (e.clipboardData || window.clipboardData).items;
+    for (let item of items) {
+        if (item.type.indexOf('image') !== -1) {
+            const file = item.getAsFile();
+            resizeAndConvert(file, 900, function(dataURL) {
+                plusIcon.style.display = 'none';
+                previewImage.src = dataURL;
+                previewImage.style.display = 'block';
+                imageURLInput.value = dataURL;
             });
+        }
+    }
+});
 
 // Hàm resize
-            function resizeAndConvert(file, maxWidth = 900, callback) {
-                const reader = new FileReader();
-                reader.onload = function (e) {
-                    const img = new Image();
-                    img.onload = function () {
-                        let canvas = document.createElement('canvas');
-                        let scale = Math.min(maxWidth / img.width, 1); // chỉ scale nếu ảnh lớn
-                        canvas.width = img.width * scale;
-                        canvas.height = img.height * scale;
-                        let ctx = canvas.getContext('2d');
-                        ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-                        let dataURL = canvas.toDataURL('image/jpeg', 0.85);
-                        callback(dataURL);
-                    };
-                    img.src = e.target.result;
-                };
-                reader.readAsDataURL(file);
-            }
+function resizeAndConvert(file, maxWidth = 900, callback) {
+    const reader = new FileReader();
+    reader.onload = function(e) {
+        const img = new Image();
+        img.onload = function() {
+            let canvas = document.createElement('canvas');
+            let scale = Math.min(maxWidth / img.width, 1); // chỉ scale nếu ảnh lớn
+            canvas.width = img.width * scale;
+            canvas.height = img.height * scale;
+            let ctx = canvas.getContext('2d');
+            ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+            let dataURL = canvas.toDataURL('image/jpeg', 0.85);
+            callback(dataURL);
+        };
+        img.src = e.target.result;
+    };
+    reader.readAsDataURL(file);
+}
 
         </script>
 

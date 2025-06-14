@@ -1,5 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+ <link rel="stylesheet" href="assets/css/blog.css">
 <html>
     <head>
         <title>Chỉnh sửa Blog</title>
@@ -12,55 +13,7 @@
                 margin: 0;
                 display: flex;
             }
-            .sidebar {
-                position: fixed;
-                top: 0;
-                left: 0;
-                width: 220px;
-                height: 100vh;
-                background-color: #A9F89D;
-                padding: 20px;
-                border-right: 1px solid #ddd;
-                box-sizing: border-box;
-                z-index: 100;
-            }
-            .sidebar h2 {
-                background-color: #F8FFF7;
-                margin-top: 0;
-                color: #333;
-                margin-bottom: 20px;
-                font-size: 1.2em;
-                padding: 10px 24px;
-                border-radius: 32px;
-                font-weight: bold;
-                display: block;
-                width: 75%;          /* hoặc 80%, 90% tuỳ ý */
-                margin: 0 auto 20px auto;  /* Căn giữa theo chiều ngang */
-                text-align: center;        /* Căn giữa chữ */
-            }
-            .sidebar ul {
-                list-style: none;
-                padding: 0;
-                margin: 0;
-                margin-bottom: 30px;
-                font-weight: bold;
-            }
-            .sidebar ul li {
-                margin-bottom: 10px;
-            }
-            .sidebar ul li a {
-                display: block;
-                padding: 10px 15px;
-                text-decoration: none;
-                color: #555;
-                border-radius: 5px;
-                transition: background-color 0.2s ease-in-out;
-            }
-            .sidebar ul li a.active,
-            .sidebar ul li a:hover {
-                background-color: #e9ecef;
-                color: #000;
-            }
+            
 
             .main-container {
                 flex: 1;
