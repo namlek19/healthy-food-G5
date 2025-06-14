@@ -70,9 +70,11 @@
                     <div class="auth-button">
                         <% User user = (User) session.getAttribute("user"); %>
                         <% if (user == null) { %>
+                         
                             <a href="login.jsp" class="btn btn-outline-success btn-sm">Sign In</a>
                             <a href="login.jsp?action=signup" class="btn btn-outline-success btn-sm">Sign Up</a>
                         <% } else { %>
+                         <a href="order-history" class="auth-button">Lịch sử đơn hàng</a>
                             <a href="profile.jsp" class="auth-button">Hello, <%= user.getFirstName() != null && !user.getFirstName().isEmpty() ? user.getFirstName() : user.getFullName() %></a>
                             <a href="login?action=logout" class="auth-button">Logout</a>
                         <% } %>
