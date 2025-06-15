@@ -21,7 +21,7 @@ public class UpdateCartServlet extends HttpServlet {
         User user = (User) session.getAttribute("user");
 
         if (user != null) {
-            // ✅ Đã login → xử lý trên database
+    
             try {
                 List<CartItem> dbCart = cartDAO.getCartItemsByUser(user.getUserID());
                 for (CartItem item : dbCart) {
@@ -49,7 +49,7 @@ public class UpdateCartServlet extends HttpServlet {
             }
 
         } else {
-            // 👤 Guest → xử lý trong session
+           
             List<CartItem> guestCart = (List<CartItem>) session.getAttribute("guest_cart");
             if (guestCart != null) {
                 for (int i = 0; i < guestCart.size(); i++) {
