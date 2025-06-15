@@ -61,7 +61,7 @@ public class CartServlet extends HttpServlet {
                 e.printStackTrace();
             }
         } else {
-            // ❗GUEST → dùng session như cũ
+           
             List<CartItem> guestCart = (List<CartItem>) session.getAttribute("guest_cart");
             if (guestCart == null) guestCart = new ArrayList<>();
 
