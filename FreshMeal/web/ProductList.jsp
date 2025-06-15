@@ -14,14 +14,8 @@
         <link rel="stylesheet" href="assets/css/style.css">
         <link rel="stylesheet" href="assets/css/productlist.css">
         <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/css/bootstrap.min.css" rel="stylesheet">
 
-        <!-- Bootstrap 5 CSS -->
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4Q6Gf2aSP4eDXB8Miphtr37CMZZQ5oXLH2yaXMJ2w8e2ZtHTl7GptT4jmndRuHDT" crossorigin="anonymous">
-
-        <!-- Google Fonts -->
-        <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
-
-        <!-- Custom styles (optional) -->
         <style>
             body {
                 font-family: 'Poppins', sans-serif;
@@ -46,12 +40,7 @@
                 border-radius: 25px;
                 padding: 10px 20px;
             }
-            header img {
-                height: 40px;
-            }
-            .auth-buttons .btn {
-                font-size: 0.9rem;
-            }
+           
         </style>
     </head>
     <body>
@@ -64,25 +53,28 @@
                 </div>
                 <nav>
                     <ul class="nav">
-                        <li class="nav-item"><a href="productlistcontrol?category=" class="nav-link text-dark" >Product</a></li>
-                        <li class="nav-item"><a href="MenuCus.jsp" class="nav-link text-dark" >Menu</a></li>
-                        <li class="nav-item"><a href="blogcus.jsp" class="nav-link text-dark" >Blog</a></li>
+                        <li class="nav-item"><a href="productlistcontrol?category=" class="nav-link text-dark">Product</a></li>
+                        <li class="nav-item"><a href="menucus?bmi=" class="nav-link text-dark">Menu</a></li>
+                        <li class="nav-item"><a href="blogcus.jsp" class="nav-link text-dark">Blog</a></li>
                     </ul>
                 </nav>
-
                 <div class="d-flex align-items-center gap-3">
                     <a href="cart.jsp" title="Cart">
                         <img src="assets/images/shopping-cart.png" alt="Cart" style="width: 24px;">
                     </a>
                     <div class="auth-button">
-                        <% User user = (User) session.getAttribute("user"); %>
-                        <% if (user == null) { %>
-                        <a href="login.jsp" class="btn btn-outline-success btn-sm">Sign In</a>
-                        <a href="login.jsp?action=signup" class="btn btn-outline-success btn-sm">Sign Up</a>
-                        <% } else { %>
-                        <a href="profile.jsp" class="auth-button">Hello, <%= user.getFirstName() != null && !user.getFirstName().isEmpty() ? user.getFirstName() : user.getFullName() %></a>
-                        <a href="login?action=logout" class="auth-button">Logout</a>
-                        <% } %>
+                        <c:choose>
+                            <c:when test="${sessionScope.user == null}">
+                                <a href="login.jsp" class="btn btn-outline-success btn-sm">Sign In</a>
+                                <a href="login.jsp?action=signup" class="btn btn-outline-success btn-sm">Sign Up</a>
+                            </c:when>
+                            <c:otherwise>
+                                <a href="profile.jsp" class="auth-button">
+                                    Hello, <c:out value="${sessionScope.user.firstName != null && !empty sessionScope.user.firstName ? sessionScope.user.firstName : sessionScope.user.fullName}"/>
+                                </a>
+                                <a href="login?action=logout" class="auth-button">Logout</a>
+                            </c:otherwise>
+                        </c:choose>
                     </div>
                 </div>
             </div>

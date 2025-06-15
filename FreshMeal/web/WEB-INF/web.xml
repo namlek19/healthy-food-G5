@@ -40,6 +40,14 @@
         <servlet-name>BlogCusServlet</servlet-name>
         <servlet-class>controller.BlogCusServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>MenuCusServlet</servlet-name>
+        <servlet-class>controller.MenuCusServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>MenuDetailServlet</servlet-name>
+        <servlet-class>controller.MenuDetailServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>ProductListServlet</servlet-name>
         <url-pattern>/productlistcontrol</url-pattern>
@@ -71,5 +79,13 @@
     <servlet-mapping>
         <servlet-name>BlogCusServlet</servlet-name>
         <url-pattern>/blogcus</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>MenuCusServlet</servlet-name>
+        <url-pattern>/menucus</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>MenuDetailServlet</servlet-name>
+        <url-pattern>/menudetail</url-pattern>
     </servlet-mapping>
 </web-app>
