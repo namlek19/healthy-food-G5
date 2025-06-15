@@ -1,6 +1,7 @@
 package controller;
 
 import dal.OrderDAO;
+import dal.CartDAO;
 import model.*;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -11,6 +12,7 @@ import java.util.Date;
 
 @WebServlet("/checkout")
 public class CheckoutServlet extends HttpServlet {
+    @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         // Nhận thông tin từ form
         String fullname = request.getParameter("fullname");
@@ -56,6 +58,16 @@ public class CheckoutServlet extends HttpServlet {
             session.removeAttribute("cart");
             session.removeAttribute("guest_cart");
 
+            // Nếu user đã login, xóa cả cart trên DB (nếu bạn có lưu DB)
+            if (user != null) {
+                try {
+                    CartDAO cartDAO = new CartDAO();
+                    cartDAO.clearCart(user.getUserID());
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
             // Gửi orderId sang trang thành công nếu cần
             session.setAttribute("orderId", orderId);
 
@@ -64,7 +76,6 @@ public class CheckoutServlet extends HttpServlet {
 
         } else if ("vnpay".equals(method)) {
             // Chưa xử lý thanh toán VNPAY
-            // Có thể chuyển đến trang thông báo hoặc hiện popup trên trang
             response.sendRedirect("checkout.jsp?error=VNPAY chưa được hỗ trợ. Hãy chọn thanh toán khi nhận hàng.");
         } else {
             // Không chọn phương thức
