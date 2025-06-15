@@ -2,7 +2,9 @@
 <%@ page import="model.Order, model.OrderItem, java.util.List, java.text.SimpleDateFormat" %>
 <!DOCTYPE html>
 <html>
+    
 <head>
+    
     <title>Lịch sử đơn hàng</title>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/checkout.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/order-history.css">
