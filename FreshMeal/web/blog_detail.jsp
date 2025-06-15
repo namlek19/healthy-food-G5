@@ -1,6 +1,11 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<%
+    Integer roleID = (Integer) session.getAttribute("roleID");
+    String backUrl = (roleID != null && roleID == 5) ? "blog" : "blogcus";
+%>
+
 <!DOCTYPE html>
 <html>
     <head>
@@ -43,7 +48,7 @@
     </head>
     <body>
         <div class="container">
-            <a href="blog" style="color:#999;text-decoration:underline;">← Quay lại</a>
+            <a href="<%= backUrl %>" style="color:#999;text-decoration:underline;">← Quay lại</a>
             <div class="blog-title preserve-whitespace">${blog.title}</div>
             <div class="blog-meta">
                 Đăng bởi <b>${blog.nutritionistName}</b> | 
