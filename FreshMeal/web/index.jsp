@@ -40,12 +40,6 @@
                 border-radius: 25px;
                 padding: 10px 20px;
             }
-            header img {
-                height: 40px;
-            }
-            .auth-buttons .btn {
-                font-size: 0.9rem;
-            }
         </style>
 
     </head>
