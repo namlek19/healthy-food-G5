@@ -59,7 +59,8 @@
                     <ul class="nav">
                         <li class="nav-item"><a href="productlistcontrol?category=" class="nav-link text-dark" >Product</a></li>
                         <li class="nav-item"><a href="MenuCus.jsp" class="nav-link text-dark" >Menu</a></li>
-                        <li class="nav-item"><a href="blogcus.jsp" class="nav-link text-dark" >Blog</a></li>
+                        <li class="nav-item"><a href="blogcus" class="nav-link text-dark" >Blog</a></li>
+
                     </ul>
                 </nav>
                 
