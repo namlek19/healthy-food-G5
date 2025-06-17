@@ -115,11 +115,6 @@
         </header>
     </div>
 
-    <div class="search-bar">
-        <div class="container">
-            <input type="text" placeholder="Searching for food...">
-        </div>
-    </div>
 
     <div class="container">
         <div class="breadcrumb">

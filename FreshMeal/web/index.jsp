@@ -7,15 +7,10 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Healthy Food</title>
         <link rel="stylesheet" href="assets/css/style.css">
+        <link rel="stylesheet" href="assets/css/header-user.css"> 
         <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
-        
         <!-- Bootstrap 5 CSS -->
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-
-        <!-- Google Fonts -->
-        <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
-
-        <!-- Custom styles (optional) -->
         <style>
             body {
                 font-family: 'Poppins', sans-serif;
@@ -41,7 +36,6 @@
                 padding: 10px 20px;
             }
         </style>
-
     </head>
     <body>
         <header class="bg-white shadow-sm">
@@ -51,33 +45,68 @@
                 </div>
                 <nav>
                     <ul class="nav">
+
                         <li class="nav-item"><a href="productlistcontrol?category=" class="nav-link text-dark" >Product</a></li>
                         <li class="nav-item"><a href="menucus?bmi=" class="nav-link text-dark" >Menu</a></li>
                         <li class="nav-item"><a href="blogcus" class="nav-link text-dark" >Blog</a></li>
 
+
                     </ul>
                 </nav>
-                
-                <div class="d-flex align-items-center gap-3">
-                    <a href="cart.jsp" title="Cart">
-                        <img src="assets/images/shopping-cart.png" alt="Cart" style="width: 24px;">
+                <div class="header-right">
+
+                    <a href="cart.jsp" class="cart-btn">
+                        <span class="cart-icon-wrap">
+                            <img src="assets/images/shopping-cart.png" alt="Cart" class="cart-icon">
+                                                    </span>
+                        <span class="cart-text">Giỏ hàng</span>
                     </a>
-                    <div class="auth-button">
-                        <% User user = (User) session.getAttribute("user"); %>
-                        <% if (user == null) { %>
-                         
-                            <a href="login.jsp" class="btn btn-outline-success btn-sm">Sign In</a>
-                            <a href="login.jsp?action=signup" class="btn btn-outline-success btn-sm">Sign Up</a>
-                        <% } else { %>
-                         <a href="order-history" class="auth-button">Lịch sử đơn hàng</a>
-                            <a href="profile.jsp" class="auth-button">Hello, <%= user.getFirstName() != null && !user.getFirstName().isEmpty() ? user.getFirstName() : user.getFullName() %></a>
-                            <a href="login?action=logout" class="auth-button">Logout</a>
-                        <% } %>
+
+                    <% User user = (User) session.getAttribute("user"); %>
+                    <% if (user != null) { %>
+                    <!-- Dropdown menu cho user đã login -->
+                    <div class="user-menu">
+                        <button class="user-menu-btn" type="button">
+                            <img src="assets/images/user-icon.png" alt="User" class="avatar">
+                            <span>
+                                <%= user.getFirstName() != null && !user.getFirstName().isEmpty()
+                                    ? user.getFirstName()
+                                    : user.getFullName() %>
+                            </span>
+                            <span class="dropdown-arrow">&#9662;</span>
+                        </button>
+                        <div class="user-dropdown">
+                            <a href="profile.jsp">Thông tin cá nhân</a>
+                            <a href="order-history">Lịch sử đơn hàng</a>
+                            <a href="login?action=logout">Đăng xuất</a>
+                        </div>
                     </div>
+                    <% } else { %>
+                    <div class="auth-buttons">
+                        <a href="login.jsp" class="btn btn-outline-success btn-sm">Sign In</a>
+                        <a href="login.jsp?action=signup" class="btn btn-outline-success btn-sm">Sign Up</a>
+                    </div>
+                    <% } %>
                 </div>
             </div>
         </header>
-                        
+        <!-- Dropdown JS -->
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                var userMenu = document.querySelector('.user-menu');
+                if (userMenu) {
+                    var btn = userMenu.querySelector('.user-menu-btn');
+                    btn.addEventListener('click', function (e) {
+                        e.stopPropagation();
+                        userMenu.classList.toggle('open');
+                    });
+                    document.addEventListener('click', function () {
+                        userMenu.classList.remove('open');
+                    });
+                }
+            });
+        </script>
+
         <div class="search-bar">
             <form action="search">
                 <input type="text" placeholder="Searching for food..." required />        
@@ -85,26 +114,25 @@
         </div>
 
         <section class="hero py-5">
-    <div class="container">
-        <div class="row align-items-center">
-            <!-- Cột chữ bên trái -->
-            <div class="col-md-6">
-                <div class="hero-text">
-                    <h1>Healthy Food for a Healthy Life</h1>
-                    <p>Eat fresh, stay healthy, and live better with our curated healthy meals delivered to your door.</p>
-                    <a href="#" class="cta-button">Explore Menu</a>
+            <div class="container">
+                <div class="row align-items-center">
+                    <!-- Cột chữ bên trái -->
+                    <div class="col-md-6">
+                        <div class="hero-text">
+                            <h1>Healthy Food for a Healthy Life</h1>
+                            <p>Eat fresh, stay healthy, and live better with our curated healthy meals delivered to your door.</p>
+                            <a href="#" class="cta-button">Explore Menu</a>
+                        </div>
+                    </div>
+                    <!-- Cột ảnh bên phải -->
+                    <div class="col-md-6">
+                        <div class="hero-image text-center">
+                            <img src="assets/images/homepage.jpg" alt="Healthy Food" class="img-fluid">
+                        </div>
+                    </div>
                 </div>
             </div>
-
-            <!-- Cột ảnh bên phải -->
-            <div class="col-md-6">
-                <div class="hero-image text-center">
-                    <img src="assets/images/homepage.jpg" alt="Healthy Food" class="img-fluid">
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
+        </section>
         <section class="latest-products">
             <div class="container">
                 <h2 class="section-title">Newest Healthy Dishes</h2>
@@ -132,7 +160,6 @@
                 </div>
             </div>
         </section>
-        
         <section class="latest-menus">
             <div class="container">
                 <h2 class="section-title">Newest Healthy Menus</h2>
@@ -160,12 +187,10 @@
                 </div>
             </div>
         </section>
-
         <footer class="bg-light text-center py-4 mt-5">
             <div class="container">
                 <p class="mb-0 text-muted">&copy; 2025 HealthyFood. All rights reserved.</p>
             </div>
         </footer>
-
     </body>
 </html>
