@@ -35,10 +35,6 @@ public class UserDAO {
                     rs.getString("City"),
                     rs.getString("District"),
                     rs.getString("Address"),
-                    rs.getFloat("HeightCm"),
-                    rs.getFloat("WeightKg"),
-                    rs.getFloat("BMI"),
-                    rs.getString("BMICategory"),
                     rs.getInt("RoleID")
                 );
             }
@@ -57,10 +53,15 @@ public class UserDAO {
     }
     
     public boolean registerUser(User user) {
+        // Email format validation
+        // if (!user.getEmail().matches("^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,6}$")) {
+        //     System.out.println("Please fix your email syntax. Example: abc@gmail.com");
+        //     return false;
+        // }
         try {
             System.out.println("DEBUG: Starting user registration for email: " + user.getEmail());
-            String query = "INSERT INTO Users (FullName, Email, PasswordHash, City, District, Address, HeightCm, WeightKg, BMICategory, RoleID) "
-                    + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+            String query = "INSERT INTO Users (FullName, Email, PasswordHash, City, District, Address, RoleID) "
+                    + "VALUES (?, ?, ?, ?, ?, ?, ?)";
             conn = db.getConnection();
             ps = conn.prepareStatement(query);
             
@@ -70,10 +71,7 @@ public class UserDAO {
             ps.setString(4, user.getCity());
             ps.setString(5, user.getDistrict());
             ps.setString(6, user.getAddress());
-            ps.setFloat(7, user.getHeightCm());
-            ps.setFloat(8, user.getWeightKg());
-            ps.setString(9, user.getBmiCategory());
-            ps.setInt(10, 2); // Default role as Customer (RoleID = 2)
+            ps.setInt(7, 2); // Default role as Customer (RoleID = 2)
             
             boolean result = ps.executeUpdate() > 0;
             System.out.println("DEBUG: Registration result: " + result);
@@ -135,10 +133,6 @@ public class UserDAO {
                     rs.getString("City"),
                     rs.getString("District"),
                     rs.getString("Address"),
-                    rs.getFloat("HeightCm"),
-                    rs.getFloat("WeightKg"),
-                    rs.getFloat("BMI"),
-                    rs.getString("BMICategory"),
                     rs.getInt("RoleID")
                 );
             }
@@ -196,10 +190,6 @@ public class UserDAO {
                     rs.getString("City"),
                     rs.getString("District"),
                     rs.getString("Address"),
-                    rs.getFloat("HeightCm"),
-                    rs.getFloat("WeightKg"),
-                    rs.getFloat("BMI"),
-                    rs.getString("BMICategory"),
                     rs.getInt("RoleID")
                 );
                 return user;
@@ -220,16 +210,14 @@ public class UserDAO {
     
     public boolean updateUser(User user) {
         try {
-            String query = "UPDATE Users SET FullName = ?, City = ?, District = ?, Address = ?, HeightCm = ?, WeightKg = ? WHERE UserID = ?";
+            String query = "UPDATE Users SET FullName = ?, City = ?, District = ?, Address = ? WHERE UserID = ?";
             conn = db.getConnection();
             ps = conn.prepareStatement(query);
             ps.setString(1, user.getFullName());
             ps.setString(2, user.getCity());
             ps.setString(3, user.getDistrict());
             ps.setString(4, user.getAddress());
-            ps.setFloat(5, user.getHeightCm());
-            ps.setFloat(6, user.getWeightKg());
-            ps.setInt(7, user.getUserID());
+            ps.setInt(5, user.getUserID());
             return ps.executeUpdate() > 0;
         } catch (Exception e) {
             System.out.println("Error in updateUser: " + e.getMessage());

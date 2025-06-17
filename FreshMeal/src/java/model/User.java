@@ -20,8 +20,7 @@ public class User {
     }
     
     public User(int userID, String fullName, String email, String passwordHash, String city, 
-                String district, String address, float heightCm, float weightKg, 
-                float bmi, String bmiCategory, int roleID) {
+                String district, String address, int roleID) {
         this.userID = userID;
         this.fullName = fullName;
         this.email = email;
@@ -29,10 +28,6 @@ public class User {
         this.city = city;
         this.district = district;
         this.address = address;
-        this.heightCm = heightCm;
-        this.weightKg = weightKg;
-        this.bmi = bmi;  // Set from database value
-        this.bmiCategory = bmiCategory;
         this.roleID = roleID;
         
         // Split fullName into firstName and lastName if fullName contains a space
@@ -48,8 +43,7 @@ public class User {
 
     // Additional constructor for form handling
     public User(int userID, String firstName, String lastName, String email, String passwordHash, 
-                String city, String district, String address, float heightCm, float weightKg, 
-                float bmi, String bmiCategory, int roleID) {
+                String city, String district, String address, int roleID) {
         this.userID = userID;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -59,10 +53,6 @@ public class User {
         this.city = city;
         this.district = district;
         this.address = address;
-        this.heightCm = heightCm;
-        this.weightKg = weightKg;
-        this.bmi = bmi;
-        this.bmiCategory = bmiCategory;
         this.roleID = roleID;
     }
 
