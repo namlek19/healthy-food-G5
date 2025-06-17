@@ -1,21 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<web-app version="6.0" xmlns="https://jakarta.ee/xml/ns/jakartaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://jakarta.ee/xml/ns/jakartaee https://jakarta.ee/xml/ns/jakartaee/web-app_6_0.xsd">
-    <!-- Login Servlet -->
+<web-app version="4.0" xmlns="http://xmlns.jcp.org/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd">
+    <!-- Servlets -->
     <servlet>
         <servlet-name>LoginServlet</servlet-name>
         <servlet-class>controller.LoginServlet</servlet-class>
     </servlet>
-    <!-- Forgot Password Servlet -->
     <servlet>
         <servlet-name>ForgotPasswordServlet</servlet-name>
         <servlet-class>controller.ForgotPasswordServlet</servlet-class>
     </servlet>
-    <!-- Blog List Servlet -->
     <servlet>
         <servlet-name>BlogListServlet</servlet-name>
         <servlet-class>controller.BlogListServlet</servlet-class>
     </servlet>
-    <!-- Servlet Mappings -->
     <servlet>
         <servlet-name>BlogPostServlet</servlet-name>
         <servlet-class>controller.BlogPostServlet</servlet-class>
@@ -48,6 +45,16 @@
         <servlet-name>MenuDetailServlet</servlet-name>
         <servlet-class>controller.MenuDetailServlet</servlet-class>
     </servlet>
+
+    <!-- Servlet Mappings -->
+    <servlet-mapping>
+        <servlet-name>LoginServlet</servlet-name>
+        <url-pattern>/login</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ForgotPasswordServlet</servlet-name>
+        <url-pattern>/forgotpassword</url-pattern>
+    </servlet-mapping>
     <servlet-mapping>
         <servlet-name>ProductListServlet</servlet-name>
         <url-pattern>/productlistcontrol</url-pattern>
@@ -73,10 +80,6 @@
         <url-pattern>/blogmanage</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>LoginServlet</servlet-name>
-        <url-pattern>/login</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
         <servlet-name>BlogCusServlet</servlet-name>
         <url-pattern>/blogcus</url-pattern>
     </servlet-mapping>
@@ -88,4 +91,26 @@
         <servlet-name>MenuDetailServlet</servlet-name>
         <url-pattern>/menudetail</url-pattern>
     </servlet-mapping>
+    
+    <session-config>
+        <session-timeout>30</session-timeout>
+    </session-config>
+    
+    <!-- Removed security constraint as we are handling authentication programmatically -->
+    <!--
+    <security-constraint>
+        <web-resource-collection>
+            <web-resource-name>Protected Area</web-resource-name>
+            <url-pattern>/profile.jsp</url-pattern>
+            <url-pattern>/cart.jsp</url-pattern>
+        </web-resource-collection>
+        <auth-constraint>
+            <role-name>*</role-name>
+        </auth-constraint>
+    </security-constraint>
+    -->
+    
+    <welcome-file-list>
+        <welcome-file>index.jsp</welcome-file>
+    </welcome-file-list>
 </web-app>
