@@ -42,7 +42,7 @@ public class CheckoutServlet extends HttpServlet {
 
             // Tạo đối tượng Order
             Order order = new Order();
-            order.setUserID(user != null ? user.getUserID() : null); // Nếu là guest có thể để null hoặc 0 tùy DB
+            order.setUserID(user != null ? user.getUserID() : 0); // Nếu là guest có thể để null hoặc 0 tùy DB
             order.setReceiverName(fullname);
             order.setDeliveryAddress(address);
             order.setDistrict(district);
