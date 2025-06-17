@@ -1,5 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<link rel="stylesheet" href="assets/css/blog.css">
 <html>
     <head>
         <title>Chỉnh sửa Blog</title>
@@ -12,42 +13,7 @@
                 margin: 0;
                 display: flex;
             }
-            .sidebar {
-                background-color: #ffffff;
-                padding: 20px;
-                width: 220px;
-                min-height: 100vh;
-                border-right: 1px solid #ddd;
-                box-sizing: border-box;
-            }
-            .sidebar h2 {
-                margin-top: 0;
-                color: #333;
-                margin-bottom: 20px;
-                font-size: 1.2em;
-            }
-            .sidebar ul {
-                list-style: none;
-                padding: 0;
-                margin: 0;
-                margin-bottom: 30px;
-            }
-            .sidebar ul li {
-                margin-bottom: 10px;
-            }
-            .sidebar ul li a {
-                display: block;
-                padding: 10px 15px;
-                text-decoration: none;
-                color: #555;
-                border-radius: 5px;
-                transition: background-color 0.2s ease-in-out;
-            }
-            .sidebar ul li a.active,
-            .sidebar ul li a:hover {
-                background-color: #e9ecef;
-                color: #000;
-            }
+
 
             .main-container {
                 flex: 1;
@@ -55,6 +21,9 @@
                 display: flex;
                 flex-direction: column;
                 align-items: center;
+                margin-left: 220px;
+                padding: 20px;
+                background-color: #BEF0CF
             }
 
             /* CSS cho phần upload ảnh */
@@ -131,12 +100,14 @@
             <h2>BLOG</h2>
             <ul>
                 <li><a href="${pageContext.request.contextPath}/blog" class="active">Blog List</a></li>
-                <li><a href="blogpost">Blog Post</a></li>
+                <li><a href="blogpost">Blog Post</a></li> 
+                <li><a href="blogmanage">Blog Manage</a></li>  
             </ul>
             <h2>MENU</h2>
             <ul>
                 <li><a href="#">Menu List</a></li>
                 <li><a href="#">Menu Post</a></li>
+                <li><a href="#">Menu Manage</a></li>
             </ul>
         </div>
 
@@ -179,55 +150,81 @@
             const previewImage = document.getElementById('previewImage');
             const imageURLInput = document.getElementById('imageURL');
 
-            imageDropArea.addEventListener('click', () => imageInput.click());
-            imageInput.addEventListener('change', function () {
-                if (imageInput.files && imageInput.files[0])
-                    previewLocalImage(imageInput.files[0]);
+// Bấm vào ô dấu cộng để chọn ảnh
+            imageDropArea.addEventListener('click', () => {
+                imageInput.click();
             });
+
+// Chọn file từ máy
+            imageInput.addEventListener('change', function () {
+                if (imageInput.files && imageInput.files[0]) {
+                    resizeAndConvert(imageInput.files[0], 900, function (dataURL) {
+                        plusIcon.style.display = 'none';
+                        previewImage.src = dataURL;
+                        previewImage.style.display = 'block';
+                        imageURLInput.value = dataURL;
+                    });
+                }
+            });
+
+// Kéo thả file vào box
             imageDropArea.addEventListener('dragover', e => {
                 e.preventDefault();
                 imageDropArea.classList.add('dragover');
             });
             imageDropArea.addEventListener('dragleave', e => {
                 e.preventDefault();
-                imageDropArea.classList.remove('dragleave');
+                imageDropArea.classList.remove('dragover');
             });
             imageDropArea.addEventListener('drop', function (e) {
                 e.preventDefault();
-                imageDropArea.classList.remove('dragleave');
-                if (e.dataTransfer.files && e.dataTransfer.files[0])
-                    previewLocalImage(e.dataTransfer.files[0]);
+                imageDropArea.classList.remove('dragover');
+                if (e.dataTransfer.files && e.dataTransfer.files[0]) {
+                    resizeAndConvert(e.dataTransfer.files[0], 900, function (dataURL) {
+                        plusIcon.style.display = 'none';
+                        previewImage.src = dataURL;
+                        previewImage.style.display = 'block';
+                        imageURLInput.value = dataURL;
+                    });
+                }
             });
+
+// Dán ảnh từ clipboard
             document.addEventListener('paste', function (e) {
                 const items = (e.clipboardData || window.clipboardData).items;
                 for (let item of items) {
-                    if (item.type.indexOf('image') !== -1)
-                        previewLocalImage(item.getAsFile());
+                    if (item.type.indexOf('image') !== -1) {
+                        const file = item.getAsFile();
+                        resizeAndConvert(file, 900, function (dataURL) {
+                            plusIcon.style.display = 'none';
+                            previewImage.src = dataURL;
+                            previewImage.style.display = 'block';
+                            imageURLInput.value = dataURL;
+                        });
+                    }
                 }
             });
-            function previewLocalImage(file) {
-                if (plusIcon)
-                    plusIcon.style.display = 'none';
 
-                // Cần xóa và tạo lại ảnh preview để tránh lỗi
-                let currentPreview = document.getElementById('previewImage');
-                if (currentPreview)
-                    currentPreview.remove();
-
-                const newPreview = document.createElement('img');
-                newPreview.id = 'previewImage';
-                imageDropArea.appendChild(newPreview);
-
-                imageDropArea.innerHTML = "Đang xử lý ảnh...";
+// Hàm resize & convert ảnh thành base64 
+            function resizeAndConvert(file, maxWidth = 900, callback) {
                 const reader = new FileReader();
                 reader.onload = function (e) {
-                    imageDropArea.innerHTML = "";
-                    newPreview.src = e.target.result;
-                    imageDropArea.appendChild(newPreview);
-                    imageURLInput.value = e.target.result;
+                    const img = new Image();
+                    img.onload = function () {
+                        let canvas = document.createElement('canvas');
+                        let scale = Math.min(maxWidth / img.width, 1); // chỉ scale nếu ảnh lớn
+                        canvas.width = img.width * scale;
+                        canvas.height = img.height * scale;
+                        let ctx = canvas.getContext('2d');
+                        ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+                        let dataURL = canvas.toDataURL('image/jpeg', 0.85);
+                        callback(dataURL);
+                    };
+                    img.src = e.target.result;
                 };
                 reader.readAsDataURL(file);
             }
         </script>
+
     </body>
 </html>

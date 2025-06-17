@@ -8,7 +8,6 @@ import java.util.ArrayList;
 import java.util.List;
 import model.Blog;
 
-
 public class BlogDAO extends DBContext {
 
     /**
@@ -131,5 +130,68 @@ public class BlogDAO extends DBContext {
             e.printStackTrace();
         }
     }
+    
+    
+    
+    // Lấy các blog do một nutritionist đăng
+public List<Blog> getBlogsByNutritionist(int nutritionistID) {
+    List<Blog> list = new ArrayList<>();
+    String sql = "SELECT b.BlogID, b.Title, b.ImageURL, b.Description, b.NutritionistID, u.FullName, b.CreatedAt " +
+            "FROM Blog b JOIN Users u ON b.NutritionistID = u.UserID " +
+            "WHERE b.NutritionistID = ? " +
+            "ORDER BY b.CreatedAt DESC";
+    try (Connection con = getConnection();
+         PreparedStatement ps = con.prepareStatement(sql)) {
+        ps.setInt(1, nutritionistID);
+        try (ResultSet rs = ps.executeQuery()) {
+            while (rs.next()) {
+                Blog blog = new Blog();
+                blog.setBlogID(rs.getInt("BlogID"));
+                blog.setTitle(rs.getString("Title"));
+                blog.setImageURL(rs.getString("ImageURL"));
+                blog.setDescription(rs.getString("Description"));
+                blog.setNutritionistID(rs.getInt("NutritionistID"));
+                blog.setNutritionistName(rs.getString("FullName"));
+                blog.setCreatedAt(rs.getTimestamp("CreatedAt"));
+                list.add(blog);
+            }
+        }
+    } catch (Exception e) {
+        e.printStackTrace();
+    }
+    return list;
+}
+
+// Tìm kiếm blog của nutritionist theo từ khóa
+public List<Blog> searchBlogsByNutritionist(int nutritionistID, String keyword) {
+    List<Blog> list = new ArrayList<>();
+    String sql = "SELECT b.BlogID, b.Title, b.ImageURL, b.Description, b.NutritionistID, u.FullName, b.CreatedAt " +
+            "FROM Blog b JOIN Users u ON b.NutritionistID = u.UserID " +
+            "WHERE b.NutritionistID = ? AND (b.Title LIKE ? OR b.Description LIKE ?) " +
+            "ORDER BY b.CreatedAt DESC";
+    try (Connection con = getConnection();
+         PreparedStatement ps = con.prepareStatement(sql)) {
+        ps.setInt(1, nutritionistID);
+        ps.setString(2, "%" + keyword + "%");
+        ps.setString(3, "%" + keyword + "%");
+        try (ResultSet rs = ps.executeQuery()) {
+            while (rs.next()) {
+                Blog blog = new Blog();
+                blog.setBlogID(rs.getInt("BlogID"));
+                blog.setTitle(rs.getString("Title"));
+                blog.setImageURL(rs.getString("ImageURL"));
+                blog.setDescription(rs.getString("Description"));
+                blog.setNutritionistID(rs.getInt("NutritionistID"));
+                blog.setNutritionistName(rs.getString("FullName"));
+                blog.setCreatedAt(rs.getTimestamp("CreatedAt"));
+                list.add(blog);
+            }
+        }
+    } catch (Exception e) {
+        e.printStackTrace();
+    }
+    return list;
+}
+
     
 }

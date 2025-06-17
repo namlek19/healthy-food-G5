@@ -68,6 +68,48 @@ public class ProductDAO extends DBContext {
         return null;
     }
 
+    public List<Product> getProductByCategory(String categoryId) {
+    List<Product> list = new ArrayList<>();
+    String query;
+
+    // Nếu không có category (hoặc chọn "Tất cả") thì lấy hết
+    if (categoryId == null || categoryId.isEmpty()) {
+        query = "SELECT * FROM Product";
+    } else {
+        query = "SELECT * FROM Product WHERE CategoryID = ?";
+    }
+
+    try {
+        conn = new DBContext().getConnection();
+        ps = conn.prepareStatement(query);
+
+        if (categoryId != null && !categoryId.isEmpty()) {
+            ps.setInt(1, Integer.parseInt(categoryId));
+        }
+
+        rs = ps.executeQuery();
+        while (rs.next()) {
+            list.add(new Product(
+                    rs.getInt("productID"),
+                    rs.getString("name"),
+                    rs.getString("description"),
+                    rs.getString("nutritionInfo"),
+                    rs.getString("origin"),
+                    rs.getString("imageURL"),
+                    rs.getString("storageInstructions"),
+                    rs.getDouble("price"),
+                    rs.getInt("categoryID"),
+                    rs.getInt("calories")
+            ));
+        }
+    } catch (Exception e) {
+        e.printStackTrace();
+    }
+    return list;
+}
+    
+    
+    
     public static void main(String[] args) {
         ProductDAO dao = new ProductDAO();
         List<Product> list = dao.getAllProduct();

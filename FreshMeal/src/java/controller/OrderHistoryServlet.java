@@ -5,6 +5,7 @@
 
 package controller;
 
+import dal.OrderDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -12,13 +13,17 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
+import java.util.List;
+import model.Order;
+import model.User;
 
 /**
  *
- * @author ducna
+ * @author admin
  */
-@WebServlet(name="servletmau", urlPatterns={"/servletmau"})
-public class servletmau extends HttpServlet {
+@WebServlet(name="OrderHistoryServlet", urlPatterns={"/order-history"})
+public class OrderHistoryServlet extends HttpServlet {
    
     /** 
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
@@ -35,10 +40,10 @@ public class servletmau extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet servletmau</title>");  
+            out.println("<title>Servlet OrderHistoryServlet</title>");  
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet servletmau at " + request.getContextPath () + "</h1>");
+            out.println("<h1>Servlet OrderHistoryServlet at " + request.getContextPath () + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -53,10 +58,19 @@ public class servletmau extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
-    throws ServletException, IOException {
-        processRequest(request, response);
-    } 
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        HttpSession session = request.getSession();
+        User user = (User) session.getAttribute("user");
+        if (user == null) {
+            response.sendRedirect("login.jsp?msg=Bạn cần đăng nhập để xem lịch sử đơn hàng");
+            return;
+        }
+
+        OrderDAO orderDAO = new OrderDAO();
+        List<Order> orders = orderDAO.getOrdersByUserId(user.getUserID());
+        request.setAttribute("orders", orders);
+        request.getRequestDispatcher("order-history.jsp").forward(request, response);
+    }
 
     /** 
      * Handles the HTTP <code>POST</code> method.

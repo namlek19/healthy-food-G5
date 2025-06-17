@@ -25,38 +25,38 @@ public class LoginServlet extends HttpServlet {
     
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
+
         String action = request.getParameter("action");
         System.out.println("DEBUG: Received action: " + action);
-        
+
         try {
             if (action == null) {
                 // Display login page
                 request.getRequestDispatcher("login.jsp").forward(request, response);
                 return;
             }
-            
+
             switch (action) {
                 case "checkEmail":
                     handleCheckEmail(request, response);
                     break;
-                    
+
                 case "register":
                     handleRegistration(request, response);
                     break;
-                    
+
                 case "login":
                     handleLogin(request, response);
                     break;
-                    
+
                 case "logout":
                     handleLogout(request, response);
                     break;
-                    
+
                 case "googleLogin":
                     handleGoogleLogin(request, response);
                     break;
-                    
+
                 default:
                     // Invalid action, redirect to login page
                     response.sendRedirect("login.jsp");
@@ -69,42 +69,63 @@ public class LoginServlet extends HttpServlet {
             response.sendRedirect("login.jsp");
         }
     }
-    
+
     private void handleCheckEmail(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String email = request.getParameter("email");
         UserDAO userDAO = new UserDAO();
         boolean exists = userDAO.checkEmailExists(email);
         response.getWriter().write("{\"exists\": " + exists + "}");
     }
-    
+
     private void handleLogin(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String email = request.getParameter("email");
         String password = request.getParameter("password");
-        
+
         // Validate input
         if (email == null || email.trim().isEmpty() || password == null || password.trim().isEmpty()) {
             request.getSession().setAttribute("errorMessage", "Email and password are required");
             response.sendRedirect("login.jsp");
             return;
         }
-        
+
         try {
             UserDAO userDAO = new UserDAO();
             User user = userDAO.checkLogin(email, password);
             
-            if (user != null) {  
-                // Programmatically log in the user with the Servlet container
-                // request.login(email, password); 
+           
 
+
+            if (user != null) {
                 HttpSession session = request.getSession();
                 session.setAttribute("user", user);
-                // It's good practice to also store relevant user details in session for easy access
                 session.setAttribute("userID", user.getUserID());
-                session.setAttribute("userName", user.getFullName());
-                session.setAttribute("userEmail", user.getEmail());
-                session.setAttribute("userRole", user.getRoleID()); // Store the user's role ID
+                session.setAttribute("roleID", user.getRoleID());
+                if (user.getRoleID() == 5) {
+                    // Nutritionist: chuyển thẳng vào trang blog list
+                    response.sendRedirect(request.getContextPath() + "/blog");
+                } 
+//                else if (user.getRoleID() == 1) {
+//                    // Admin:
+//                    response.sendRedirect(request.getContextPath() + "/abcde");
+//                } 
+//               
+//                else if (user.getRoleID() == 3) {
+//                    // Manager
+//                    response.sendRedirect(request.getContextPath() + "/abcde");
+//                } 
+//                else if (user.getRoleID() == 4) {
+//                    // Seller
+//                    response.sendRedirect(request.getContextPath() + "/abcde");
+//                } 
+//                else if (user.getRoleID() == 6) {
+//                    // Shipper
+//                    response.sendRedirect(request.getContextPath() + "/abcde");
+//                } 
+                else {
+                    // Các role khác vào homepage như thường
+                    response.sendRedirect("index.jsp");
+                }
 
-                response.sendRedirect("index.jsp");
             } else {
                 request.getSession().setAttribute("errorMessage", "Invalid email or password");
                 response.sendRedirect("login.jsp");
@@ -116,7 +137,7 @@ public class LoginServlet extends HttpServlet {
             response.sendRedirect("login.jsp");
         }
     }
-    
+
     private void handleLogout(HttpServletRequest request, HttpServletResponse response) throws IOException {
         HttpSession session = request.getSession(false);
         if (session != null) {
@@ -124,17 +145,17 @@ public class LoginServlet extends HttpServlet {
         }
         response.sendRedirect("index.jsp");
     }
-    
+
     private void handleGoogleLogin(HttpServletRequest request, HttpServletResponse response) throws IOException {
         response.setContentType("application/json");
         PrintWriter out = response.getWriter();
         try {
-            String idToken = request.getParameter("idToken");
+            String idToken = request.getParameter("credential");
             if (idToken == null || idToken.trim().isEmpty()) {
                 throw new Exception("Missing Google ID token");
             }
             // Verify the ID token with Google and parse user info
-            JsonObject tokenInfo = verifyAndParseGoogleToken(idToken);
+            JsonObject tokenInfo = verifyGoogleToken(idToken);
             if (tokenInfo == null) {
                 throw new Exception("Invalid Google Sign-In token");
             }
@@ -174,7 +195,7 @@ public class LoginServlet extends HttpServlet {
     }
     
     // Helper to verify token and return parsed JSON with user info
-    private JsonObject verifyAndParseGoogleToken(String idToken) {
+    private JsonObject verifyGoogleToken(String idToken) {
         try {
             HttpClient client = HttpClient.newHttpClient();
             HttpRequest request = HttpRequest.newBuilder()
@@ -209,7 +230,7 @@ public class LoginServlet extends HttpServlet {
         // Generate a secure random password for Google users
         return UUID.randomUUID().toString();
     }
-    
+
     private String escapeJsonString(String input) {
         if (input == null) {
             return "";
@@ -219,7 +240,7 @@ public class LoginServlet extends HttpServlet {
                    .replace("\r", "\\r")
                    .replace("\t", "\\t");
     }
-    
+
     private boolean isValidPassword(String password) {
         // Check if password is null or less than 8 characters
         if (password == null || password.length() < 8) {
@@ -334,7 +355,6 @@ public class LoginServlet extends HttpServlet {
             response.sendRedirect("login.jsp?action=signup");
         }
     }
-    
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -351,4 +371,4 @@ public class LoginServlet extends HttpServlet {
     public String getServletInfo() {
         return "Login Servlet handles user authentication and registration";
     }
-} 
+}
