@@ -95,21 +95,7 @@
     <session-config>
         <session-timeout>30</session-timeout>
     </session-config>
-    
-    <!-- Removed security constraint as we are handling authentication programmatically -->
-    <!--
-    <security-constraint>
-        <web-resource-collection>
-            <web-resource-name>Protected Area</web-resource-name>
-            <url-pattern>/profile.jsp</url-pattern>
-            <url-pattern>/cart.jsp</url-pattern>
-        </web-resource-collection>
-        <auth-constraint>
-            <role-name>*</role-name>
-        </auth-constraint>
-    </security-constraint>
-    -->
-    
+   
     <welcome-file-list>
         <welcome-file>index.jsp</welcome-file>
     </welcome-file-list>
