@@ -53,7 +53,6 @@ public class UserDAO {
     }
     
     public boolean registerUser(User user) {
-       
         try {
             System.out.println("DEBUG: Starting user registration for email: " + user.getEmail());
             String query = "INSERT INTO Users (FullName, Email, PasswordHash, City, District, Address, RoleID) "
@@ -74,7 +73,7 @@ public class UserDAO {
             return result;
         } catch (Exception e) {
             System.out.println("DEBUG: Error in registerUser: " + e.getMessage());
-            e.printStackTrace(); // This will print the full error stack trace
+            e.printStackTrace();
             return false;
         } finally {
             try {

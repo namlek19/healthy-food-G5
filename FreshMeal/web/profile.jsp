@@ -4,6 +4,11 @@
     User user = (User) session.getAttribute("user");
     String edit = request.getParameter("edit");
     String message = null;
+    String passwordMessage = (String) session.getAttribute("passwordMessage");
+    Boolean passwordSuccess = (Boolean) session.getAttribute("passwordSuccess");
+    session.removeAttribute("passwordMessage");
+    session.removeAttribute("passwordSuccess");
+    
     if (user == null) {
         response.sendRedirect("login.jsp");
         return;
@@ -13,14 +18,10 @@
         String city = request.getParameter("city");
         String district = request.getParameter("district");
         String address = request.getParameter("address");
-        float heightCm = Float.parseFloat(request.getParameter("heightCm"));
-        float weightKg = Float.parseFloat(request.getParameter("weightKg"));
         user.setFullName(fullName);
         user.setCity(city);
         user.setDistrict(district);
         user.setAddress(address);
-        user.setHeightCm(heightCm);
-        user.setWeightKg(weightKg);
         UserDAO dao = new UserDAO();
         boolean updated = dao.updateUser(user);
         if (updated) {
@@ -82,6 +83,11 @@
             <% if (message != null) { %>
                 <div class="alert alert-success" style="margin-bottom: 16px;"><%= message %></div>
             <% } %>
+            <% if (passwordMessage != null) { %>
+                <div class="alert <%= passwordSuccess ? "alert-success" : "alert-danger" %>" style="margin-bottom: 16px;">
+                    <%= passwordMessage %>
+                </div>
+            <% } %>
             <% if (edit == null) { %>
                 <div class="form-group"><label>First Name:</label> <span><%= firstName %></span></div>
                 <div class="form-group"><label>Last Name:</label> <span><%= lastName %></span></div>
@@ -89,15 +95,13 @@
                 <div class="form-group"><label>City:</label> <span><%= user.getCity() %></span></div>
                 <div class="form-group"><label>District:</label> <span><%= user.getDistrict() %></span></div>
                 <div class="form-group"><label>Address:</label> <span><%= user.getAddress() %></span></div>
-                <div class="form-group"><label>Height (cm):</label> <span><%= user.getHeightCm() %></span></div>
-                <div class="form-group"><label>Weight (kg):</label> <span><%= user.getWeightKg() %></span></div>
-                <div class="form-group"><label>BMI:</label> <span><%= user.getBmi() %> (<%= user.getBmiCategory() %>)</span></div>
+                
                 <form method="get" style="text-align: center; margin-top: 24px;">
                     <input type="hidden" name="edit" value="true">
                     <button type="submit" class="auth-button">Edit Account</button>
                 </form>
             <% } else { %>
-                <form method="post" style="margin-top: 16px;">
+                <form method="post" action="profile" style="margin-top: 16px;">
                     <div class="form-group">
                         <label>Full Name:</label>
                         <input type="text" name="fullName" value="<%= user.getFullName() %>" required>
@@ -114,16 +118,28 @@
                         <label>Address:</label>
                         <input type="text" name="address" value="<%= user.getAddress() %>" required>
                     </div>
-                    <div class="form-group">
-                        <label>Height (cm):</label>
-                        <input type="number" step="0.1" name="heightCm" value="<%= user.getHeightCm() %>" required>
+                    
+                    <!-- Password Change Section -->
+                    <div style="margin-top: 32px; padding-top: 24px; border-top: 1px solid #eee;">
+                        <h3 style="margin-bottom: 16px; color: #333;">Change Password</h3>
+                        <div class="form-group">
+                            <label>Current Password:</label>
+                            <input type="password" name="oldPassword" required>
+                        </div>
+                        <div class="form-group">
+                            <label>New Password:</label>
+                            <input type="password" name="newPassword" id="newPassword" required 
+                                   pattern="^(?=.*[0-9]).{8,}$" 
+                                   title="Password must be at least 8 characters long and contain at least one number">
+                        </div>
+                        <div class="form-group">
+                            <label>Confirm New Password:</label>
+                            <input type="password" name="confirmPassword" id="confirmPassword" required>
+                        </div>
                     </div>
-                    <div class="form-group">
-                        <label>Weight (kg):</label>
-                        <input type="number" step="0.1" name="weightKg" value="<%= user.getWeightKg() %>" required>
-                    </div>
+                    
                     <div style="text-align: center; margin-top: 24px;">
-                        <button type="submit" class="auth-button">Save</button>
+                        <button type="submit" class="auth-button">Save Changes</button>
                         <a href="profile.jsp" class="auth-button" style="background: #ccc; color: #333; margin-left: 8px;">Cancel</a>
                     </div>
                 </form>
@@ -165,5 +181,23 @@
             </div>
         </div>
     </footer>
+    <script>
+    function validatePasswordChange() {
+        var newPassword = document.getElementById('newPassword').value;
+        var confirmPassword = document.getElementById('confirmPassword').value;
+        
+        if (newPassword !== confirmPassword) {
+            alert('New passwords do not match!');
+            return false;
+        }
+        
+        if (newPassword.length < 8 || !/\d/.test(newPassword)) {
+            alert('Password must be at least 8 characters long and contain at least one number!');
+            return false;
+        }
+        
+        return true;
+    }
+    </script>
 </body>
 </html> 
