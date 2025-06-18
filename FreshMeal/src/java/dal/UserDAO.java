@@ -53,11 +53,6 @@ public class UserDAO {
     }
     
     public boolean registerUser(User user) {
-        // Email format validation
-        // if (!user.getEmail().matches("^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,6}$")) {
-        //     System.out.println("Please fix your email syntax. Example: abc@gmail.com");
-        //     return false;
-        // }
         try {
             System.out.println("DEBUG: Starting user registration for email: " + user.getEmail());
             String query = "INSERT INTO Users (FullName, Email, PasswordHash, City, District, Address, RoleID) "
@@ -78,7 +73,7 @@ public class UserDAO {
             return result;
         } catch (Exception e) {
             System.out.println("DEBUG: Error in registerUser: " + e.getMessage());
-            e.printStackTrace(); // This will print the full error stack trace
+            e.printStackTrace();
             return false;
         } finally {
             try {
