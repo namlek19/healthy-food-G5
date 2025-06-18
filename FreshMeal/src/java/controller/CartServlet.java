@@ -32,7 +32,7 @@ public class CartServlet extends HttpServlet {
         }
 
         int productId = Integer.parseInt(idParam);
-        int quantity = 1; // mặc định
+        int quantity = 1; 
 
         if (quantityParam != null) {
             try {
@@ -52,11 +52,11 @@ public class CartServlet extends HttpServlet {
         User user = (User) session.getAttribute("user");
 
         if (user != null) {
-            // ĐÃ LOGIN → lưu giỏ vào DATABASE
+           
             try {
                 cartDAO.addOrUpdateCartItem(user.getUserID(), productId, quantity);
                 List<CartItem> dbCart = cartDAO.getCartItemsByUser(user.getUserID());
-                session.setAttribute("cart", dbCart); // sync lại session nếu cần dùng
+                session.setAttribute("cart", dbCart);
             } catch (Exception e) {
                 e.printStackTrace();
             }

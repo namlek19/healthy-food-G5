@@ -75,24 +75,24 @@ public class BlogPostServlet extends HttpServlet {
         String title = request.getParameter("title");
         String description = request.getParameter("description");
         String imageURL = request.getParameter("imageURL");
-        System.out.println("imageURL = " + imageURL); // debug
+        System.out.println("imageURL = " + imageURL);
 
-        // Lấy userID từ session (đúng chuẩn)
+        
         Integer nutritionistID = (Integer) request.getSession().getAttribute("userID");
 
-        // Nếu chưa login hoặc không có userID thì redirect về login
+        
         if (nutritionistID == null) {
             response.sendRedirect("login.jsp");
             return;
         }
 
-        // Kiểm tra đầu vào (tùy chọn nhưng nên có)
+        
         if (title != null && !title.trim().isEmpty() && description != null && !description.trim().isEmpty()) {
             BlogDAO blogDAO = new BlogDAO();
             blogDAO.addBlog(title, imageURL, description, nutritionistID);
-            response.sendRedirect("blog"); // Chuyển hướng về trang danh sách blog
+            response.sendRedirect("blog"); 
         } else {
-            // Xử lý lỗi nếu tiêu đề hoặc nội dung trống
+            
             request.setAttribute("error", "Tiêu đề và nội dung không được để trống!");
             request.getRequestDispatcher("blog_post.jsp").forward(request, response);
         }

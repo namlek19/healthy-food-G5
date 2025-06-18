@@ -63,7 +63,6 @@ public class MenuCusServlet extends HttpServlet {
         MenuDAO dao = new MenuDAO();
         List<Menu> menuList;
         if (bmi == null || bmi.isEmpty()) {
-            // Lấy tất cả menu
             menuList = new ArrayList<>();
             menuList.addAll(dao.getMenusByBMICategory("Underweight"));
             menuList.addAll(dao.getMenusByBMICategory("Normal"));

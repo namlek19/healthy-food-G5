@@ -11,7 +11,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import model.Blog;
 
-// 1. Giữ lại @WebServlet và đây sẽ là nguồn khai báo URL duy nhất
+
 @WebServlet(name = "BlogListServlet", urlPatterns = {"/blog"})
 public class BlogListServlet extends HttpServlet {
 
@@ -21,7 +21,7 @@ public class BlogListServlet extends HttpServlet {
         String action = request.getParameter("action");
         BlogDAO blogDAO = new BlogDAO();
 
-        // Lấy user hiện tại từ session
+        
         jakarta.servlet.http.HttpSession session = request.getSession(false);
         model.User currentUser = (session != null) ? (model.User) session.getAttribute("user") : null;
 
@@ -33,14 +33,14 @@ public class BlogListServlet extends HttpServlet {
                 RequestDispatcher rd = request.getRequestDispatcher("editBlog.jsp");
                 rd.forward(request, response);
             } catch (NumberFormatException e) {
-                // 2. Sửa lại lệnh chuyển hướng để nó tạo ra URL tuyệt đối
+                
                 response.sendRedirect(request.getContextPath() + "/blog");
             }
         } else {
-            // Hiển thị danh sách blog cho mọi user
+            
             List<Blog> blogs = blogDAO.getAllBlogs();
             request.setAttribute("blogs", blogs);
-            // Truyền userID vào request (để jsp dùng)
+            
             if (currentUser != null) {
                 request.setAttribute("myUserID", currentUser.getUserID());
             }
@@ -52,7 +52,7 @@ public class BlogListServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        // Thêm dòng này để xử lý tiếng Việt khi cập nhật bài viết
+        
         request.setCharacterEncoding("UTF-8");
 
         String action = request.getParameter("action");
@@ -82,7 +82,7 @@ public class BlogListServlet extends HttpServlet {
             }
         }
 
-        // 3. Sửa lại lệnh chuyển hướng để nó tạo ra URL tuyệt đối và chính xác
+        
         response.sendRedirect(request.getContextPath() + "/blog");
     }
 

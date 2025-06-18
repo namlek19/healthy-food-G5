@@ -8,7 +8,6 @@ import model.CartItem;
 
 public class OrderDAO extends DBContext {
 
-    // Lấy tất cả đơn hàng (dùng cho admin)
     public List<Order> getAllOrders() {
         List<Order> list = new ArrayList<>();
         String sql = "SELECT * FROM [Order] ORDER BY OrderDate DESC";
@@ -24,7 +23,6 @@ public class OrderDAO extends DBContext {
                 order.setTotalAmount(rs.getDouble("TotalAmount"));
                 order.setOrderDate(rs.getTimestamp("OrderDate"));
                 order.setStatus(rs.getString("Status"));
-                // Gán thêm danh sách sản phẩm
                 order.setItems(getOrderItems(order.getOrderID()));
                 list.add(order);
             }
@@ -34,7 +32,7 @@ public class OrderDAO extends DBContext {
         return list;
     }
 
-    // Lấy danh sách đơn hàng của 1 user
+
     public List<Order> getOrdersByUserId(int userId) {
         List<Order> orders = new ArrayList<>();
         String sql = "SELECT * FROM [Order] WHERE UserID = ? ORDER BY OrderDate DESC";
@@ -51,7 +49,6 @@ public class OrderDAO extends DBContext {
                 order.setTotalAmount(rs.getDouble("TotalAmount"));
                 order.setOrderDate(rs.getTimestamp("OrderDate"));
                 order.setStatus(rs.getString("Status"));
-                // Gán thêm danh sách sản phẩm
                 order.setItems(getOrderItems(order.getOrderID()));
                 orders.add(order);
             }
@@ -61,7 +58,7 @@ public class OrderDAO extends DBContext {
         return orders;
     }
 
-    // Lấy 1 đơn hàng chi tiết (dùng cho order-info)
+
     public Order getOrderById(int orderId) {
         String sql = "SELECT * FROM [Order] WHERE OrderID = ?";
         try (Connection conn = getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
@@ -77,7 +74,6 @@ public class OrderDAO extends DBContext {
                 order.setTotalAmount(rs.getDouble("TotalAmount"));
                 order.setOrderDate(rs.getTimestamp("OrderDate"));
                 order.setStatus(rs.getString("Status"));
-                // Gán thêm danh sách sản phẩm
                 order.setItems(getOrderItems(orderId));
                 return order;
             }
@@ -87,7 +83,6 @@ public class OrderDAO extends DBContext {
         return null;
     }
 
-    // Lấy danh sách sản phẩm trong 1 đơn (có tên + ảnh)
     public List<OrderItem> getOrderItems(int orderId) {
         List<OrderItem> items = new ArrayList<>();
         String sql = "SELECT oi.OrderItemID, oi.OrderID, oi.ProductID, p.Name, p.ImageURL, oi.Quantity, oi.Price "
@@ -112,7 +107,7 @@ public class OrderDAO extends DBContext {
         return items;
     }
 
-    // Thêm đơn hàng mới, trả về orderId vừa tạo
+
     public int createOrder(Order order, List<CartItem> cart) {
         String sqlOrder = "INSERT INTO [Order](UserID, ReceiverName, DeliveryAddress, District, TotalAmount, OrderDate, Status) VALUES (?, ?, ?, ?, ?, ?, ?)";
         String sqlItem = "INSERT INTO OrderItem (OrderID, ProductID, Quantity, Price) VALUES (?, ?, ?, ?)";
@@ -120,7 +115,6 @@ public class OrderDAO extends DBContext {
 
         try (Connection conn = getConnection(); PreparedStatement psOrder = conn.prepareStatement(sqlOrder, Statement.RETURN_GENERATED_KEYS)) {
 
-            // Thêm Order
             if (order.getUserID() == 0) {
                 psOrder.setNull(1, Types.INTEGER);
             } else {
@@ -135,14 +129,12 @@ public class OrderDAO extends DBContext {
             psOrder.setString(7, order.getStatus());
             psOrder.executeUpdate();
 
-            // Lấy orderId mới tạo
             try (ResultSet rs = psOrder.getGeneratedKeys()) {
                 if (rs.next()) {
                     orderId = rs.getInt(1);
                 }
             }
 
-            // Thêm từng sản phẩm vào OrderItem
             try (PreparedStatement psItem = conn.prepareStatement(sqlItem)) {
                 for (CartItem item : cart) {
                     psItem.setInt(1, orderId);
@@ -162,7 +154,6 @@ public class OrderDAO extends DBContext {
         return 0;
     }
 
-    // Cập nhật trạng thái đơn hàng
     public void updateOrderStatus(int orderId, String status) {
         String sql = "UPDATE [Order] SET Status = ? WHERE OrderID = ?";
         try (Connection conn = getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {

@@ -23,7 +23,7 @@ public class MenuDAO extends DBContext {
                         rs.getInt("NutritionistID")
                 );
                 m.setProducts(getProductsInMenu(m.getMenuID(), conn));
-                // -- TÍNH TỔNG GIÁ --
+                
                 List<Product> menuProducts = m.getProducts();
                 double total = 0;
                 if (menuProducts != null) {
@@ -32,7 +32,7 @@ public class MenuDAO extends DBContext {
                     }
                 }
                 m.setTotalPrice(total);
-                // -- KẾT THÚC TÍNH TỔNG GIÁ --
+                
                 list.add(m);
             }
         } catch (Exception e) {
