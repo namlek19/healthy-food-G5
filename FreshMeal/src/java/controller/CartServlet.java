@@ -10,7 +10,6 @@ import jakarta.servlet.http.*;
 import java.io.IOException;
 import java.util.*;
 
-@WebServlet("/CartServlet")
 public class CartServlet extends HttpServlet {
     private ProductDAO productDAO;
     private CartDAO cartDAO;

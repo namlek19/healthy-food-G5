@@ -45,8 +45,11 @@
         <servlet-name>MenuDetailServlet</servlet-name>
         <servlet-class>controller.MenuDetailServlet</servlet-class>
     </servlet>
-
     <!-- Servlet Mappings -->
+    <servlet>
+        <servlet-name>CartServlet</servlet-name>
+        <servlet-class>controller.CartServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>LoginServlet</servlet-name>
         <url-pattern>/login</url-pattern>
@@ -91,11 +94,13 @@
         <servlet-name>MenuDetailServlet</servlet-name>
         <url-pattern>/menudetail</url-pattern>
     </servlet-mapping>
-    
+    <servlet-mapping>
+        <servlet-name>CartServlet</servlet-name>
+        <url-pattern>/CartServlet</url-pattern>
+    </servlet-mapping>
     <session-config>
         <session-timeout>30</session-timeout>
     </session-config>
-   
     <welcome-file-list>
         <welcome-file>index.jsp</welcome-file>
     </welcome-file-list>
