@@ -10,18 +10,12 @@ import model.Blog;
 
 public class BlogDAO extends DBContext {
 
-    /**
-     * Lấy tất cả các bài blog từ cơ sở dữ liệu và sắp xếp theo ngày tạo mới nhất.
-     * @return Danh sách các đối tượng Blog.
-     */
     public List<Blog> getAllBlogs() {
         List<Blog> list = new ArrayList<>();
         String sql = "SELECT b.BlogID, b.Title, b.ImageURL, b.Description, b.NutritionistID, u.FullName, b.CreatedAt " +
                      "FROM Blog b JOIN Users u ON b.NutritionistID = u.UserID " +
                      "ORDER BY b.CreatedAt DESC";
 
-        // Sử dụng try-with-resources để tự động quản lý Connection, PreparedStatement, và ResultSet
-        // Connection sẽ được lấy từ phương thức getConnection() của lớp cha DBContext
         try (Connection con = getConnection();
              PreparedStatement ps = con.prepareStatement(sql);
              ResultSet rs = ps.executeQuery()) {
@@ -37,19 +31,13 @@ public class BlogDAO extends DBContext {
                 blog.setCreatedAt(rs.getTimestamp("CreatedAt"));
                 list.add(blog);
             }
-        } catch (Exception e) { // Bắt Exception vì getConnection() có thể ném ra
-            e.printStackTrace(); // In lỗi ra console để debug
+        } catch (Exception e) { 
+            e.printStackTrace(); 
         }
         return list;
     }
 
-    /**
-     * Thêm một bài blog mới vào cơ sở dữ liệu.
-     * @param title Tiêu đề bài blog.
-     * @param imageURL URL hình ảnh của bài blog.
-     * @param description Nội dung mô tả của bài blog.
-     * @param nutritionistID ID của chuyên gia dinh dưỡng tạo bài blog.
-     */
+    
     public void addBlog(String title, String imageURL, String description, int nutritionistID) {
         String sql = "INSERT INTO Blog (Title, ImageURL, Description, NutritionistID) VALUES (?, ?, ?, ?)";
 
@@ -63,13 +51,12 @@ public class BlogDAO extends DBContext {
             ps.setInt(4, nutritionistID);
             ps.executeUpdate();
             
-        } catch (Exception e) { // Bắt Exception vì getConnection() có thể ném ra
-            e.printStackTrace(); // In lỗi ra console để debug
+        } catch (Exception e) { 
+            e.printStackTrace(); 
         }
     }
     
-    // Bạn có thể thêm các phương thức khác ở đây (ví dụ: getBlogByID, updateBlog, deleteBlog)
-    // theo cùng một cấu trúc try-with-resources.
+  
     
     public void deleteBlog(int blogID) {
         String sql = "DELETE FROM Blog WHERE BlogID = ?";
@@ -82,11 +69,7 @@ public class BlogDAO extends DBContext {
         }
     }
 
-    /**
-     * Lấy thông tin chi tiết của một bài blog dựa trên ID.
-     * @param blogID ID của bài blog cần lấy.
-     * @return Đối tượng Blog hoặc null nếu không tìm thấy.
-     */
+   
     public Blog getBlogByID(int blogID) {
         String sql = "SELECT b.BlogID, b.Title, b.ImageURL, b.Description, b.NutritionistID, u.FullName, b.CreatedAt " +
                      "FROM Blog b JOIN Users u ON b.NutritionistID = u.UserID " +
@@ -113,10 +96,7 @@ public class BlogDAO extends DBContext {
         return null;
     }
 
-    /**
-     * Cập nhật thông tin của một bài blog.
-     * @param blog Đối tượng Blog chứa thông tin đã cập nhật.
-     */
+    
     public void updateBlog(Blog blog) {
         String sql = "UPDATE Blog SET Title = ?, ImageURL = ?, Description = ? WHERE BlogID = ?";
         try (Connection con = getConnection();
@@ -132,8 +112,7 @@ public class BlogDAO extends DBContext {
     }
     
     
-    
-    // Lấy các blog do một nutritionist đăng
+
 public List<Blog> getBlogsByNutritionist(int nutritionistID) {
     List<Blog> list = new ArrayList<>();
     String sql = "SELECT b.BlogID, b.Title, b.ImageURL, b.Description, b.NutritionistID, u.FullName, b.CreatedAt " +
@@ -162,7 +141,7 @@ public List<Blog> getBlogsByNutritionist(int nutritionistID) {
     return list;
 }
 
-// Tìm kiếm blog của nutritionist theo từ khóa
+
 public List<Blog> searchBlogsByNutritionist(int nutritionistID, String keyword) {
     List<Blog> list = new ArrayList<>();
     String sql = "SELECT b.BlogID, b.Title, b.ImageURL, b.Description, b.NutritionistID, u.FullName, b.CreatedAt " +

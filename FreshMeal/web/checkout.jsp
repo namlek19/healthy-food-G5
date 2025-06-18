@@ -9,13 +9,13 @@
 </head>
 <body class="checkout-page">
     <header>
-        <!-- ... giữ nguyên header như cũ ... -->
+        
     </header>
     <div class="checkout-wrapper">
         <h2>Thông tin & Thanh toán đơn hàng</h2>
         <div class="checkout-form">
             <form action="checkout" method="post" onsubmit="return validateCheckout();">
-                <!-- THÔNG TIN NGƯỜI NHẬN -->
+                
                 <label>Họ và tên <span class="required">*</span></label>
                 <input type="text" name="fullname" required>
 
@@ -42,7 +42,7 @@
                 <label>Địa chỉ cụ thể <span class="required">*</span></label>
                 <textarea name="address" id="address" placeholder="Số nhà, ngõ, đường..." disabled required></textarea>
 
-                <!-- CHI TIẾT SẢN PHẨM TRONG ĐƠN -->
+                
                 <h3 style="margin: 32px 0 12px 0; color: #1b813e; font-size: 1.12rem; font-weight: bold;">Sản phẩm đã đặt</h3>
                 <div style="background: #fff; border-radius:8px; padding:18px; border:1px solid #e1f5ea; margin-bottom:16px;">
                 <%
@@ -84,7 +84,7 @@
                 %>
                 </div>
 
-                <!-- CHỌN PHƯƠNG THỨC THANH TOÁN -->
+                
                 <div style="margin: 22px 0 10px 0;">
                     <label style="font-weight:bold;">Chọn phương thức thanh toán <span class="required">*</span></label><br>
                     <input type="radio" name="method" value="cod" checked> Thanh toán khi nhận hàng (COD)

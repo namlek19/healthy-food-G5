@@ -1,19 +1,19 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
- <link rel="stylesheet" href="assets/css/blog.css">
+<link rel="stylesheet" href="assets/css/blog.css">
 <html>
     <head>
         <title>Chỉnh sửa Blog</title>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
         <style>
-            /* Bắt đầu khối CSS layout chung */
+            
             body {
                 font-family: Arial, sans-serif;
                 background-color: #f0f2f5;
                 margin: 0;
                 display: flex;
             }
-            
+
 
             .main-container {
                 flex: 1;
@@ -26,7 +26,7 @@
                 background-color: #BEF0CF
             }
 
-            /* CSS cho phần upload ảnh */
+            
             .image-upload-wrapper {
                 width: 200px;
                 height: 150px;
@@ -69,10 +69,10 @@
                 box-shadow: 0 2px 4px rgba(0,0,0,0.1);
                 max-width: 700px;
                 width: 100%;
-                text-align: left; /* Căn trái nội dung trong form */
+                text-align: left;
             }
 
-            /* CSS cho các input và button bên trong form */
+            
             .main-container label {
                 display: block;
                 margin-bottom: 8px;
@@ -150,55 +150,81 @@
             const previewImage = document.getElementById('previewImage');
             const imageURLInput = document.getElementById('imageURL');
 
-            imageDropArea.addEventListener('click', () => imageInput.click());
-            imageInput.addEventListener('change', function () {
-                if (imageInput.files && imageInput.files[0])
-                    previewLocalImage(imageInput.files[0]);
+
+            imageDropArea.addEventListener('click', () => {
+                imageInput.click();
             });
+
+
+            imageInput.addEventListener('change', function () {
+                if (imageInput.files && imageInput.files[0]) {
+                    resizeAndConvert(imageInput.files[0], 900, function (dataURL) {
+                        plusIcon.style.display = 'none';
+                        previewImage.src = dataURL;
+                        previewImage.style.display = 'block';
+                        imageURLInput.value = dataURL;
+                    });
+                }
+            });
+
+
             imageDropArea.addEventListener('dragover', e => {
                 e.preventDefault();
                 imageDropArea.classList.add('dragover');
             });
             imageDropArea.addEventListener('dragleave', e => {
                 e.preventDefault();
-                imageDropArea.classList.remove('dragleave');
+                imageDropArea.classList.remove('dragover');
             });
             imageDropArea.addEventListener('drop', function (e) {
                 e.preventDefault();
-                imageDropArea.classList.remove('dragleave');
-                if (e.dataTransfer.files && e.dataTransfer.files[0])
-                    previewLocalImage(e.dataTransfer.files[0]);
+                imageDropArea.classList.remove('dragover');
+                if (e.dataTransfer.files && e.dataTransfer.files[0]) {
+                    resizeAndConvert(e.dataTransfer.files[0], 900, function (dataURL) {
+                        plusIcon.style.display = 'none';
+                        previewImage.src = dataURL;
+                        previewImage.style.display = 'block';
+                        imageURLInput.value = dataURL;
+                    });
+                }
             });
+
+
             document.addEventListener('paste', function (e) {
                 const items = (e.clipboardData || window.clipboardData).items;
                 for (let item of items) {
-                    if (item.type.indexOf('image') !== -1)
-                        previewLocalImage(item.getAsFile());
+                    if (item.type.indexOf('image') !== -1) {
+                        const file = item.getAsFile();
+                        resizeAndConvert(file, 900, function (dataURL) {
+                            plusIcon.style.display = 'none';
+                            previewImage.src = dataURL;
+                            previewImage.style.display = 'block';
+                            imageURLInput.value = dataURL;
+                        });
+                    }
                 }
             });
-            function previewLocalImage(file) {
-                if (plusIcon)
-                    plusIcon.style.display = 'none';
 
-                // Cần xóa và tạo lại ảnh preview để tránh lỗi
-                let currentPreview = document.getElementById('previewImage');
-                if (currentPreview)
-                    currentPreview.remove();
 
-                const newPreview = document.createElement('img');
-                newPreview.id = 'previewImage';
-                imageDropArea.appendChild(newPreview);
-
-                imageDropArea.innerHTML = "Đang xử lý ảnh...";
+            function resizeAndConvert(file, maxWidth = 900, callback) {
                 const reader = new FileReader();
                 reader.onload = function (e) {
-                    imageDropArea.innerHTML = "";
-                    newPreview.src = e.target.result;
-                    imageDropArea.appendChild(newPreview);
-                    imageURLInput.value = e.target.result;
+                    const img = new Image();
+                    img.onload = function () {
+                        let canvas = document.createElement('canvas');
+                        let scale = Math.min(maxWidth / img.width, 1); // chỉ scale nếu ảnh lớn
+                        canvas.width = img.width * scale;
+                        canvas.height = img.height * scale;
+                        let ctx = canvas.getContext('2d');
+                        ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+                        let dataURL = canvas.toDataURL('image/jpeg', 0.85);
+                        callback(dataURL);
+                    };
+                    img.src = e.target.result;
                 };
                 reader.readAsDataURL(file);
             }
         </script>
+
     </body>
 </html>

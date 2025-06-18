@@ -35,12 +35,6 @@
                 border-radius: 25px;
                 padding: 10px 20px;
             }
-            header img {
-                height: 40px;
-            }
-            .auth-buttons .btn {
-                font-size: 0.9rem;
-            }
         </style>
     </head>
     <body>
@@ -51,9 +45,12 @@
                 </div>
                 <nav>
                     <ul class="nav">
-                        <li class="nav-item"><a href="productlistcontrol?category=" class="nav-link text-dark">Product</a></li>
-                        <li class="nav-item"><a href="MenuCus.jsp" class="nav-link text-dark">Menu</a></li>
-                        <li class="nav-item"><a href="blogcus.jsp" class="nav-link text-dark">Blog</a></li>
+
+                        <li class="nav-item"><a href="productlistcontrol?category=" class="nav-link text-dark" >Product</a></li>
+                        <li class="nav-item"><a href="menucus?bmi=" class="nav-link text-dark" >Menu</a></li>
+                        <li class="nav-item"><a href="blogcus" class="nav-link text-dark" >Blog</a></li>
+
+
                     </ul>
                 </nav>
                 <div class="header-right">

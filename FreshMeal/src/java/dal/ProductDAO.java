@@ -72,7 +72,6 @@ public class ProductDAO extends DBContext {
     List<Product> list = new ArrayList<>();
     String query;
 
-    // Nếu không có category (hoặc chọn "Tất cả") thì lấy hết
     if (categoryId == null || categoryId.isEmpty()) {
         query = "SELECT * FROM Product";
     } else {

@@ -12,7 +12,7 @@ public class OrderInfoServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        // Lấy orderId từ tham số URL
+        
         String oid = request.getParameter("orderId");
         if (oid == null) {
             response.sendRedirect("order-history");
@@ -26,7 +26,7 @@ public class OrderInfoServlet extends HttpServlet {
             return;
         }
 
-        // Lấy thông tin order từ DAO (bao gồm list sản phẩm)
+        
         OrderDAO orderDAO = new OrderDAO();
         Order order = orderDAO.getOrderById(orderId);
 
@@ -35,11 +35,11 @@ public class OrderInfoServlet extends HttpServlet {
             return;
         }
 
-        // Kiểm tra quyền xem (chỉ cho xem nếu là chủ đơn hoặc admin)
+        
         HttpSession session = request.getSession();
         model.User user = (model.User) session.getAttribute("user");
         if (user == null || (order.getUserID() > 0 && user.getUserID() != order.getUserID())) {
-            // Không phải chủ đơn và không phải đơn guest
+            
             response.sendRedirect("order-history");
             return;
         }

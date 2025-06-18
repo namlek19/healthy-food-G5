@@ -15,7 +15,7 @@
         <style>
             
 
-            /* CSS giống style của bạn, có thể copy phần sidebar/menu từ blog.jsp cho đồng bộ */
+            
             body {
                 font-family: Arial, sans-serif;
                 background-color: #BEF0CF;
@@ -24,8 +24,6 @@
             .main-container {
                 flex: 1;
                 padding: 20px;
-                /* KHÔNG cần max-width, KHÔNG cần căn giữa bằng margin auto! */
-                /* Sửa lại background nếu muốn giống blog.jsp */
                 background: none;
                 margin-left: 220px;
                 padding: 20px;

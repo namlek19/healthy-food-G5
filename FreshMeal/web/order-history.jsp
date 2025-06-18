@@ -11,7 +11,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
 </head>
 <body class="checkout-page">
-    <!-- ===== HEADER BEGIN ===== -->
+   
     <header class="bg-white shadow-sm">
         <div class="container d-flex align-items-center justify-content-between py-3">
             <div class="logo">

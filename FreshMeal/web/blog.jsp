@@ -108,10 +108,10 @@
 
         .blog-img-full {
             display: block;
-            width: 100%;      /* luôn chiếm full chiều ngang post-container */
+            width: 100%;      
             height: auto;
-            max-height: 500px;    /* hoặc giá trị bạn muốn, để không bị quá dài */
-            object-fit: cover;    /* hoặc contain nếu muốn ảnh không bị crop */
+            max-height: 500px;    
+            object-fit: cover;    
             border-radius: 8px;
             background: #f4f4f4;
             margin: 0 auto;
@@ -201,7 +201,7 @@
                     </c:if>
 
 
-                    <!-- Thêm link xem chi tiết ở đây -->
+                    
                     <p style="margin-top: 10px;">
                         <a href="blogdetail?id=${blog.blogID}" style="color: #007bff; text-decoration: none;">
                             → Xem chi tiết & bình luận
@@ -216,24 +216,24 @@
             function toggleMenu(event) {
                 event.stopPropagation();
                 var dropdown = event.target.nextElementSibling;
-                // Đóng tất cả các menu khác trước khi mở menu hiện tại
+                
                 closeAllMenus(dropdown);
                 dropdown.classList.toggle("show");
             }
 
-            // Đóng menu khi click ra ngoài
+            
             window.onclick = function (event) {
                 if (!event.target.matches('.menu-button')) {
                     closeAllMenus(null);
                 }
             }
 
-            // Đã sửa lại hàm này để hoạt động đúng
+            
             function closeAllMenus(exceptThisOne) {
                 var dropdowns = document.getElementsByClassName("dropdown-content");
                 for (var i = 0; i < dropdowns.length; i++) {
                     var openDropdown = dropdowns[i];
-                    // Nếu dropdown không phải là cái đang được click và đang mở, thì đóng nó lại
+                    
                     if (openDropdown !== exceptThisOne && openDropdown.classList.contains('show')) {
                         openDropdown.classList.remove('show');
                     }
@@ -241,7 +241,7 @@
             }
 
 
-            // ======= LƯU VỊ TRÍ KHI CHUYỂN TRANG =======
+            
             document.querySelectorAll('a[href*="blogdetail"]').forEach(link => {
                 link.addEventListener('click', function () {
                     // Lưu lại vị trí scroll hiện tại vào sessionStorage
@@ -249,12 +249,12 @@
                 });
             });
 
-// ======= KHI LOAD LẠI TRANG, ĐƯA VỀ VỊ TRÍ CŨ =======
+
             window.addEventListener('load', function () {
                 const lastScroll = sessionStorage.getItem('bloglist-scroll');
                 if (lastScroll) {
                     window.scrollTo(0, parseInt(lastScroll));
-                    // Xóa để lần sau vào bloglist từ chỗ khác sẽ lại ở top
+                    
                     sessionStorage.removeItem('bloglist-scroll');
                 }
             });
