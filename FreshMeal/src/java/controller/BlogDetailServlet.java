@@ -26,7 +26,7 @@ public class BlogDetailServlet extends HttpServlet {
         Blog blog = blogDAO.getBlogByID(blogID);
 
         if (blog == null) {
-            response.sendRedirect("blog"); // Không tìm thấy blog
+            response.sendRedirect("blog");
             return;
         }
 

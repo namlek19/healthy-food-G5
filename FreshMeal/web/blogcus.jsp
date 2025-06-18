@@ -64,7 +64,7 @@
     </head>
     <body style="background:#f0f2f5; margin:0;">
 
-        <!-- ===== HEADER (copy từ index.jsp) ===== -->
+        
         <header class="bg-white shadow-sm">
             <div class="container d-flex align-items-center justify-content-between py-3">
                 <div class="logo">
@@ -103,9 +103,9 @@
                 <input type="text" placeholder="Searching for food..." required />        
             </form>
         </div>
-        <!-- ===== END HEADER ===== -->
+        
 
-        <!-- ======= BLOG LIST ======= -->
+        
         <div class="container py-4">
             <h2 style="text-align:center;">Danh sách bài viết</h2>
             <c:if test="${empty blogs}">
@@ -132,18 +132,18 @@
                 </div>
             </c:forEach>
         </div>
-        <!-- ======= END BLOG LIST ======= -->
+        
 
-        <!-- ===== FOOTER (copy từ index.jsp) ===== -->
+        
         <footer class="bg-light text-center py-4 mt-5">
             <div class="container">
                 <p class="mb-0 text-muted">&copy; 2025 HealthyFood. All rights reserved.</p>
             </div>
         </footer>
-        <!-- ===== END FOOTER ===== -->
+        
 
         <script>
-            // Lưu vị trí scroll khi bấm xem chi tiết
+            
             document.querySelectorAll('a[href*="blogdetail"]').forEach(link => {
                 link.addEventListener('click', function () {
                     sessionStorage.setItem('bloglist-scroll', window.scrollY);
@@ -152,7 +152,7 @@
             window.addEventListener('load', function () {
                 const lastScroll = sessionStorage.getItem('bloglist-scroll');
                 if (lastScroll) {
-                    // Sử dụng behavior: "auto" để đảm bảo không smooth
+                    
                     window.scrollTo({top: parseInt(lastScroll), behavior: "auto"});
                     sessionStorage.removeItem('bloglist-scroll');
                 }

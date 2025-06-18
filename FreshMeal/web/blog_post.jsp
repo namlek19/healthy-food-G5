@@ -10,7 +10,7 @@
         <title>Đăng bài viết mới</title>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
         <style>
-            /* --- Bắt đầu CSS từ blog.jsp --- */
+            
             body {
                 font-family: Arial, sans-serif;
                 background-color: #f0f2f5;
@@ -29,7 +29,7 @@
                 background-color: #BEF0CF;
             }
 
-            /* CSS gốc của blog_post.jsp cho phần upload ảnh */
+            
             .image-upload-wrapper {
                 width: 200px;
                 height: 150px;
@@ -66,7 +66,7 @@
                 box-shadow: 0 2px 4px rgba(0,0,0,0.1);
                 max-width: 700px;
                 width: 100%;
-                text-align: left; /* Căn trái lại nội dung trong form */
+                text-align: left; 
             }
 
             .main-container button {
@@ -112,7 +112,7 @@
                 <li><a href="#">Menu Manage</a></li>
             </ul>
             
-            <!-- Thêm nút logout ở đây -->
+           
                 <ul>
                     <li>
                         <a href="${pageContext.request.contextPath}/login?action=logout" style="color:red;">
@@ -152,24 +152,24 @@ const plusIcon = document.getElementById('plusIcon');
 const previewImage = document.getElementById('previewImage');
 const imageURLInput = document.getElementById('imageURL');
 
-// Bấm vào ô dấu cộng để chọn ảnh
+
 imageDropArea.addEventListener('click', () => {
     imageInput.click();
 });
 
-// Chọn file
+
 imageInput.addEventListener('change', function () {
     if (imageInput.files && imageInput.files[0]) {
         resizeAndConvert(imageInput.files[0], 900, function(dataURL) {
             plusIcon.style.display = 'none';
             previewImage.src = dataURL;
             previewImage.style.display = 'block';
-            imageURLInput.value = dataURL; // base64 đã resize
+            imageURLInput.value = dataURL; 
         });
     }
 });
 
-// Kéo thả file
+
 imageDropArea.addEventListener('dragover', e => {
     e.preventDefault();
     imageDropArea.classList.add('dragover');
@@ -191,7 +191,7 @@ imageDropArea.addEventListener('drop', function (e) {
     }
 });
 
-// Dán ảnh (Ctrl+V)
+
 document.addEventListener('paste', function (e) {
     const items = (e.clipboardData || window.clipboardData).items;
     for (let item of items) {
@@ -207,14 +207,14 @@ document.addEventListener('paste', function (e) {
     }
 });
 
-// Hàm resize
+
 function resizeAndConvert(file, maxWidth = 900, callback) {
     const reader = new FileReader();
     reader.onload = function(e) {
         const img = new Image();
         img.onload = function() {
             let canvas = document.createElement('canvas');
-            let scale = Math.min(maxWidth / img.width, 1); // chỉ scale nếu ảnh lớn
+            let scale = Math.min(maxWidth / img.width, 1);
             canvas.width = img.width * scale;
             canvas.height = img.height * scale;
             let ctx = canvas.getContext('2d');

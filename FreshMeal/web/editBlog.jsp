@@ -6,7 +6,7 @@
         <title>Chỉnh sửa Blog</title>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
         <style>
-            /* Bắt đầu khối CSS layout chung */
+            
             body {
                 font-family: Arial, sans-serif;
                 background-color: #f0f2f5;
@@ -26,7 +26,7 @@
                 background-color: #BEF0CF
             }
 
-            /* CSS cho phần upload ảnh */
+            
             .image-upload-wrapper {
                 width: 200px;
                 height: 150px;
@@ -69,10 +69,10 @@
                 box-shadow: 0 2px 4px rgba(0,0,0,0.1);
                 max-width: 700px;
                 width: 100%;
-                text-align: left; /* Căn trái nội dung trong form */
+                text-align: left;
             }
 
-            /* CSS cho các input và button bên trong form */
+            
             .main-container label {
                 display: block;
                 margin-bottom: 8px;
@@ -150,12 +150,12 @@
             const previewImage = document.getElementById('previewImage');
             const imageURLInput = document.getElementById('imageURL');
 
-// Bấm vào ô dấu cộng để chọn ảnh
+
             imageDropArea.addEventListener('click', () => {
                 imageInput.click();
             });
 
-// Chọn file từ máy
+
             imageInput.addEventListener('change', function () {
                 if (imageInput.files && imageInput.files[0]) {
                     resizeAndConvert(imageInput.files[0], 900, function (dataURL) {
@@ -167,7 +167,7 @@
                 }
             });
 
-// Kéo thả file vào box
+
             imageDropArea.addEventListener('dragover', e => {
                 e.preventDefault();
                 imageDropArea.classList.add('dragover');
@@ -189,7 +189,7 @@
                 }
             });
 
-// Dán ảnh từ clipboard
+
             document.addEventListener('paste', function (e) {
                 const items = (e.clipboardData || window.clipboardData).items;
                 for (let item of items) {
@@ -205,7 +205,7 @@
                 }
             });
 
-// Hàm resize & convert ảnh thành base64 
+
             function resizeAndConvert(file, maxWidth = 900, callback) {
                 const reader = new FileReader();
                 reader.onload = function (e) {
