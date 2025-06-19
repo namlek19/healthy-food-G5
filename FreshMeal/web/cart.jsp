@@ -4,7 +4,9 @@
     <head>
         <title>Giỏ Hàng</title>
         <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/checkout.css">
-        <link rel="stylesheet" href="assets/css/anhtdcss.css">
+         <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/header-user.css">
+          <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/style.css">
+       
         <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
         <style>
             table {
@@ -33,46 +35,71 @@
         </style>
     </head>
     <body>
-        <header>
-            <div class="container header-flex">
-                <div class="logo">
-                    <a href="index.jsp">
-                        <img src="assets/images/logo.png" alt="logo">
-                    </a>
-                </div>
-                <nav>
-                    <ul class="nav-menu">
-                        <li><a href="index.jsp">Home</a></li>
-                        <li><a href="#">Order</a></li>
-                        <li><a href="#">Menu</a></li>
-                        <li><a href="#">Blog</a></li>
-                        <li><a href="#">About Us</a></li>
-                    </ul>
-                </nav>
-                <div class="header-right">
-                    <a href="cart.jsp" class="cart" title="Cart">
-                        <img src="assets/images/shopping-cart.png" alt="Cart" />
-                    </a>
-                    <div class="auth-buttons">
-                        <%
-                            User user = (User) session.getAttribute("user");
-                            if (user == null) {
-                        %>
-                            <a href="login.jsp" class="auth-button">Sign In</a>
-                            <a href="login.jsp?action=signup" class="auth-button">Sign Up</a>
-                        <%
-                            } else {
-                        %>
-                            <a href="profile.jsp" class="auth-button">Chào, <%= user.getFirstName() != null ? user.getFirstName() : user.getFullName() %></a>
-                            <a href="login?action=logout" class="auth-button">Logout</a>
-                        <%
-                            }
-                        %>
+         <!-- ===== HEADER BEGIN ===== -->
+    <header class="bg-white shadow-sm">
+        <div class="container d-flex align-items-center justify-content-between py-3">
+            <div class="logo">
+                <a href="index.jsp"><img src="assets/images/logo.png" alt="logo"></a>
+            </div>
+            <nav>
+                <ul class="nav">
+                    <li class="nav-item"><a href="productlistcontrol?category=" class="nav-link text-dark">Product</a></li>
+                    <li class="nav-item"><a href="MenuCus.jsp" class="nav-link text-dark">Menu</a></li>
+                    <li class="nav-item"><a href="blogcus.jsp" class="nav-link text-dark">Blog</a></li>
+                </ul>
+            </nav>
+            <div class="header-right d-flex align-items-center gap-3">
+                <a href="cart.jsp" class="cart-btn">
+                    <span class="cart-icon-wrap">
+                        <img src="assets/images/shopping-cart.png" alt="Cart" class="cart-icon">
+                    </span>
+                    <span class="cart-text">Giỏ hàng</span>
+                </a>
+                <%
+                    User user = (User) session.getAttribute("user");
+                %>
+                <% if (user != null) { %>
+                <div class="user-menu">
+                    <button class="user-menu-btn" type="button">
+                        <img src="assets/images/user-icon.png" alt="User" class="avatar" style="width:32px;">
+                        <span>
+                            <%= user.getFirstName() != null && !user.getFirstName().isEmpty()
+                                ? user.getFirstName()
+                                : user.getFullName() %>
+                        </span>
+                        <span class="dropdown-arrow">&#9662;</span>
+                    </button>
+                    <div class="user-dropdown">
+                        <a href="profile.jsp">Thông tin cá nhân</a>
+                        <a href="order-history">Lịch sử đơn hàng</a>
+                        <a href="login?action=logout">Đăng xuất</a>
                     </div>
                 </div>
+                <% } else { %>
+                <div class="auth-buttons">
+                    <a href="login.jsp" class="btn btn-outline-success btn-sm">Sign In</a>
+                    <a href="login.jsp?action=signup" class="btn btn-outline-success btn-sm">Sign Up</a>
+                </div>
+                <% } %>
             </div>
-        </header>
-
+        </div>
+    </header>
+    <script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var userMenu = document.querySelector('.user-menu');
+        if (userMenu) {
+            var btn = userMenu.querySelector('.user-menu-btn');
+            btn.addEventListener('click', function (e) {
+                e.stopPropagation();
+                userMenu.classList.toggle('open');
+            });
+            document.addEventListener('click', function () {
+                userMenu.classList.remove('open');
+            });
+        }
+    });
+    </script>
+    <!-- ===== HEADER END ===== -->
         <h2>Giỏ hàng của bạn</h2>
         <%
             List<CartItem> cart = (List<CartItem>) session.getAttribute(
@@ -155,3 +182,5 @@
         </div>
     </body>
 </html>
+ <!-- ===== end
+'' ===== -->
