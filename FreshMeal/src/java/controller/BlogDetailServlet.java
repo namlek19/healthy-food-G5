@@ -10,7 +10,6 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-
 public class BlogDetailServlet extends HttpServlet {
 
     @Override
@@ -30,7 +29,20 @@ public class BlogDetailServlet extends HttpServlet {
             return;
         }
 
+        String desc = blog.getDescription();
+        desc = desc.replaceAll("(?m)^\\s+", ""); // Xoá khoảng trắng đầu dòng
+
+// Chia đoạn dựa trên một hoặc nhiều dấu xuống dòng liên tiếp
+        String[] paragraphs = desc.split("\\n+");
+        StringBuilder htmlDesc = new StringBuilder();
+        for (String para : paragraphs) {
+            if (!para.trim().isEmpty()) {
+                htmlDesc.append("<p>").append(para.trim()).append("</p>");
+            }
+        }
         request.setAttribute("blog", blog);
+        request.setAttribute("blogDescHtml", htmlDesc.toString());
+
         RequestDispatcher rd = request.getRequestDispatcher("blog_detail.jsp");
         rd.forward(request, response);
     }
