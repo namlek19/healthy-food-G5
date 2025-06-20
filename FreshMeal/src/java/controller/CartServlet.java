@@ -20,6 +20,7 @@ public class CartServlet extends HttpServlet {
         cartDAO = new CartDAO();
     }
 
+    @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String idParam = request.getParameter("id");
         String quantityParam = request.getParameter("quantity");
@@ -31,7 +32,7 @@ public class CartServlet extends HttpServlet {
         }
 
         int productId = Integer.parseInt(idParam);
-        int quantity = 1; 
+        int quantity = 1; // default
 
         if (quantityParam != null) {
             try {
@@ -51,7 +52,7 @@ public class CartServlet extends HttpServlet {
         User user = (User) session.getAttribute("user");
 
         if (user != null) {
-           
+            // USER LOGIN: add/update cart in DB, sync session "cart"
             try {
                 cartDAO.addOrUpdateCartItem(user.getUserID(), productId, quantity);
                 List<CartItem> dbCart = cartDAO.getCartItemsByUser(user.getUserID());
@@ -60,7 +61,7 @@ public class CartServlet extends HttpServlet {
                 e.printStackTrace();
             }
         } else {
-           
+            // GUEST: add/update cart in session "guest_cart"
             List<CartItem> guestCart = (List<CartItem>) session.getAttribute("guest_cart");
             if (guestCart == null) guestCart = new ArrayList<>();
 
