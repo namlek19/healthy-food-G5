@@ -2,48 +2,72 @@
     position: fixed;
     top: 0;
     left: 0;
-    width: 220px;
+    width: 230px;
     height: 100vh;
-    background-color: #A9F89D;
-    padding: 20px;
-    border-right: 1px solid #ddd;
+    background: #9EE493; /* Xanh lá tươi, phẳng */
+    padding: 24px 16px 18px 16px;
+    border-right: 1px solid #c2ddb8;
     box-sizing: border-box;
     z-index: 100;
+    display: flex;
+    flex-direction: column;
 }
+
 .sidebar h2 {
-    background-color: #F8FFF7;
-    margin-top: 0;
-    color: #333;
-    margin-bottom: 20px;
-    font-size: 1.2em;
-    padding: 10px 24px;
-    border-radius: 32px;
-    font-weight: bold;
-    display: block;
-    width: 75%;          /* hoặc 80%, 90% tuỳ ý */
-    margin: 0 auto 20px auto;  /* Căn giữa theo chiều ngang */
-    text-align: center;        /* Căn giữa chữ */
+    margin: 0 0 18px 0;
+    padding: 10px 0;
+    border-radius: 28px;
+    background: #fff;
+    color: #228046;
+    font-size: 1.18em;
+    font-weight: 700;
+    text-align: center;
+    letter-spacing: 0.3px;
 }
+
 .sidebar ul {
     list-style: none;
     padding: 0;
-    margin: 0;
-    margin-bottom: 30px; /* Khoảng cách giữa các nhóm menu */
-    font-weight: bold;
+    margin: 0 0 20px 0;
 }
+
 .sidebar ul li {
-    margin-bottom: 10px;
+    margin-bottom: 8px;
 }
+
 .sidebar ul li a {
     display: block;
-    padding: 10px 15px;
+    padding: 10px 14px;
+    border-radius: 7px;
+    color: #18482a;
     text-decoration: none;
-    color: #555;
-    border-radius: 5px;
-    transition: background-color 0.2s ease-in-out;
+    font-size: 1em;
+    font-family: 'Poppins', Arial, sans-serif;
+    font-weight: 500;
+    background: none;
+    border: none;
+    transition: background 0.15s, color 0.12s;
 }
-.sidebar ul li a.active, /* Lớp để đánh dấu mục đang được chọn */
+
+/* Hiệu ứng hover & active rõ ràng, không mờ */
+.sidebar ul li a.active,
 .sidebar ul li a:hover {
-    background-color: #e9ecef;
-    color: #000;
+    background: #e4f5e0;
+    color: #14843c;
+}
+
+.sidebar ul:last-child {
+    margin-bottom: 0;
+}
+    
+.sidebar ul li a[style*="color:red;"], /* Đặc biệt cho Logout */
+.sidebar ul li a[style*="color: red;"] {
+    color: #e23d3d !important;
+    font-weight: bold;
+}
+
+.sidebar ul li a[style*="color:red;"]:hover,
+.sidebar ul li a[style*="color: red;"]:hover {
+    background: #ffdede;
+    color: #b51c1c !important;
 }

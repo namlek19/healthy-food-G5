@@ -99,7 +99,7 @@ public class LoginServlet extends HttpServlet {
                 session.setAttribute("roleID", user.getRoleID());
                 if (user.getRoleID() == 5) {
                     // Nutritionist: chuyển thẳng vào trang blog list
-                    response.sendRedirect(request.getContextPath() + "/blog");
+                    response.sendRedirect(request.getContextPath() + "/blogmanage");
                 } 
 //                else if (user.getRoleID() == 1) {
 //                    // Admin:

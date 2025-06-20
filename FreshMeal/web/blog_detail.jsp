@@ -3,7 +3,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%
     Integer roleID = (Integer) session.getAttribute("roleID");
-    String backUrl = (roleID != null && roleID == 5) ? "blog" : "blogcus";
+    String backUrl = (roleID != null && roleID == 5) ? "blogmanage" : "blogcus";
 %>
 <!DOCTYPE html>
 <html>
