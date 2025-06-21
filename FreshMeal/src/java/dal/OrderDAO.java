@@ -109,50 +109,52 @@ public class OrderDAO extends DBContext {
 
 
     public int createOrder(Order order, List<CartItem> cart) {
-        String sqlOrder = "INSERT INTO [Order](UserID, ReceiverName, DeliveryAddress, District, TotalAmount, OrderDate, Status) VALUES (?, ?, ?, ?, ?, ?, ?)";
-        String sqlItem = "INSERT INTO OrderItem (OrderID, ProductID, Quantity, Price) VALUES (?, ?, ?, ?)";
-        int orderId = 0;
+    String sqlOrder = "INSERT INTO [Order](UserID, ReceiverName, DeliveryAddress, District, TotalAmount, OrderDate, Status, Email) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+    String sqlItem = "INSERT INTO OrderItem (OrderID, ProductID, Quantity, Price) VALUES (?, ?, ?, ?)";
+    int orderId = 0;
 
-        try (Connection conn = getConnection(); PreparedStatement psOrder = conn.prepareStatement(sqlOrder, Statement.RETURN_GENERATED_KEYS)) {
+    try (Connection conn = getConnection(); PreparedStatement psOrder = conn.prepareStatement(sqlOrder, Statement.RETURN_GENERATED_KEYS)) {
 
-            if (order.getUserID() == 0) {
-                psOrder.setNull(1, Types.INTEGER);
-            } else {
-                psOrder.setInt(1, order.getUserID());
-            }
-
-            psOrder.setString(2, order.getReceiverName());
-            psOrder.setString(3, order.getDeliveryAddress());
-            psOrder.setString(4, order.getDistrict());
-            psOrder.setDouble(5, order.getTotalAmount());
-            psOrder.setTimestamp(6, new java.sql.Timestamp(order.getOrderDate().getTime()));
-            psOrder.setString(7, order.getStatus());
-            psOrder.executeUpdate();
-
-            try (ResultSet rs = psOrder.getGeneratedKeys()) {
-                if (rs.next()) {
-                    orderId = rs.getInt(1);
-                }
-            }
-
-            try (PreparedStatement psItem = conn.prepareStatement(sqlItem)) {
-                for (CartItem item : cart) {
-                    psItem.setInt(1, orderId);
-                    psItem.setInt(2, item.getProduct().getProductID());
-                    psItem.setInt(3, item.getQuantity());
-                    psItem.setDouble(4, item.getProduct().getPrice());
-                    psItem.addBatch();
-                }
-                psItem.executeBatch();
-            }
-
-            return orderId;
-
-        } catch (Exception e) {
-            e.printStackTrace();
+        if (order.getUserID() == 0) {
+            psOrder.setNull(1, Types.INTEGER);
+        } else {
+            psOrder.setInt(1, order.getUserID());
         }
-        return 0;
+
+        psOrder.setString(2, order.getReceiverName());
+        psOrder.setString(3, order.getDeliveryAddress());
+        psOrder.setString(4, order.getDistrict());
+        psOrder.setDouble(5, order.getTotalAmount());
+        psOrder.setTimestamp(6, new java.sql.Timestamp(order.getOrderDate().getTime()));
+        psOrder.setString(7, order.getStatus());
+        psOrder.setString(8, order.getEmail()); // <-- THÊM DÒNG NÀY
+
+        psOrder.executeUpdate();
+
+        try (ResultSet rs = psOrder.getGeneratedKeys()) {
+            if (rs.next()) {
+                orderId = rs.getInt(1);
+            }
+        }
+
+        try (PreparedStatement psItem = conn.prepareStatement(sqlItem)) {
+            for (CartItem item : cart) {
+                psItem.setInt(1, orderId);
+                psItem.setInt(2, item.getProduct().getProductID());
+                psItem.setInt(3, item.getQuantity());
+                psItem.setDouble(4, item.getProduct().getPrice());
+                psItem.addBatch();
+            }
+            psItem.executeBatch();
+        }
+
+        return orderId;
+
+    } catch (Exception e) {
+        e.printStackTrace();
     }
+    return 0;
+}
 
     public void updateOrderStatus(int orderId, String status) {
         String sql = "UPDATE [Order] SET Status = ? WHERE OrderID = ?";

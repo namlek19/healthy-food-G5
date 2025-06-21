@@ -14,7 +14,6 @@ import java.util.Date;
 public class CheckoutServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        // Nhận thông tin từ form
         String fullname = request.getParameter("fullname");
         String email = request.getParameter("email");
         String phone = request.getParameter("phone");
@@ -23,42 +22,37 @@ public class CheckoutServlet extends HttpServlet {
         String method = request.getParameter("method");
 
         HttpSession session = request.getSession();
-        
         User user = (User) session.getAttribute("user");
         List<CartItem> cart = (List<CartItem>) session.getAttribute(user != null ? "cart" : "guest_cart");
 
-        
         if (cart == null || cart.isEmpty()) {
             response.sendRedirect("cart.jsp");
             return;
         }
 
+        double total = 0;
+        for (CartItem item : cart) {
+            total += item.getTotalPrice();
+        }
+
+        Order order = new Order();
+        order.setUserID(user != null ? user.getUserID() : 0);
+        order.setReceiverName(fullname);
+        order.setDeliveryAddress(address);
+        order.setDistrict(district);
+        order.setTotalAmount(total);
+        order.setOrderDate(new Date());
+        order.setStatus("Chờ xác nhận"); // Mặc định cho COD
+
+        OrderDAO orderDAO = new OrderDAO();
+        
         if ("cod".equals(method)) {
-            
-            double total = 0;
-            for (CartItem item : cart) {
-                total += item.getTotalPrice();
-            }
-
-            
-            Order order = new Order();
-            order.setUserID(user != null ? user.getUserID() : 0); // Nếu là guest có thể để null hoặc 0 tùy DB
-            order.setReceiverName(fullname);
-            order.setDeliveryAddress(address);
-            order.setDistrict(district);
-            order.setTotalAmount(total);
-            order.setStatus("Chờ xác nhận");
-            order.setOrderDate(new Date()); // Lấy ngày hiện tại
-
-            
-            OrderDAO orderDAO = new OrderDAO();
+            // COD flow
             int orderId = orderDAO.createOrder(order, cart);
 
-            
             session.removeAttribute("cart");
             session.removeAttribute("guest_cart");
 
-            
             if (user != null) {
                 try {
                     CartDAO cartDAO = new CartDAO();
@@ -67,18 +61,19 @@ public class CheckoutServlet extends HttpServlet {
                     e.printStackTrace();
                 }
             }
-
-            
             session.setAttribute("orderId", orderId);
-
-            
             response.sendRedirect("success.jsp");
-
         } else if ("vnpay".equals(method)) {
-           
-            response.sendRedirect("checkout.jsp?error=VNPAY chưa được hỗ trợ. Hãy chọn thanh toán khi nhận hàng.");
+            // VNPAY flow
+            order.setStatus("Chờ thanh toán VNPay");
+            int orderId = orderDAO.createOrder(order, cart);
+
+            // Chỉ lưu orderId vào session (cart vẫn giữ nguyên!)
+            session.setAttribute("vnp_orderId", orderId);
+
+            // Redirect sang ajaxServlet để xử lý tạo link thanh toán VNPay
+            response.sendRedirect("ajaxServlet?orderId=" + orderId);
         } else {
-            
             response.sendRedirect("checkout.jsp?error=Vui lòng chọn phương thức thanh toán.");
         }
     }

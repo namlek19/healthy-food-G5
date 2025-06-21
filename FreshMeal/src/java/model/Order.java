@@ -12,11 +12,12 @@ public class Order {
     private double totalAmount;
     private Date orderDate;
     private String status;
+    String Email;
     private List<OrderItem> items;
     public Order() {
     }
 
-    public Order(int orderID, int userID, String receiverName, String deliveryAddress, String district, double totalAmount, Date orderDate, String status) {
+    public Order(int orderID, int userID, String receiverName, String deliveryAddress, String district, double totalAmount, Date orderDate, String status, String Email, List<OrderItem> items) {
         this.orderID = orderID;
         this.userID = userID;
         this.receiverName = receiverName;
@@ -25,6 +26,8 @@ public class Order {
         this.totalAmount = totalAmount;
         this.orderDate = orderDate;
         this.status = status;
+        this.Email = Email;
+        this.items = items;
     }
 
     public int getOrderID() {
@@ -91,6 +94,14 @@ public class Order {
         this.status = status;
     }
 
+    public String getEmail() {
+        return Email;
+    }
+
+    public void setEmail(String Email) {
+        this.Email = Email;
+    }
+
     public List<OrderItem> getItems() {
         return items;
     }
@@ -99,6 +110,7 @@ public class Order {
         this.items = items;
     }
 
+    
     
 }
 
