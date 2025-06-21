@@ -9,6 +9,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.List;
 
 public class BlogDetailServlet extends HttpServlet {
 
@@ -42,6 +43,9 @@ public class BlogDetailServlet extends HttpServlet {
         }
         request.setAttribute("blog", blog);
         request.setAttribute("blogDescHtml", htmlDesc.toString());
+
+        List<Blog> latestBlogs = blogDAO.getLatestBlogsExcept(blogID, 3);
+        request.setAttribute("latestBlogs", latestBlogs);
 
         RequestDispatcher rd = request.getRequestDispatcher("blog_detail.jsp");
         rd.forward(request, response);
