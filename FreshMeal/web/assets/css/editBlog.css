@@ -1,0 +1,124 @@
+body {
+    background: #f0f7f4;
+    font-family: 'Poppins', Arial, sans-serif;
+    margin: 0;
+    min-height: 100vh;
+}
+.main-container {
+    max-width: 860px;
+    margin: 56px 250px 46px auto; /* căn lệch phải so với sidebar, nếu muốn giữa: margin: 56px auto; */
+    background: #fff;
+    border-radius: 18px;
+    box-shadow: 0 2px 16px #ddeee0;
+    padding: 48px 60px 38px 60px;
+}
+
+.main-container h2 {
+    text-align: center;
+    color: #1c8363;
+    font-size: 2em;
+    font-weight: 700;
+    margin-bottom: 25px;
+    letter-spacing: -1px;
+}
+
+.main-container form {
+    width: 100%;
+}
+
+.main-container label {
+    font-weight: 500;
+    margin-bottom: 7px;
+    color: #207f5a;
+    display: block;
+}
+
+.main-container textarea,
+.main-container input[type="text"] {
+    width: 100%;
+    border: 1.4px solid #cce6db;
+    border-radius: 8px;
+    padding: 9px 13px;
+    font-size: 1.12em;
+    margin-bottom: 18px;
+    background: #f7fbf9;
+    outline: none;
+    transition: border 0.18s;
+    font-family: 'Poppins', Arial, sans-serif;
+}
+.main-container textarea:focus,
+.main-container input[type="text"]:focus {
+    border-color: #27ad64;
+    background: #eefcf7;
+}
+
+.image-upload-wrapper {
+    width: 100%;
+    max-width: 340px;
+    height: 210px;
+    border: 2px dashed #c4d9cd;
+    border-radius: 13px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    position: relative;
+    background: #f5fbf6;
+    margin-bottom: 20px;
+    margin-left: auto;
+    margin-right: auto;
+    transition: border-color 0.3s;
+}
+.plus-icon {
+    font-size: 48px;
+    color: #b4bcbc;
+    user-select: none;
+    pointer-events: none;
+}
+.image-upload-wrapper.dragover {
+    border-color: #28b66e;
+    background: #e8faed;
+}
+#previewImage {
+    display: block;
+    max-width: 100%;
+    max-height: 208px;
+    border-radius: 11px;
+    margin: 0 auto;
+}
+
+.main-container button {
+    width: 100%;
+    background: linear-gradient(90deg, #27ad64 60%, #39db84 100%);
+    color: #fff;
+    font-weight: 600;
+    border: none;
+    border-radius: 8px;
+    padding: 11px 0;
+    font-size: 1.1em;
+    margin-top: 10px;
+    letter-spacing: 1px;
+    transition: background 0.16s;
+    box-shadow: 0 1px 4px #e3f2e8;
+}
+.main-container button:hover {
+    background: linear-gradient(90deg, #188948 60%, #27ad64 100%);
+    color: #fff;
+}
+
+.main-container a {
+    display: block;
+    margin: 20px auto 0 auto;
+    text-align: center;
+    color: #279256;
+    text-decoration: underline;
+    font-size: 1em;
+    font-weight: 500;
+}
+
+@media (max-width: 850px) {
+    .main-container {
+        padding: 22px 7vw;
+        max-width: 98vw;
+    }
+}
