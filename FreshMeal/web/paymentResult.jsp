@@ -56,6 +56,10 @@
                 <strong style="color: red; font-size: 24px;">0383456xxx</strong>
             </div>
         </c:if>
+          <!-- Nút về trang chủ -->
+        <a href="index.jsp" class="back-home-btn">
+            <i class="fas fa-home"></i> Về trang chủ
+        </a>
     </section>
 
 </body>
