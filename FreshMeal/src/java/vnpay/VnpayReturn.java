@@ -64,7 +64,7 @@ public class VnpayReturn extends HttpServlet {
                 boolean transSuccess = false;
                 String status;
                 if ("00".equals(request.getParameter("vnp_TransactionStatus"))) {
-                    status = "Thanh toán qua vnpay thành công";
+                    status = "Succesful";
                     transSuccess = true;
                 } else {
                     status = "Failed";
