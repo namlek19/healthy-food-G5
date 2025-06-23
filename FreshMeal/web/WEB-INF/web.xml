@@ -58,6 +58,10 @@
         <servlet-name>AjaxServlet</servlet-name>
         <servlet-class>vnpay.AjaxServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>MenuPostServlet</servlet-name>
+        <servlet-class>controller.MenuPostServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>LoginServlet</servlet-name>
         <url-pattern>/login</url-pattern>
@@ -113,6 +117,10 @@
     <servlet-mapping>
         <servlet-name>AjaxServlet</servlet-name>
         <url-pattern>/vnpay_ajax</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>MenuPostServlet</servlet-name>
+        <url-pattern>/menupost</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>30</session-timeout>

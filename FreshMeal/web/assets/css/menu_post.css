@@ -1,0 +1,112 @@
+body {
+    background: #f5faf8;
+    font-family: 'Poppins', Arial, sans-serif;
+    margin: 0;
+    min-height: 100vh;
+}
+
+.main-container {
+    max-width: 1050px;
+    margin: 38px 200px 26px auto;    /* <-- căn giữa theo chiều ngang */
+    padding: 0 18px 60px 18px;
+    /* KHÔNG dùng margin-left lớn trừ khi sidebar là absolute/fixed */
+}
+h2, h4, h5 {
+    font-family: 'Poppins', Arial, sans-serif;
+}
+.card {
+    border-radius: 14px;
+    box-shadow: 0 2px 7px #e6f0ee;
+    background: #fff;
+    border: 1px solid #e2f1e7;
+}
+.selected-products-table th,
+.selected-products-table td {
+    vertical-align: middle;
+    text-align: center;
+}
+.selected-products-table img {
+    width: 50px;
+    border-radius: 6px;
+}
+.selected-products-table .btn-danger {
+    padding: 4px 10px;
+    font-size: 1em;
+}
+.selected-products-table thead {
+    background: #e6f7ee;
+}
+.selected-products-table tbody tr {
+    background: #f9fcfb;
+    transition: background 0.18s;
+}
+.selected-products-table tbody tr:hover {
+    background: #e7faee;
+}
+.selected-products-table {
+    margin-bottom: 0;
+}
+
+.product-card {
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    box-shadow: 0 2px 7px #e6f0ee;
+    padding: 10px;
+    margin-bottom: 16px;
+    background: #fff;
+    height: 100%;
+    transition: box-shadow 0.18s;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+.product-card:hover {
+    box-shadow: 0 6px 24px #c7eedd88;
+    border: 1.5px solid #55c08a;
+}
+.product-card img {
+    width: 100%;
+    max-height: 120px;
+    object-fit: cover;
+    border-radius: 7px;
+    margin-bottom: 7px;
+}
+.product-card .fw-bold {
+    font-size: 1.08em;
+    margin-bottom: 2px;
+}
+.product-card .small {
+    font-size: 0.97em;
+}
+.product-card button {
+    background: linear-gradient(90deg, #27ad64 60%, #39db84 100%);
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    padding: 6px 14px;
+    font-weight: 600;
+    margin-top: 6px;
+    transition: background 0.18s;
+}
+.product-card button[disabled] {
+    background: #ccc;
+    color: #fff;
+    cursor: not-allowed;
+}
+.mt-4 > h4 {
+    margin-left: 3px;
+}
+
+@media (max-width: 1100px) {
+    .main-container {
+        margin-left: 0;
+        padding-left: 5vw;
+        padding-right: 5vw;
+    }
+}
+@media (max-width: 750px) {
+    .main-container {
+        padding-left: 2vw;
+        padding-right: 2vw;
+    }
+}
