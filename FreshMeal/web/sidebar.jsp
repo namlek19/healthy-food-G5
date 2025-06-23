@@ -18,9 +18,18 @@
     </ul>
     <h2>MENU</h2>
     <ul>
-        <li><a href="#">Menu List</a></li>
-        <li><a href="#">Menu Post</a></li>
-        <li><a href="#">Menu Manage</a></li>
+        <li>
+            <a href="menupost"
+               class="${currentPage eq 'menupost' ? 'active' : ''}">
+                Menu Post
+            </a>
+        </li>
+        <li>
+            <a href="menumanage"
+               class="${currentPage eq 'menumanage' ? 'active' : ''}">
+                Menu Manage
+            </a>
+        </li>
     </ul>
     <ul>
         <li>

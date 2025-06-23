@@ -91,4 +91,43 @@ public class MenuDAO extends DBContext {
         }
         return null;
     }
+    
+    // Thêm menu mới, trả về MenuID vừa insert (SQL Server)
+public int addMenu(Menu menu) {
+    int menuID = -1;
+    String sql = "INSERT INTO Menu (MenuName, Description, BMICategory, ImageURL, NutritionistID) VALUES (?, ?, ?, ?, ?)";
+    try (Connection conn = getConnection();
+         PreparedStatement ps = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+        ps.setString(1, menu.getMenuName());
+        ps.setString(2, menu.getDescription());
+        ps.setString(3, menu.getBmiCategory());
+        ps.setString(4, menu.getImageURL());
+        ps.setInt(5, menu.getNutritionistID());
+        int affectedRows = ps.executeUpdate();
+        if (affectedRows > 0) {
+            ResultSet rs = ps.getGeneratedKeys();
+            if (rs.next()) {
+                menuID = rs.getInt(1);
+            }
+        }
+    } catch (Exception e) {
+        e.printStackTrace();
+    }
+    return menuID;
+}
+
+// Thêm 1 món ăn vào menu
+public void addMenuProduct(int menuID, int productID) {
+    String sql = "INSERT INTO MenuProduct (MenuID, ProductID) VALUES (?, ?)";
+    try (Connection conn = getConnection();
+         PreparedStatement ps = conn.prepareStatement(sql)) {
+        ps.setInt(1, menuID);
+        ps.setInt(2, productID);
+        ps.executeUpdate();
+    } catch (Exception e) {
+        e.printStackTrace();
+    }
+}
+
+    
 }
