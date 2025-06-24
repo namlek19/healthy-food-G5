@@ -42,7 +42,8 @@ public class CheckoutServlet extends HttpServlet {
         order.setDistrict(district);
         order.setTotalAmount(total);
         order.setOrderDate(new Date());
-        order.setStatus("Chờ xác nhận"); // Mặc định cho COD
+        order.setEmail(email); 
+        order.setStatus("Chờ xác nhận"); 
 
         OrderDAO orderDAO = new OrderDAO();
         

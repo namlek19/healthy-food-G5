@@ -127,7 +127,7 @@ public class OrderDAO extends DBContext {
         psOrder.setDouble(5, order.getTotalAmount());
         psOrder.setTimestamp(6, new java.sql.Timestamp(order.getOrderDate().getTime()));
         psOrder.setString(7, order.getStatus());
-        psOrder.setString(8, order.getEmail()); // <-- THÊM DÒNG NÀY
+        psOrder.setString(8, order.getEmail()); 
 
         psOrder.executeUpdate();
 
