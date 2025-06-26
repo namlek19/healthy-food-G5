@@ -20,6 +20,7 @@ public class CheckoutServlet extends HttpServlet {
         String district = request.getParameter("district");
         String address = request.getParameter("address");
         String method = request.getParameter("method");
+        String addressOption = request.getParameter("addressOption");
 
         HttpSession session = request.getSession();
         User user = (User) session.getAttribute("user");
@@ -28,6 +29,13 @@ public class CheckoutServlet extends HttpServlet {
         if (cart == null || cart.isEmpty()) {
             response.sendRedirect("cart.jsp");
             return;
+        }
+
+        if ("profile".equals(addressOption)) {
+            if (user != null) {
+                address = user.getAddress();
+                district = user.getDistrict();
+            }
         }
 
         double total = 0;
@@ -42,13 +50,12 @@ public class CheckoutServlet extends HttpServlet {
         order.setDistrict(district);
         order.setTotalAmount(total);
         order.setOrderDate(new Date());
-        order.setEmail(email); 
-        order.setStatus("Chờ xác nhận"); 
+        order.setEmail(email);
+        order.setStatus("Chờ xác nhận");
 
         OrderDAO orderDAO = new OrderDAO();
-        
+
         if ("cod".equals(method)) {
-            // COD flow
             int orderId = orderDAO.createOrder(order, cart);
 
             session.removeAttribute("cart");
@@ -65,14 +72,10 @@ public class CheckoutServlet extends HttpServlet {
             session.setAttribute("orderId", orderId);
             response.sendRedirect("success.jsp");
         } else if ("vnpay".equals(method)) {
-            // VNPAY flow
             order.setStatus("Chờ thanh toán VNPay");
             int orderId = orderDAO.createOrder(order, cart);
 
-            // Chỉ lưu orderId vào session (cart vẫn giữ nguyên!)
             session.setAttribute("vnp_orderId", orderId);
-
-            // Redirect sang ajaxServlet để xử lý tạo link thanh toán VNPay
             response.sendRedirect("ajaxServlet?orderId=" + orderId);
         } else {
             response.sendRedirect("checkout.jsp?error=Vui lòng chọn phương thức thanh toán.");
