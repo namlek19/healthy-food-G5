@@ -117,30 +117,37 @@
 
     <script>
         function validateCheckout() {
-            const email = document.getElementById("email").value.trim();
-            const addressOptionInput = document.querySelector('input[name="addressOption"]:checked');
-            const addressOption = addressOptionInput ? addressOptionInput.value : "new";
-            const district = document.getElementById("district").value;
-            const address = document.getElementById("address").value.trim();
+    const email = document.getElementById("email").value.trim();
+    const addressOptionInput = document.querySelector('input[name="addressOption"]:checked');
+    const addressOption = addressOptionInput ? addressOptionInput.value : "new";
+    const district = document.getElementById("district").value;
+    const address = document.getElementById("address").value.trim();
 
-            const emailRegex = /^[a-zA-Z0-9._%+-]+@(gmail\.com|fpt\.edu\.vn|yahoo\.com)$/;
-            if (!emailRegex.test(email)) {
-                alert("Vui lòng nhập địa chỉ email hợp lệ.");
-                return false;
-            }
+    const allowedDistricts = [
+        "Hoàn Kiếm", "Ba Đình", "Đống Đa", "Hai Bà Trưng", "Tây Hồ",
+        "Cầu Giấy", "Thanh Xuân", "Hoàng Mai", "Long Biên"
+    ];
 
-            if (addressOption === 'new') {
-                if (district === "") {
-                    alert("Vui lòng chọn quận nội thành.");
-                    return false;
-                }
-                if (address === "") {
-                    alert("Vui lòng nhập địa chỉ cụ thể.");
-                    return false;
-                }
-            }
-            return true;
+    const emailRegex = /^[a-zA-Z0-9._%+-]+@(gmail\.com|fpt\.edu\.vn|yahoo\.com)$/;
+    if (!emailRegex.test(email)) {
+        alert("Vui lòng nhập địa chỉ email hợp lệ.");
+        return false;
+    }
+
+    if (district === "" || !allowedDistricts.includes(district)) {
+        alert("Chỉ hỗ trợ giao hàng cho khách tại các quận trung tâm nội thành Hà Nội.");
+        return false;
+    }
+
+    if (addressOption === 'new') {
+        if (address === "") {
+            alert("Vui lòng nhập địa chỉ cụ thể.");
+            return false;
         }
+    }
+    return true;
+}
+
 
         function enableAddress() {
             const district = document.getElementById("district").value;
