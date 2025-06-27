@@ -68,6 +68,18 @@
         <div class="container py-4">
             <h2 class="blog-list-header">Danh sách bài viết</h2>
 
+            <div class="blog-filter-form">
+                <label for="sort-select">Lọc:</label>
+                <form method="get" action="blogcus" style="margin-bottom:0;">
+                    <select id="sort-select" name="sort" class="blog-filter-select"
+                            onchange="this.form.submit()">
+                        <option value="newest" ${param.sort == 'newest' || empty param.sort ? 'selected' : ''}>Bài mới nhất</option>
+                        <option value="oldest" ${param.sort == 'oldest' ? 'selected' : ''}>Bài cũ nhất</option>
+                    </select>
+                </form>
+            </div>
+
+
             <c:if test="${empty blogs}">
                 <p style="text-align:center;">Chưa có bài viết nào.</p>
             </c:if>

@@ -154,5 +154,44 @@ body {
     }
 }
 
+/* Dùng chung cho cả hai nút */
+.simple-btn {
+    background: #fff;
+    color: #27ad64;
+    border: 1.3px solid #d2ecd6;
+    border-radius: 8px;
+    padding: 7px 18px 7px 16px;
+    font-size: 1em;
+    font-weight: 600;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    cursor: pointer;
+    box-shadow: none;
+    transition: color 0.15s, border-color 0.15s, background 0.15s;
+}
+.simple-btn:hover,
+.simple-btn:focus {
+    color: #16794c;
+    border-color: #b3e2c0;
+    background: #f3fbf7;
+    text-decoration: underline;
+}
+.simple-btn .icon {
+    margin-right: 8px;
+    font-size: 1.06em;
+    display: inline-block;
+    vertical-align: -1px;
+}
+
+/* Để sát lề trái, phải */
+.blog-header-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 18px;
+}
+
+
 
 

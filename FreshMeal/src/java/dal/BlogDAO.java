@@ -187,5 +187,35 @@ public class BlogDAO extends DBContext {
         }
         return list;
     }
+    
+    public List<Blog> getAllBlogsSorted(String sort) {
+    List<Blog> list = new ArrayList<>();
+    String orderBy = "DESC"; // Mặc định mới nhất
+    if ("oldest".equalsIgnoreCase(sort)) {
+        orderBy = "ASC";
+    }
+    String sql = "SELECT b.BlogID, b.Title, b.ImageURL, b.Description, b.NutritionistID, u.FullName, b.CreatedAt "
+            + "FROM Blog b JOIN Users u ON b.NutritionistID = u.UserID "
+            + "ORDER BY b.CreatedAt " + orderBy;
+
+    try (Connection con = getConnection(); PreparedStatement ps = con.prepareStatement(sql); ResultSet rs = ps.executeQuery()) {
+
+        while (rs.next()) {
+            Blog blog = new Blog();
+            blog.setBlogID(rs.getInt("BlogID"));
+            blog.setTitle(rs.getString("Title"));
+            blog.setImageURL(rs.getString("ImageURL"));
+            blog.setDescription(rs.getString("Description"));
+            blog.setNutritionistID(rs.getInt("NutritionistID"));
+            blog.setNutritionistName(rs.getString("FullName"));
+            blog.setCreatedAt(rs.getTimestamp("CreatedAt"));
+            list.add(blog);
+        }
+    } catch (Exception e) {
+        e.printStackTrace();
+    }
+    return list;
+}
+
 
 }
