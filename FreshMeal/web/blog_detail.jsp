@@ -2,8 +2,11 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"/>
+
 <%
     Integer roleID = (Integer) session.getAttribute("roleID");
+    Integer userID = (Integer) session.getAttribute("userID");
     String backUrl = (roleID != null && roleID == 5) ? "blogmanage" : "blogcus";
 %>
 <!DOCTYPE html>
@@ -12,12 +15,20 @@
         <meta charset="UTF-8">
         <title>Chi tiết Blog</title>
         <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
-
+        <link rel="stylesheet" href="assets/css/blog_detail.css">
     </head>
-    <link rel="stylesheet" href="assets/css/blog_detail.css">
     <body>
         <div class="blog-container">
-            <a href="<%= backUrl %>" class="back-link">← Quay lại</a>
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+                <a href="<%= backUrl %>" class="back-link">← Quay lại</a>
+                <c:if test="${sessionScope.roleID == 5 && sessionScope.userID == blog.nutritionistID}">
+                    <a href="blog?action=edit&id=${blog.blogID}" class="simple-btn">
+                        <span class="edit-icon"><i class="fas fa-pen"></i></span>
+                        Chỉnh sửa
+                    </a>
+
+                </c:if>
+            </div>
             <div class="blog-title preserve-whitespace">${blog.title}</div>
             <div class="blog-meta">
                 Người đăng: <b>${blog.nutritionistName}</b> | 
@@ -29,8 +40,6 @@
             <div class="blog-desc">
                 <c:out value="${blogDescHtml}" escapeXml="false"/>
             </div>
-
-
         </div>
 
         <div class="latest-blogs-section">
@@ -63,6 +72,5 @@
                 <div>Không có bài viết nào khác.</div>
             </c:if>
         </div>
-
     </body>
 </html>

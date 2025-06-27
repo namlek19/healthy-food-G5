@@ -75,3 +75,34 @@
     }
 }
 
+.blog-filter-form {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 18px;
+}
+
+.blog-filter-form label {
+    font-weight: 500;
+    color: #196b3b;
+    margin-bottom: 0;
+    font-size: 1em;
+    letter-spacing: 0.1px;
+}
+
+.blog-filter-select {
+    border: 1px solid #cbe4d7;
+    border-radius: 5px;
+    padding: 5px 12px;
+    font-size: 1em;
+    background: #f7fbf8;
+    color: #18332b;
+    min-width: 120px;
+    outline: none;
+    transition: border 0.2s;
+}
+.blog-filter-select:focus {
+    border-color: #27ad64;
+    background: #f4fef9;
+}
+
