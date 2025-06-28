@@ -10,7 +10,7 @@ import jakarta.servlet.http.HttpSession;
 import model.User;
 import dal.UserDAO;
 
-@WebServlet(name = "ChangePasswordServlet", urlPatterns = {"/profile"})
+
 public class ChangePasswordServlet extends HttpServlet {
 
     @Override

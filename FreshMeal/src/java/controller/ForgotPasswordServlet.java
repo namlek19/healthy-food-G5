@@ -11,7 +11,7 @@ import jakarta.servlet.http.HttpSession;
 import model.User;
 import java.util.*;
 
-@WebServlet(name = "ForgotPasswordServlet", urlPatterns = {"/forgotpassword"})
+
 public class ForgotPasswordServlet extends HttpServlet {
 
     @Override

@@ -18,7 +18,7 @@ import java.net.URI;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
-@WebServlet(name = "LoginServlet", urlPatterns = {"/login"})
+
 public class LoginServlet extends HttpServlet {
     private static final String GOOGLE_CLIENT_ID = "423890706733-eo05uhbjo9aup4pkpq714evrohqjqcq1.apps.googleusercontent.com";
     private static final String GOOGLE_TOKEN_VERIFICATION_URL = "https://oauth2.googleapis.com/tokeninfo?id_token=";
@@ -31,7 +31,7 @@ public class LoginServlet extends HttpServlet {
 
         try {
             if (action == null) {
-                // Display login page
+                // vao trang dang nhap
                 request.getRequestDispatcher("login.jsp").forward(request, response);
                 return;
             }
@@ -58,7 +58,7 @@ public class LoginServlet extends HttpServlet {
                     break;
 
                 default:
-                    // Invalid action, redirect to login page
+                    
                     response.sendRedirect("login.jsp");
                     break;
             }
@@ -81,7 +81,7 @@ public class LoginServlet extends HttpServlet {
         String email = request.getParameter("email");
         String password = request.getParameter("password");
 
-        // Validate input
+        // check input
         if (email == null || email.trim().isEmpty() || password == null || password.trim().isEmpty()) {
             request.getSession().setAttribute("errorMessage", "Email and password are required");
             response.sendRedirect("login.jsp");
@@ -171,7 +171,7 @@ public class LoginServlet extends HttpServlet {
                 user.setEmail(email);
                 user.setFullName(fullName);
                 
-                // Set default values for required fields to prevent database NOT NULL issues
+                
                 user.setCity("Not Provided");
                 user.setDistrict("Not Provided");
                 user.setAddress("Not Provided");
@@ -181,7 +181,7 @@ public class LoginServlet extends HttpServlet {
                     throw new Exception("Failed to create user account");
                 }
             }
-            // Set session attributes
+            
             HttpSession session = request.getSession();
             session.setAttribute("user", user);
             session.setAttribute("isGoogleUser", true);
@@ -227,7 +227,6 @@ public class LoginServlet extends HttpServlet {
     }
     
     private String generateSecurePassword() {
-        // Generate a secure random password for Google users
         return UUID.randomUUID().toString();
     }
 
@@ -242,12 +241,12 @@ public class LoginServlet extends HttpServlet {
     }
 
     private boolean isValidPassword(String password) {
-        // Check if password is null or less than 8 characters
+        // check mat khau
         if (password == null || password.length() < 8) {
             return false;
         }
         
-        // Check if password contains at least one number
+        // check dieu kien mk
         boolean hasNumber = false;
         for (char c : password.toCharArray()) {
             if (Character.isDigit(c)) {
@@ -263,7 +262,6 @@ public class LoginServlet extends HttpServlet {
         System.out.println("\nDEBUG: Starting registration process");
         
         try {
-            // Log raw request parameters for debugging
             System.out.println("DEBUG: Raw request parameters:");
             Enumeration<String> paramNames = request.getParameterNames();
             while (paramNames.hasMoreElements()) {
@@ -271,7 +269,7 @@ public class LoginServlet extends HttpServlet {
                 System.out.println(paramName + ": " + request.getParameter(paramName));
             }
             
-            // Get and validate all parameters first
+            // check tham so input
             Map<String, String> params = new HashMap<>();
             params.put("firstName", request.getParameter("firstName"));
             params.put("lastName", request.getParameter("lastName"));
@@ -281,13 +279,13 @@ public class LoginServlet extends HttpServlet {
             params.put("district", request.getParameter("district"));
             params.put("address", request.getParameter("address"));
 
-            // Log all received parameters
+
             System.out.println("DEBUG: Received parameters:");
             for (Map.Entry<String, String> entry : params.entrySet()) {
                 System.out.println(entry.getKey() + ": " + entry.getValue());
             }
 
-            // Check for missing parameters
+            // Check dieu kien input
             List<String> missingParams = new ArrayList<>();
             for (Map.Entry<String, String> entry : params.entrySet()) {
                 if (entry.getValue() == null || entry.getValue().trim().isEmpty()) {
@@ -303,7 +301,7 @@ public class LoginServlet extends HttpServlet {
                 return;
             }
 
-            // Validate password
+            // mat khau
             if (!isValidPassword(params.get("password"))) {
                 request.getSession().setAttribute("errorMessage", 
                     "Password must be at least 8 characters long and contain at least one number");
@@ -311,10 +309,10 @@ public class LoginServlet extends HttpServlet {
                 return;
             }
 
-            // Create new user
+            // tao nguoi dung
             User user = new User();
             user.setEmail(params.get("email"));
-            user.setPasswordHash(params.get("password")); // In production, this should be hashed
+            user.setPasswordHash(params.get("password"));
             user.setFullName(params.get("firstName") + " " + params.get("lastName"));
             user.setCity(params.get("city"));
             user.setDistrict(params.get("district"));
@@ -322,7 +320,7 @@ public class LoginServlet extends HttpServlet {
 
             UserDAO userDAO = new UserDAO();
 
-            // Check if email exists
+            
             if (userDAO.checkEmailExists(params.get("email"))) {
                 System.out.println("DEBUG: Email already exists - " + params.get("email"));
                 request.getSession().setAttribute("errorMessage", "Email already exists");
@@ -330,7 +328,7 @@ public class LoginServlet extends HttpServlet {
                 return;
             }
 
-            // Attempt registration
+            
             System.out.println("DEBUG: Attempting to register user");
             if (userDAO.registerUser(user)) {
                 System.out.println("DEBUG: Registration successful for email: " + params.get("email"));
