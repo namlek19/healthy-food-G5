@@ -140,6 +140,33 @@ public void addMenuProduct(int menuID, int productID) {
         e.printStackTrace();
     }
 }
-
+public List<Menu> getMenusByStatus(int status) {
+    List<Menu> list = new ArrayList<>();
+    String query = "SELECT * FROM Menu WHERE Status = ?";
+    try (Connection conn = getConnection(); PreparedStatement ps = conn.prepareStatement(query)) {
+        ps.setInt(1, status);
+        ResultSet rs = ps.executeQuery();
+        while (rs.next()) {
+            Menu m = new Menu(
+                    rs.getInt("MenuID"),
+                    rs.getString("MenuName"),
+                    rs.getString("Description"),
+                    rs.getString("ImageURL"),
+                    rs.getString("BMICategory"),
+                    rs.getInt("NutritionistID")
+            );
+            m.setProducts(getProductsInMenu(m.getMenuID(), conn));
+            double total = 0;
+            for (Product p : m.getProducts()) {
+                total += p.getPrice();
+            }
+            m.setTotalPrice(total);
+            list.add(m);
+        }
+    } catch (Exception e) {
+        e.printStackTrace();
+    }
+    return list;
+}
 
 }

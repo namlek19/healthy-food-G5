@@ -1,0 +1,174 @@
+/* NỀN TOÀN TRANG */
+body {
+    background: #f0fff5;
+    font-family: 'Segoe UI', 'Roboto', Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+/* HEADER MANAGER */
+header.manager-header {
+    background: #fff;
+    box-shadow: 0 2px 8px rgba(46, 204, 113, 0.09);
+    border-radius: 10px;
+    margin: 20px 30px 30px 30px;
+    padding: 0;
+    position: relative;
+}
+
+.manager-header .container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 18px 40px;
+}
+
+.manager-header .logo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.manager-header .logo img {
+    height: 45px;
+    width: auto;
+}
+
+.manager-header .brand-name {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #2ecc71;
+    margin-left: 12px;
+    letter-spacing: 1px;
+}
+
+.manager-header .header-title {
+    flex-grow: 1;
+    text-align: center;
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: #189654;
+    letter-spacing: 0.5px;
+}
+
+.manager-header .header-right {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.manager-header .username {
+    color: #2ecc71;
+    font-weight: 600;
+    font-size: 1.05rem;
+    margin-right: 10px;
+}
+
+.manager-header .btn-logout {
+    background: #2ecc71;
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    padding: 7px 20px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    box-shadow: 0 2px 6px rgba(46,204,113,0.08);
+    cursor: pointer;
+    text-decoration: none;
+    transition: background 0.15s, color 0.15s;
+}
+.manager-header .btn-logout:hover {
+    background: #189654;
+    color: #fff;
+}
+
+/* PHẦN DANH SÁCH MENU CHỜ DUYỆT */
+.container-main {
+    background: #fff;
+    max-width: 1050px;
+    margin: 0 auto 48px auto;
+    padding: 32px 30px 40px 30px;
+    border-radius: 15px;
+    box-shadow: 0 2px 12px rgba(46,204,113,0.06);
+}
+
+/* Title */
+.container-main h2 {
+    color: #2ecc71;
+    font-weight: 700;
+    font-size: 1.6rem;
+    margin-bottom: 20px;
+    letter-spacing: 0.5px;
+}
+
+/* Success/Error msg */
+.success-msg {
+    color: #2ecc71;
+    font-size: 1rem;
+    margin-bottom: 10px;
+}
+.error-msg {
+    color: #e74c3c;
+    font-size: 1rem;
+    margin-bottom: 10px;
+}
+
+/* Table style */
+.table-menus {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 18px;
+    background: #f0fff5;
+    border-radius: 7px;
+    overflow: hidden;
+}
+
+.table-menus th, .table-menus td {
+    border: none;
+    padding: 13px 10px;
+    text-align: center;
+}
+
+.table-menus th {
+    background: #2ecc71;
+    color: #fff;
+    font-size: 1.02rem;
+    font-weight: 600;
+    letter-spacing: 0.4px;
+}
+
+.table-menus tr {
+    border-bottom: 1px solid #e1f6ea;
+    transition: background 0.12s;
+}
+.table-menus tr:hover {
+    background: #e7fdf0;
+}
+
+.table-menus td img {
+    max-width: 110px;
+    border-radius: 8px;
+    border: 2px solid #e1f6ea;
+}
+
+.table-menus td button {
+    background: #2ecc71;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    padding: 7px 18px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background 0.13s;
+    box-shadow: 0 1px 5px rgba(46,204,113,0.04);
+}
+.table-menus td button:hover {
+    background: #189654;
+}
+
+/* Responsive */
+@media (max-width: 800px) {
+    .container-main { padding: 18px 3vw; }
+    .manager-header .container { flex-direction: column; gap: 15px; padding: 12px 2vw; }
+    .manager-header .header-title { margin-top: 7px; }
+}
