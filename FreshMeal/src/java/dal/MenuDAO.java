@@ -101,45 +101,42 @@ public class MenuDAO extends DBContext {
         }
         return false;
     }
-    
-    
+
     // Thêm menu mới, trả về MenuID vừa insert (SQL Server), status=1 (đang chờ duyệt)
-public int addMenu(Menu menu) {
-    int menuID = -1;
-    String sql = "INSERT INTO Menu (MenuName, Description, BMICategory, ImageURL, NutritionistID, Status) VALUES (?, ?, ?, ?, ?, ?)";
-    try (Connection conn = getConnection();
-         PreparedStatement ps = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
-        ps.setString(1, menu.getMenuName());
-        ps.setString(2, menu.getDescription());
-        ps.setString(3, menu.getBmiCategory());
-        ps.setString(4, menu.getImageURL());
-        ps.setInt(5, menu.getNutritionistID());
-        ps.setInt(6, 1); // luôn luôn là 1 khi nutritionist tạo
-        int affectedRows = ps.executeUpdate();
-        if (affectedRows > 0) {
-            ResultSet rs = ps.getGeneratedKeys();
-            if (rs.next()) {
-                menuID = rs.getInt(1);
+    public int addMenu(Menu menu) {
+        int menuID = -1;
+        String sql = "INSERT INTO Menu (MenuName, Description, BMICategory, ImageURL, NutritionistID, Status) VALUES (?, ?, ?, ?, ?, ?)";
+        try (Connection conn = getConnection(); PreparedStatement ps = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+            ps.setString(1, menu.getMenuName());
+            ps.setString(2, menu.getDescription());
+            ps.setString(3, menu.getBmiCategory());
+            ps.setString(4, menu.getImageURL());
+            ps.setInt(5, menu.getNutritionistID());
+            ps.setInt(6, 1); // luôn luôn là 1 khi nutritionist tạo
+            int affectedRows = ps.executeUpdate();
+            if (affectedRows > 0) {
+                ResultSet rs = ps.getGeneratedKeys();
+                if (rs.next()) {
+                    menuID = rs.getInt(1);
+                }
             }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-    } catch (Exception e) {
-        e.printStackTrace();
+        return menuID;
     }
-    return menuID;
-}
 
 // Thêm 1 món ăn vào menu (chuẩn style)
-public void addMenuProduct(int menuID, int productID) {
-    String sql = "INSERT INTO MenuProduct (MenuID, ProductID) VALUES (?, ?)";
-    try (Connection conn = getConnection();
-         PreparedStatement ps = conn.prepareStatement(sql)) {
-        ps.setInt(1, menuID);
-        ps.setInt(2, productID);
-        ps.executeUpdate();
-    } catch (Exception e) {
-        e.printStackTrace();
+    public void addMenuProduct(int menuID, int productID) {
+        String sql = "INSERT INTO MenuProduct (MenuID, ProductID) VALUES (?, ?)";
+        try (Connection conn = getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, menuID);
+            ps.setInt(2, productID);
+            ps.executeUpdate();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
-}
 public List<Menu> getMenusByStatus(int status) {
     List<Menu> list = new ArrayList<>();
     String query = "SELECT * FROM Menu WHERE Status = ?";
@@ -170,3 +167,6 @@ public List<Menu> getMenusByStatus(int status) {
 }
 
 }
+
+
+
