@@ -1,0 +1,197 @@
+
+body {
+    background: linear-gradient(135deg, #eafaf1 0%, #f8fff7 100%);
+    font-family: 'Poppins', Arial, sans-serif;
+    margin: 0;
+    min-height: 100vh;
+}
+.blog-container {
+    max-width: 720px;
+    margin: 40px auto;
+    background: #ffffff;
+    border-radius: 18px;
+    box-shadow: 0 4px 36px 0 #98e7b1b0, 0 1.5px 4px #d5eedd;
+    padding: 38px 32px 36px 32px;
+    position: relative;
+}
+.back-link {
+    color: #27ad64;
+    text-decoration: none;
+    font-weight: 600;
+    display: inline-block;
+    margin-bottom: 18px;
+    font-size: 1.03em;
+    transition: color 0.2s;
+}
+.back-link:hover {
+    color: #15794b;
+    text-decoration: underline;
+}
+.blog-title {
+    font-size: 2.1em;
+    font-weight: 700;
+    color: #18332b;
+    margin-bottom: 8px;
+    letter-spacing: 0.01em;
+}
+.blog-meta {
+    color: #6eb286;
+    margin-bottom: 18px;
+    font-size: 1em;
+    font-weight: 500;
+}
+.blog-img {
+    width: 100%;
+    max-height: 350px;
+    object-fit: cover;
+    border-radius: 11px;
+    margin-bottom: 18px;
+    background: #eef4ea;
+    box-shadow: 0 2px 12px #d4f2e2a1;
+    border: 1.5px solid #eaf7ee;
+}
+.blog-desc {
+    font-size: 1.13em;
+    color: #222e1f;
+    line-height: 1.8;
+    margin-bottom: 14px;
+    background: #f4fef9;
+    border-radius: 9px;
+    padding: 18px 18px 15px 18px;
+    box-shadow: 0 1px 2px #eaf7ee62;
+}
+.preserve-whitespace {
+    white-space: pre-wrap;
+    word-wrap: break-word;
+}
+@media (max-width: 750px) {
+    .blog-container {
+        padding: 20px 7vw;
+    }
+    .blog-title {
+        font-size: 1.5em;
+    }
+}
+.blog-desc p {
+    margin: 0 0 14px 0;   /* 14px là khoảng cách giữa các đoạn, có thể đổi 10px, 16px tùy bạn */
+    line-height: 1.8;
+}
+.blog-desc p:last-child {
+    margin-bottom: 0;
+}
+
+/* --- Latest Blogs Section (Bài viết mới nhất) --- */
+.latest-blogs-section {
+    margin-top: 38px;
+    background: #fff;
+    border-radius: 13px;
+    box-shadow: 0 2px 10px #e5efe2;
+    padding: 24px 24px 10px 24px;
+    max-width: 720px;
+    margin-left: auto;
+    margin-right: auto;
+}
+.latest-blogs-title {
+    font-size: 1.22em;
+    font-weight: bold;
+    margin-bottom: 20px;
+    color: #196b3b;
+    letter-spacing: 0.3px;
+}
+.latest-blog-row {
+    display: flex;
+    gap: 15px;
+    border-bottom: 1px solid #e2e2e2;
+    padding-bottom: 16px;
+    margin-bottom: 16px;
+    align-items: flex-start;
+}
+.latest-blog-row:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+    padding-bottom: 0;
+}
+.latest-blog-img img {
+    width: 96px;
+    height: 64px;
+    object-fit: cover;
+    border-radius: 8px;
+    background: #e6f4ee;
+    border: 1.5px solid #eaf7ee;
+}
+.latest-blog-info {
+    flex: 1;
+}
+.latest-blog-title {
+    font-weight: bold;
+    font-size: 1.09em;
+    color: #218355;
+    text-decoration: none;
+}
+.latest-blog-title:hover {
+    color: #27ad64;
+    text-decoration: underline;
+}
+.latest-blog-meta {
+    color: #888;
+    font-size: 0.95em;
+    margin: 2px 0 2px 0;
+}
+.latest-blog-desc {
+    color: #222;
+    font-size: 0.97em;
+}
+@media (max-width: 750px) {
+    .latest-blogs-section {
+        padding: 14px 3vw 8px 3vw;
+    }
+    .latest-blog-row {
+        gap: 9px;
+    }
+    .latest-blog-img img {
+        width: 70px;
+        height: 50px;
+    }
+}
+
+/* Dùng chung cho cả hai nút */
+.simple-btn {
+    background: #fff;
+    color: #27ad64;
+    border: 1.3px solid #d2ecd6;
+    border-radius: 8px;
+    padding: 7px 18px 7px 16px;
+    font-size: 1em;
+    font-weight: 600;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    cursor: pointer;
+    box-shadow: none;
+    transition: color 0.15s, border-color 0.15s, background 0.15s;
+}
+.simple-btn:hover,
+.simple-btn:focus {
+    color: #16794c;
+    border-color: #b3e2c0;
+    background: #f3fbf7;
+    text-decoration: underline;
+}
+.simple-btn .icon {
+    margin-right: 8px;
+    font-size: 1.06em;
+    display: inline-block;
+    vertical-align: -1px;
+}
+
+/* Để sát lề trái, phải */
+.blog-header-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 18px;
+}
+
+
+
+

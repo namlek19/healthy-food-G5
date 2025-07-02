@@ -83,7 +83,7 @@ public class BlogListServlet extends HttpServlet {
         }
 
         
-        response.sendRedirect(request.getContextPath() + "/blog");
+        response.sendRedirect(request.getContextPath() + "/blogmanage");
     }
 
     @Override

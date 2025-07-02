@@ -1,9 +1,5 @@
 /* === USER MENU DROPDOWN === */
-.header-right {
-    display: flex;
-    align-items: center;
-    gap: 18px;
-}
+
 .user-menu { position: relative; }
 .user-menu-btn {
     background: none;
@@ -92,4 +88,18 @@
     margin-left: 3px;
     font-size: 1.05rem;
     letter-spacing: 0.15px;
+}
+header .container {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    flex-wrap: nowrap !important;
+}
+.logo {
+    min-width: 130px;
+}
+.header-right {
+    display: flex;
+    align-items: center;
+    gap: 18px;
 }

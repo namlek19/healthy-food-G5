@@ -1,115 +1,19 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<link rel="stylesheet" href="assets/css/blog.css">
+
 <html>
     <head>
         <title>Chỉnh sửa Blog</title>
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
-        <style>
-            
-            body {
-                font-family: Arial, sans-serif;
-                background-color: #f0f2f5;
-                margin: 0;
-                display: flex;
-            }
-
-
-            .main-container {
-                flex: 1;
-                padding: 20px;
-                display: flex;
-                flex-direction: column;
-                align-items: center;
-                margin-left: 220px;
-                padding: 20px;
-                background-color: #BEF0CF
-            }
-
-            
-            .image-upload-wrapper {
-                width: 200px;
-                height: 150px;
-                border: 2px dashed #bbb;
-                border-radius: 10px;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                cursor: pointer;
-                position: relative;
-                background: #fafbfc;
-                margin-bottom: 8px;
-                transition: border-color 0.3s;
-            }
-            .image-upload-wrapper:hover {
-                border-color: #3399ff;
-            }
-            .plus-icon {
-                font-size: 48px;
-                color: #bbb;
-                user-select: none;
-                transition: color 0.3s;
-            }
-            .image-upload-wrapper.dragover {
-                border-color: #3399ff;
-                background: #e6f0ff;
-            }
-            #previewImage {
-                display: block;
-                max-width:200px;
-                max-height:150px;
-                border-radius:10px;
-            }
-
-            /* CSS cho Form */
-            .main-container form {
-                background-color: #ffffff;
-                padding: 20px;
-                border-radius: 8px;
-                box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-                max-width: 700px;
-                width: 100%;
-                text-align: left;
-            }
-
-            
-            .main-container label {
-                display: block;
-                margin-bottom: 8px;
-            }
-            .main-container input[type="text"], .main-container textarea {
-                width: 98%;
-                padding: 8px;
-                margin-bottom: 10px;
-                border: 1px solid #ccc;
-                border-radius: 4px;
-            }
-            .main-container button {
-                padding: 10px 15px;
-                background-color: #4CAF50;
-                color: white;
-                border: none;
-                border-radius: 4px;
-                cursor: pointer;
-            }
-        </style>
+        <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+        <link rel="stylesheet" href="assets/css/blog.css">
+        <link rel="stylesheet" href="assets/css/editBlog.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"/>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+        
     </head>
     <body>
 
-        <div class="sidebar">
-            <h2>BLOG</h2>
-            <ul>
-                <li><a href="${pageContext.request.contextPath}/blog" class="active">Blog List</a></li>
-                <li><a href="blogpost">Blog Post</a></li> 
-                <li><a href="blogmanage">Blog Manage</a></li>  
-            </ul>
-            <h2>MENU</h2>
-            <ul>
-                <li><a href="#">Menu List</a></li>
-                <li><a href="#">Menu Post</a></li>
-                <li><a href="#">Menu Manage</a></li>
-            </ul>
-        </div>
+        <%@ include file="sidebar.jsp" %>
 
         <div class="main-container">
             <h2>Chỉnh sửa bài Blog</h2>
@@ -140,7 +44,7 @@
                 <p>Không tìm thấy bài blog để chỉnh sửa.</p>
             </c:if>
 
-            <p style="margin-top: 20px;"><a href="blog">Quay lại danh sách</a></p>
+            <p style="margin-top: 20px;"><a href="blogmanage">Quay lại danh sách</a></p>
         </div>
 
         <script>
