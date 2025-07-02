@@ -62,9 +62,15 @@
                         <textarea class="form-control" name="description" rows="3" maxlength="300" required></textarea>
                     </div>
                     <div class="mb-3">
-                        <label class="form-label fw-bold">Ảnh thực đơn (URL hoặc upload sau)</label>
-                        <input class="form-control" name="imageURL" placeholder="https://...">
+                        <label class="form-label fw-bold">Ảnh thực đơn</label>
+                        <div class="image-upload-wrapper" id="menuImageDropArea" title="Nhấn, kéo thả hoặc Ctrl+V để chọn ảnh">
+                            <span class="plus-icon" id="menuPlusIcon">+</span>
+                            <input type="file" id="menuImageInput" accept="image/*" style="display:none;">
+                            <img id="menuPreviewImage" style="display:none; max-width:160px; max-height:160px; border-radius:8px; margin-top:5px;" />
+                        </div>
+                        <input type="hidden" name="imageURL" id="menuImageURL">
                     </div>
+
                     <button type="submit" class="btn btn-success btn-lg w-100 mt-2 fw-bold" style="font-size:1.15em;">
                         Đăng Thực Đơn
                     </button>
