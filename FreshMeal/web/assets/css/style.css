@@ -1,9 +1,9 @@
-.body {
-    font-family: 'Poppins', sans-serif;
+body {
+    font-family: 'Poppins', sans-serif !important;
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    background-color: #fff;
+    background-color: #F0FDF4 !important;
     color: #333;
 }
 
@@ -192,4 +192,7 @@ footer {
   color: #2ecc71;
   font-weight: 600;
   margin-top: 5px;
+}
+.cta-button:hover {
+    background-color: #238043;
 }

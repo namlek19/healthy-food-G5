@@ -107,7 +107,7 @@
     <div class="container">
         <header class="header">
             <div class="logo">
-                <img src="assets/images/logo.png" alt="FreshMeal">
+                <img src="assets/images/logoreal.png" alt="FreshMeal">
             </div>
             <nav class="nav-links">
                 <a href="index.jsp">Home</a>
