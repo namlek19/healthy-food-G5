@@ -12,7 +12,7 @@
     <div class="container">
         <header class="header">
             <div class="logo">
-                <img src="assets/images/logo.png" alt="FreshMeal">
+                <img src="assets/images/logoreal.png" alt="FreshMeal">
             </div>
             <nav class="nav-links">
                 <a href="index.jsp">Home</a>
@@ -96,7 +96,7 @@
         <div class="container">
             <div class="footer-grid">
                 <div>
-                    <img src="assets/images/logo.png" alt="FreshMeal" class="footer-logo">
+                    <img src="assets/images/logoreal.png" alt="FreshMeal" class="footer-logo">
                     <p class="footer-description">
                         Healthy food provides essential nutrients for the body and helps prevent diseases while supporting energy and maintaining a healthy weight!
                     </p>

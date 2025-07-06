@@ -25,7 +25,7 @@
     <header class="manager-header">
         <div class="container">
             <div class="logo">
-                <img src="assets/images/logo.png" alt="logo">
+                <img src="assets/images/logoreal.png" alt="logo">
                 <span class="brand-name">freshmeal</span>
             </div>
             <div class="header-title">Menu chờ duyệt</div>
