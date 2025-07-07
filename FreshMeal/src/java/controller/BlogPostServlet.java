@@ -56,7 +56,10 @@ public class BlogPostServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        request.setAttribute("currentPage", "blogpost");
+
         request.getRequestDispatcher("blog_post.jsp").forward(request, response);
+
     }
 
     /**
@@ -77,22 +80,19 @@ public class BlogPostServlet extends HttpServlet {
         String imageURL = request.getParameter("imageURL");
         System.out.println("imageURL = " + imageURL);
 
-        
         Integer nutritionistID = (Integer) request.getSession().getAttribute("userID");
 
-        
         if (nutritionistID == null) {
             response.sendRedirect("login.jsp");
             return;
         }
 
-        
         if (title != null && !title.trim().isEmpty() && description != null && !description.trim().isEmpty()) {
             BlogDAO blogDAO = new BlogDAO();
             blogDAO.addBlog(title, imageURL, description, nutritionistID);
-            response.sendRedirect("blogmanage"); 
+            response.sendRedirect("blogmanage");
         } else {
-            
+
             request.setAttribute("error", "Tiêu đề và nội dung không được để trống!");
             request.getRequestDispatcher("blog_post.jsp").forward(request, response);
         }

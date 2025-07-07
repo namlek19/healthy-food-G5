@@ -64,6 +64,8 @@ public class MenuPostServlet extends HttpServlet {
         List<Product> productList = productDAO.getAllProduct();
         request.setAttribute("productList", productList);
 
+        request.setAttribute("currentPage", "menupost");
+
         // Nếu cần: lấy thêm info BMI, profile...
         request.getRequestDispatcher("menu_post.jsp").forward(request, response);
     }

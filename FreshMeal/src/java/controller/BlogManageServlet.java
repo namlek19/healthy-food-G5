@@ -13,18 +13,19 @@ import model.Blog;
 import java.io.IOException;
 import java.util.List;
 
-
 public class BlogManageServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        
+        request.setAttribute("currentPage", "blogmanage");
+
         HttpSession session = request.getSession();
         Integer nutritionistID = (Integer) session.getAttribute("userID");
-        if (nutritionistID == null) nutritionistID = 1; // test cứng nếu chưa có login
-
+        if (nutritionistID == null) {
+            nutritionistID = 1; // test cứng nếu chưa có login
+        }
         String search = request.getParameter("search");
         BlogDAO blogDAO = new BlogDAO();
 
@@ -44,7 +45,7 @@ public class BlogManageServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
+
         request.setCharacterEncoding("UTF-8");
         String action = request.getParameter("action");
         BlogDAO blogDAO = new BlogDAO();
