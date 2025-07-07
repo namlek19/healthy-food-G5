@@ -1,73 +1,147 @@
+/* Import font Poppins để có giao diện hiện đại hơn */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+body {
+    font-family: 'Poppins', sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f8f9fa; /* Màu nền nhẹ nhàng cho body */
+}
+
 .sidebar {
     position: fixed;
     top: 0;
     left: 0;
-    width: 230px;
+    width: 250px; /* Giữ nguyên chiều rộng */
     height: 100vh;
-    background: #9EE493; /* Xanh lá tươi, phẳng */
-    padding: 24px 16px 18px 16px;
-    border-right: 1px solid #c2ddb8;
+    background: #aeff6e; /* Xanh lá cây cực nhạt (Green Minty Pastel) - Nền chính của sidebar */
+    padding: 20px;
+    box-shadow: 2px 0 10px rgba(0, 0, 0, 0.03); /* Giảm độ đậm của bóng để nhẹ nhàng hơn */
     box-sizing: border-box;
     z-index: 100;
     display: flex;
     flex-direction: column;
+    border-right: none; /* Bỏ border-right */
 }
 
-.sidebar h2 {
-    margin: 0 0 18px 0;
-    padding: 10px 0;
-    border-radius: 28px;
-    background: #fff;
-    color: #228046;
-    font-size: 1.18em;
+/* Phần header của sidebar */
+.sidebar-header {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 30px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid #000000; /* Đổi đường kẻ dưới thành màu đen */
+}
+
+.sidebar-logo-icon {
+    font-size: 2.2em;
+    color: #4CAF50; /* Giữ màu xanh lá chính cho icon logo */
+    margin-right: 10px;
+}
+
+.sidebar-header h2 {
+    margin: 0;
+    color: #34495e; /* Giữ màu chữ đậm hơn một chút, gần đen hơn để nổi bật */
+    font-size: 1.6em;
     font-weight: 700;
-    text-align: center;
-    letter-spacing: 0.3px;
+    letter-spacing: 0.5px;
+    background: none;
+    border-radius: 0;
+    text-align: left;
 }
 
-.sidebar ul {
+/* Danh mục menu */
+.sidebar-menu {
     list-style: none;
     padding: 0;
-    margin: 0 0 20px 0;
+    margin: 0 0 25px 0;
 }
 
-.sidebar ul li {
+/* Tiêu đề danh mục con (Blog, Combo) */
+.menu-category-title {
+    font-size: 0.9em;
+    color: #7f8c8d; /* Giữ màu xám trung tính, dễ chịu */
+    margin-bottom: 15px;
+    padding: 5px 0;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+}
+
+.sidebar-menu li {
     margin-bottom: 8px;
 }
 
-.sidebar ul li a {
-    display: block;
-    padding: 10px 14px;
-    border-radius: 7px;
-    color: #18482a;
+.sidebar-menu li a {
+    display: flex;
+    align-items: center;
+    padding: 12px 15px;
+    border-radius: 8px;
+    color: #495057; /* Giữ màu chữ mặc định */
     text-decoration: none;
     font-size: 1em;
-    font-family: 'Poppins', Arial, sans-serif;
     font-weight: 500;
-    background: none;
-    border: none;
-    transition: background 0.15s, color 0.12s;
+    transition: background 0.2s ease-in-out, color 0.2s ease-in-out, transform 0.2s ease-in-out;
+    position: relative;
+    overflow: hidden;
 }
 
-/* Hiệu ứng hover & active rõ ràng, không mờ */
-.sidebar ul li a.active,
-.sidebar ul li a:hover {
-    background: #e4f5e0;
-    color: #14843c;
+.menu-icon {
+    font-size: 1.1em;
+    margin-right: 12px;
+    color: #7f8c8d; /* Giữ icon mặc định cũng dùng màu xám trung tính */
+    transition: color 0.2s ease-in-out;
 }
 
-.sidebar ul:last-child {
-    margin-bottom: 0;
-}
-    
-.sidebar ul li a[style*="color:red;"], /* Đặc biệt cho Logout */
-.sidebar ul li a[style*="color: red;"] {
-    color: #e23d3d !important;
-    font-weight: bold;
+/* Hiệu ứng hover và active */
+.sidebar-menu li a.active,
+.sidebar-menu li a:hover {
+    background: #D4EDDA; /* Giữ màu xanh lá cây nhạt hơn, tông pastel nhẹ nhàng */
+    color: #28B463; /* Giữ màu xanh lá cây vừa, nổi bật hơn một chút so với nền */
+    transform: translateX(5px);
 }
 
-.sidebar ul li a[style*="color:red;"]:hover,
-.sidebar ul li a[style*="color: red;"]:hover {
-    background: #ffdede;
-    color: #b51c1c !important;
+.sidebar-menu li a.active .menu-icon,
+.sidebar-menu li a:hover .menu-icon {
+    color: #28B463; /* Giữ icon đổi màu tương ứng */
+}
+
+/* Hiệu ứng gạch chân hiện đại khi hover */
+.sidebar-menu li a:hover::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 4px;
+    background-color: #2ECC71; /* Giữ màu xanh lá cây đẹp hơn cho gạch chân */
+    border-radius: 0 4px 4px 0;
+    opacity: 1;
+}
+
+/* Phần Logout */
+.sidebar-bottom {
+    margin-top: auto;
+    padding-top: 20px;
+    border-top: 1px solid #000000; /* Đổi đường kẻ trên thành màu đen */
+}
+
+.logout-link {
+    color: #e74c3c !important; /* Giữ màu đỏ mềm mại hơn một chút */
+    font-weight: 600;
+}
+
+.logout-link .menu-icon {
+    color: #e74c3c !important;
+}
+
+.logout-link:hover {
+    background: #fdeaea !important; /* Giữ nền đỏ nhạt khi hover */
+    color: #c0392b !important; /* Giữ màu đỏ đậm hơn, nhưng vẫn không quá gắt */
+    transform: translateX(5px);
+}
+
+.logout-link:hover .menu-icon {
+    color: #c0392b !important;
 }

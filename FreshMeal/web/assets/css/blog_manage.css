@@ -1,96 +1,182 @@
-
+/* --- TỔNG THỂ --- */
 body {
-    font-family: 'Poppins', Arial, sans-serif;
-    background-color: #BEF0CF;
+    font-family: 'Poppins', sans-serif;
+    background-color: #F0FDF4; /* Màu nền xanh lá nhạt từ homepage */
     margin: 0;
 }
 
 .main-container {
     flex: 1;
-    padding: 20px;
-    background: none;
-    margin-left: 220px;
-    padding: 20px;
+    padding: 30px 40px;
+    margin-left: 220px; /* Điều chỉnh nếu chiều rộng sidebar khác */
+    background-color: #F0FDF4;
 }
 
+/* --- TIÊU ĐỀ & THANH TÌM KIẾM --- */
 h2 {
     text-align: center;
+    color: #4D8D76; /* Màu xanh lá đậm của chữ */
+    font-weight: 600;
+    font-size: 2.2em; /* 35.2px */
+    margin-bottom: 30px;
 }
+
 .search-bar {
     display: flex;
-    gap: 10px;
-    margin-bottom: 24px;
     justify-content: center;
+    margin-bottom: 35px;
+    gap: 10px;
 }
+
 .search-bar input[type="text"] {
-    width: 350px;
-    padding: 8px 12px;
-    border-radius: 8px;
-    border: 1px solid #aaa;
+    width: 450px;
+    padding: 12px 20px;
+    border-radius: 25px; /* Bo tròn hoàn toàn */
+    border: 1px solid #E0E0E0;
+    font-size: 1em; /* 16px */
+    outline: none;
+    transition: all 0.3s ease;
 }
+
+.search-bar input[type="text"]:focus {
+    border-color: #2A8C5E;
+    box-shadow: 0 0 0 3px rgba(42, 140, 94, 0.2);
+}
+
 .search-bar button {
-    background: #18cb77;
+    background-color: #2A8C5E; /* Màu xanh lá chủ đạo */
     color: #fff;
     border: none;
-    padding: 0 22px;
-    border-radius: 12px;
-    font-size: 20px;
+    padding: 0 25px;
+    border-radius: 25px; /* Bo tròn đồng bộ */
+    font-size: 1em;
+    font-weight: 500;
     cursor: pointer;
+    transition: background-color 0.2s;
 }
+
+.search-bar button:hover {
+    background-color: #1E6A47;
+}
+
+/* --- DANH SÁCH BÀI VIẾT --- */
 .blog-list {
-    border-top: 2px solid #222;
-    margin-top: 8px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px; /* Khoảng cách giữa các card */
 }
+
 .blog-row {
     display: flex;
     align-items: center;
-    gap: 16px;
-    border-bottom: 1px solid #aee5bb;
-    padding: 14px 0;
+    gap: 20px;
+    background-color: #FFFFFF; /* Nền trắng cho card */
+    padding: 20px;
+    border-radius: 16px; /* Bo góc mềm mại */
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.06);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
+
+.blog-row:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+}
+
 .blog-img {
-    width: 80px;
-    height: 80px;
+    width: 100px;
+    height: 100px;
     object-fit: cover;
-    border-radius: 8px;
+    border-radius: 12px; /* Bo góc ảnh */
+    flex-shrink: 0;
 }
+
 .blog-info {
     flex: 1;
+    min-width: 0;
 }
-.blog-title {
-    font-size: 1.1em;
-    font-weight: bold;
-    color: #10634f;
-    margin-bottom: 4px;
-}
+
 .blog-date {
     color: #888;
-    font-size: 0.95em;
-    margin-bottom: 2px;
+    font-size: 0.85em; /* 13.6px */
+    margin-bottom: 5px;
 }
+
+.blog-title {
+    font-size: 1.2em; /* 19.2px */
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 8px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.blog-title a {
+    color: #4D8D76 !important;
+    text-decoration: none !important;
+    transition: color 0.2s;
+}
+
+.blog-title a:hover {
+    color: #2A8C5E !important;
+    text-decoration: underline !important;
+}
+
 .blog-desc {
-    color: #2d2d2d;
-    font-size: 0.97em;
+    color: #555;
+    font-size: 0.95em; /* 15.2px */
+    line-height: 1.5;
 }
+
+/* --- NÚT HÀNH ĐỘNG (XEM, SỬA, XÓA) --- */
 .actions {
     display: flex;
-    gap: 14px;
+    flex-direction: column;
+    gap: 12px;
 }
+
 .actions form {
     display: inline;
+    margin: 0;
 }
+
 .icon-btn {
-    background: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    background: #f4f4f4;
     border: none;
+    border-radius: 50%;
     cursor: pointer;
-    font-size: 22px;
+    font-size: 16px;
+    color: #555;
+    transition: all 0.2s ease;
 }
-.icon-btn.view {
+
+.icon-btn.view:hover {
+    background-color: #e0efff;
     color: #1e90ff;
 }
-.icon-btn.edit {
+
+.icon-btn.edit:hover {
+    background-color: #dff7ea;
     color: #17b978;
 }
-.icon-btn.delete {
+
+.icon-btn.delete:hover {
+    background-color: #ffe0e0;
     color: #ff4848;
+}
+
+/* --- THÔNG BÁO RỖNG --- */
+.no-blogs-message {
+    text-align: center;
+    padding: 40px 0;
+    color: #777;
+    font-size: 1.1em;
+    background-color: #fff;
+    border-radius: 16px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.06);
 }
