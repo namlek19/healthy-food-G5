@@ -1,7 +1,7 @@
 <%@ page import="model.*, java.util.*, dal.CartDAO" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%
-    // Khai báo biến user MỘT LẦN DUY NHẤT ở đây, dùng cho toàn trang
+   
     User user = (User) session.getAttribute("user");
 %>
 <html>

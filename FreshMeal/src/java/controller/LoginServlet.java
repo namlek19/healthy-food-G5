@@ -121,6 +121,11 @@ public class LoginServlet extends HttpServlet {
                 } else if (user.getRoleID() == 3) {
                     // Manager: chuyển vào trang quản lý menu chờ duyệt
                     response.sendRedirect(request.getContextPath() + "/pending-menu.jsp");
+                    
+                }else if (user.getRoleID() == 6) {
+                   
+                    response.sendRedirect(request.getContextPath() + "/ShipperOrderServlet");
+                    
                 } else {
                     // Các role khác vào homepage như thường
                     response.sendRedirect("index.jsp");

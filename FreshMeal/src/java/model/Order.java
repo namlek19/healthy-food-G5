@@ -6,6 +6,7 @@ import java.util.List;
 public class Order {
     private int orderID;
     private int userID;
+    private int shipperID;
     private String receiverName;
     private String deliveryAddress;
     private String district;
@@ -14,12 +15,14 @@ public class Order {
     private String status;
     String Email;
     private List<OrderItem> items;
+
     public Order() {
     }
 
-    public Order(int orderID, int userID, String receiverName, String deliveryAddress, String district, double totalAmount, Date orderDate, String status, String Email, List<OrderItem> items) {
+    public Order(int orderID, int userID, int shipperID, String receiverName, String deliveryAddress, String district, double totalAmount, Date orderDate, String status, String Email, List<OrderItem> items) {
         this.orderID = orderID;
         this.userID = userID;
+        this.shipperID = shipperID;
         this.receiverName = receiverName;
         this.deliveryAddress = deliveryAddress;
         this.district = district;
@@ -44,6 +47,14 @@ public class Order {
 
     public void setUserID(int userID) {
         this.userID = userID;
+    }
+
+    public int getShipperID() {
+        return shipperID;
+    }
+
+    public void setShipperID(int shipperID) {
+        this.shipperID = shipperID;
     }
 
     public String getReceiverName() {
@@ -109,8 +120,4 @@ public class Order {
     public void setItems(List<OrderItem> items) {
         this.items = items;
     }
-
-    
-    
 }
-
