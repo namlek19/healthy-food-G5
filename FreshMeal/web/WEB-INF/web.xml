@@ -70,6 +70,10 @@
         <servlet-name>MenuManage</servlet-name>
         <servlet-class>controller.MenuManage</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>DeleteMenuServlet</servlet-name>
+        <servlet-class>controller.DeleteMenuServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>LoginServlet</servlet-name>
         <url-pattern>/login</url-pattern>
@@ -137,6 +141,10 @@
     <servlet-mapping>
         <servlet-name>MenuManage</servlet-name>
         <url-pattern>/menumanage</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>DeleteMenuServlet</servlet-name>
+        <url-pattern>/deletemenu</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>30</session-timeout>
