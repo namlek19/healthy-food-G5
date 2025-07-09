@@ -66,6 +66,10 @@
         <servlet-name>ApproveMenuServlet</servlet-name>
         <servlet-class>controller.ApproveMenuServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>MenuManage</servlet-name>
+        <servlet-class>controller.MenuManage</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>LoginServlet</servlet-name>
         <url-pattern>/login</url-pattern>
@@ -129,6 +133,10 @@
     <servlet-mapping>
         <servlet-name>ApproveMenuServlet</servlet-name>
         <url-pattern>/approveMenu</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>MenuManage</servlet-name>
+        <url-pattern>/menumanage</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>30</session-timeout>
