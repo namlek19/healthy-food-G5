@@ -52,7 +52,7 @@
                     </td>
                     <td>
                         <c:if test="${status == 1}">
-                            <a href="editmenu?id=${m.menuID}" class="btn btn-sm btn-outline-primary">Sửa</a>
+                            <!--<a href="editmenu?id=${m.menuID}" class="btn btn-sm btn-outline-primary">Sửa</a>-->
                             <a href="deletemenu?id=${m.menuID}" class="btn btn-sm btn-outline-danger" onclick="return confirm('Bạn có chắc chắn muốn xóa?');">Xóa</a>
                         </c:if>
                         <c:if test="${status != 1}">

@@ -211,6 +211,39 @@ public Map<Integer, Integer> getStatusMapByNutritionist(int nutritionistID) {
 }
 
 
+// Lấy status để xác minh trước khi xóa
+public int getMenuStatusByID(int menuID, int nutritionistID) {
+    String sql = "SELECT Status FROM Menu WHERE MenuID = ? AND NutritionistID = ?";
+    try (Connection conn = getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+        ps.setInt(1, menuID);
+        ps.setInt(2, nutritionistID);
+        ResultSet rs = ps.executeQuery();
+        if (rs.next()) return rs.getInt("Status");
+    } catch (Exception e) {
+        e.printStackTrace();
+    }
+    return -1; // Không tồn tại hoặc không thuộc về user
+}
+
+public void deleteMenu(int menuID) {
+    String deleteMenuProduct = "DELETE FROM MenuProduct WHERE MenuID = ?";
+    String deleteMenu = "DELETE FROM Menu WHERE MenuID = ?";
+    try (Connection conn = getConnection()) {
+        // Xóa món trong MenuProduct trước
+        try (PreparedStatement ps1 = conn.prepareStatement(deleteMenuProduct)) {
+            ps1.setInt(1, menuID);
+            ps1.executeUpdate();
+        }
+        try (PreparedStatement ps2 = conn.prepareStatement(deleteMenu)) {
+            ps2.setInt(1, menuID);
+            ps2.executeUpdate();
+        }
+    } catch (Exception e) {
+        e.printStackTrace();
+    }
+}
+
+
 }
 
 
