@@ -1,18 +1,18 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ page import="dal.MenuDAO, java.util.*, model.Menu, model.Product, model.User" %>
 <%
-    /* ====== Kiểm tra đăng nhập ====== */
+   
     User user = (User) session.getAttribute("user");
     if (user == null) {
         response.sendRedirect("login.jsp");
         return;
     }
 
-    /* ====== Lấy danh sách menu chờ duyệt ====== */
+
     MenuDAO dao = new MenuDAO();
     List<Menu> pendingMenus = dao.getMenusByStatus(1);     // 1 = Chờ duyệt
 
-    /* ====== Thông báo thành công / lỗi ====== */
+
     String successMsg = (String) session.getAttribute("successMsg");
     String errorMsg   = (String) session.getAttribute("errorMsg");
     if (successMsg != null) session.removeAttribute("successMsg");
