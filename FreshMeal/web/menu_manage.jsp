@@ -37,6 +37,9 @@
                                 <c:set var="status" value="${statusMap[m.menuID]}" />
 
                                 <c:choose>
+                                    <c:when test="${status == 0}">
+                                        <span class="badge text-bg-danger">Bị từ chối</span>
+                                    </c:when>
                                     <c:when test="${status == 1}">
                                         <span class="badge text-bg-warning">Chờ duyệt</span>
                                     </c:when>
@@ -46,20 +49,26 @@
                                     <c:when test="${status == 3}">
                                         <span class="badge text-bg-success">Đã đăng</span>
                                     </c:when>
-                                    <c:otherwise>
-                                        <span class="badge text-bg-danger">Bị từ chối</span>
-                                    </c:otherwise>
+                                    <c:when test="${status == 4}">
+                                        <span class="badge bg-dark">Chờ yêu cầu xóa</span>
+                                    </c:when>
                                 </c:choose>
                             </td>
                             <td>
                                 <c:if test="${status == 1}">
-                                    <!--<a href="editmenu?id=${m.menuID}" class="btn btn-sm btn-outline-primary">Sửa</a>-->
                                     <a href="deletemenu?id=${m.menuID}" class="btn btn-sm btn-outline-danger" onclick="return confirm('Bạn có chắc chắn muốn xóa?');">Xóa</a>
                                 </c:if>
-                                <c:if test="${status != 1}">
+                                <c:if test="${status == 3}">
+                                    <a href="requestdeletemenu?id=${m.menuID}" class="btn btn-sm btn-outline-warning" onclick="return confirm('Gửi yêu cầu xóa menu này?');">Gửi yêu cầu xóa</a>
+                                </c:if>
+                                <c:if test="${status == 0}">
+                                    <a href="deletemenu?id=${m.menuID}" class="btn btn-sm btn-outline-danger" onclick="return confirm('Bạn có chắc chắn muốn xóa?');">Xóa</a>
+                                </c:if>
+                                <c:if test="${status != 1 && status != 3 && status != 0}">
                                     <span class="text-muted">--</span>
                                 </c:if>
                             </td>
+
                         </tr>
                     </c:forEach>
                 </tbody>
