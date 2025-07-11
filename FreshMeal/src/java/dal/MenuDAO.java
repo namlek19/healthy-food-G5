@@ -244,6 +244,23 @@ public void deleteMenu(int menuID) {
 }
 
 
+// Trong MenuDAO:
+public List<String> getProductNamesByMenu(int menuID) {
+    List<String> productNames = new ArrayList<>();
+    String sql = "SELECT p.name FROM MenuProduct mp JOIN Product p ON mp.productID = p.productID WHERE mp.menuID = ?";
+    try (Connection conn = getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+        ps.setInt(1, menuID);
+        ResultSet rs = ps.executeQuery();
+        while (rs.next()) {
+            productNames.add(rs.getString("name"));
+        }
+    } catch (Exception e) {
+        e.printStackTrace();
+    }
+    return productNames;
+}
+
+
 }
 
 
