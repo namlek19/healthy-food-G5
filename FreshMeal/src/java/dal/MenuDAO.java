@@ -274,6 +274,175 @@ public List<String> getAllManagerEmails() {
     }
     return emails;
 }
+public boolean deleteMenuWithResult(int menuID) {
+    String deleteMenuProduct = "DELETE FROM MenuProduct WHERE MenuID = ?";
+    String deleteMenu = "DELETE FROM Menu WHERE MenuID = ?";
+    try (Connection conn = getConnection()) {
+        int affected = 0;
+
+        try (PreparedStatement ps1 = conn.prepareStatement(deleteMenuProduct)) {
+            ps1.setInt(1, menuID);
+            ps1.executeUpdate();
+        }
+
+        try (PreparedStatement ps2 = conn.prepareStatement(deleteMenu)) {
+            ps2.setInt(1, menuID);
+            affected = ps2.executeUpdate();
+        }
+
+        return affected > 0;
+    } catch (Exception e) {
+        e.printStackTrace();
+    }
+    return false;
+}
+public boolean applySuaMenuWithResult(int menuID) {
+    try (Connection conn = getConnection()) {
+        conn.setAutoCommit(false); // Bắt đầu giao dịch
+
+        // Lấy thông tin từ SuaMenu
+        String getSuaMenu = "SELECT MenuName, Description, ImageURL, BMICategory FROM SuaMenu WHERE MenuID = ?";
+        try (PreparedStatement ps1 = conn.prepareStatement(getSuaMenu)) {
+            ps1.setInt(1, menuID);
+            ResultSet rs = ps1.executeQuery();
+            if (!rs.next()) return false;
+
+            String name = rs.getString("MenuName");
+            String desc = rs.getString("Description");
+            String img = rs.getString("ImageURL");
+            String bmi = rs.getString("BMICategory");
+
+            // Cập nhật bảng Menu
+            String updateMenu = "UPDATE Menu SET MenuName = ?, Description = ?, ImageURL = ?, BMICategory = ? WHERE MenuID = ?";
+            try (PreparedStatement ps2 = conn.prepareStatement(updateMenu)) {
+                ps2.setString(1, name);
+                ps2.setString(2, desc);
+                ps2.setString(3, img);
+                ps2.setString(4, bmi);
+                ps2.setInt(5, menuID);
+                ps2.executeUpdate();
+            }
+
+            // Xóa MenuProduct cũ
+            String deleteOldProducts = "DELETE FROM MenuProduct WHERE MenuID = ?";
+            try (PreparedStatement ps3 = conn.prepareStatement(deleteOldProducts)) {
+                ps3.setInt(1, menuID);
+                ps3.executeUpdate();
+            }
+
+            // Thêm lại sản phẩm từ bảng SuaMenuProduct
+            String insertProducts = "INSERT INTO MenuProduct(MenuID, ProductID) SELECT MenuID, ProductID FROM SuaMenuProduct WHERE MenuID = ?";
+            try (PreparedStatement ps4 = conn.prepareStatement(insertProducts)) {
+                ps4.setInt(1, menuID);
+                ps4.executeUpdate();
+            }
+
+            // Xóa bảng sửa
+            try (PreparedStatement ps5 = conn.prepareStatement("DELETE FROM SuaMenuProduct WHERE MenuID = ?")) {
+                ps5.setInt(1, menuID);
+                ps5.executeUpdate();
+            }
+
+            try (PreparedStatement ps6 = conn.prepareStatement("DELETE FROM SuaMenu WHERE MenuID = ?")) {
+                ps6.setInt(1, menuID);
+                ps6.executeUpdate();
+            }
+
+            conn.commit(); // Xác nhận thay đổi
+            return true;
+        } catch (Exception e) {
+            conn.rollback();
+            e.printStackTrace();
+        }
+    } catch (Exception e) {
+        e.printStackTrace();
+    }
+    return false;
+}
+public boolean rejectSuaMenuWithResult(int menuID) {
+    try (Connection conn = getConnection()) {
+        int affected = 0;
+
+        try (PreparedStatement ps1 = conn.prepareStatement("DELETE FROM SuaMenuProduct WHERE MenuID = ?")) {
+            ps1.setInt(1, menuID);
+            ps1.executeUpdate();
+        }
+
+        try (PreparedStatement ps2 = conn.prepareStatement("DELETE FROM SuaMenu WHERE MenuID = ?")) {
+            ps2.setInt(1, menuID);
+            affected = ps2.executeUpdate(); // affected sẽ là 1 nếu xóa thành công
+        }
+
+        return affected > 0;
+    } catch (Exception e) {
+        e.printStackTrace();
+    }
+    return false;
+}
+public List<Menu> getMenusFromSuaMenu() {
+    List<Menu> list = new ArrayList<>();
+    String sql = "SELECT sm.MenuID, sm.MenuName, sm.Description, sm.ImageURL, sm.BMICategory, sm.NutritionistID " +
+                 "FROM SuaMenu sm";
+    try (Connection conn = getConnection();
+         PreparedStatement ps = conn.prepareStatement(sql);
+         ResultSet rs = ps.executeQuery()) {
+
+        while (rs.next()) {
+            int menuId = rs.getInt("MenuID");
+            String menuName = rs.getString("MenuName");
+            String description = rs.getString("Description");
+            String imageURL = rs.getString("ImageURL");
+            String bmiCategory = rs.getString("BMICategory");
+            int nutritionistID = rs.getInt("NutritionistID");
+
+            // Lấy danh sách sản phẩm từ bảng SuaMenuProduct
+            List<Product> products = getProductsFromSuaMenu(menuId);
+
+            Menu menu = new Menu(menuId, menuName, description, imageURL, bmiCategory, nutritionistID, products);
+
+            // Tính tổng giá
+            double total = 0;
+            for (Product p : products) {
+                total += p.getPrice();
+            }
+            menu.setTotalPrice(total);
+
+            list.add(menu);
+        }
+
+    } catch (Exception e) {
+        e.printStackTrace();
+    }
+    return list;
+}
+
+private List<Product> getProductsFromSuaMenu(int menuId) {
+    List<Product> products = new ArrayList<>();
+    String sql = "SELECT p.ProductID, p.Name, p.Description, p.ImageURL, p.Price " +
+                 "FROM Product p " +
+                 "JOIN SuaMenuProduct smp ON p.ProductID = smp.ProductID " +
+                 "WHERE smp.MenuID = ?";
+    try (Connection conn = getConnection();
+         PreparedStatement ps = conn.prepareStatement(sql)) {
+
+        ps.setInt(1, menuId);
+        ResultSet rs = ps.executeQuery();
+        while (rs.next()) {
+            Product p = new Product();
+            p.setProductID(rs.getInt("ProductID"));
+            p.setName(rs.getString("Name"));
+            p.setDescription(rs.getString("Description"));
+            p.setImageURL(rs.getString("ImageURL"));
+            p.setPrice(rs.getDouble("Price"));
+            products.add(p);
+        }
+
+    } catch (Exception e) {
+        e.printStackTrace();
+    }
+    return products;
+}
+
 
 
 }
