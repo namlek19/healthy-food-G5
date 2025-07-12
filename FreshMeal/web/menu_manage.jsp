@@ -13,13 +13,13 @@
         <%@ include file="sidebar.jsp" %>
 
         <div class="main-container">
-            <h2 class="text-success fw-bold mb-4">Quản Lý Menu Cá Nhân</h2>
+            <h2 class="text-success fw-bold mb-4">Quản Lý Combo </h2>
 
             <table class="table table-bordered table-hover shadow-sm bg-white">
                 <thead class="table-success text-center">
                     <tr>
                         <!--<th>Ảnh</th>-->
-                        <th>Tên Menu</th>
+                        <th>Tên Combo</th>
                         <th>Nhóm BMI</th>
                         <th>Món ăn</th>
                         <th>Trạng thái</th>
@@ -59,8 +59,20 @@
                                     <a href="deletemenu?id=${m.menuID}" class="btn btn-sm btn-outline-danger" onclick="return confirm('Bạn có chắc chắn muốn xóa?');">Xóa</a>
                                 </c:if>
                                 <c:if test="${status == 3}">
-                                    <a href="requestdeletemenu?id=${m.menuID}" class="btn btn-sm btn-outline-warning" onclick="return confirm('Gửi yêu cầu xóa menu này?');">Gửi yêu cầu xóa</a>
+                                    <div class="d-flex justify-content-center gap-2 flex-wrap">
+                                        <a href="requestdeletemenu?id=${m.menuID}" 
+                                           class="btn btn-sm btn-outline-danger"
+                                           onclick="return confirm('Bạn có chắc chắn muốn gửi yêu cầu xóa combo này?');">
+                                            Gửi yêu cầu xóa
+                                        </a>
+                                        <a href="requestEditMenu?menuID=${m.menuID}" 
+                                           class="btn btn-sm btn-outline-success"
+                                           onclick="return confirm('Bạn có chắc chắn muốn gửi yêu cầu sửa combo này?');">
+                                            Gửi yêu cầu sửa
+                                        </a>
+                                    </div>
                                 </c:if>
+
                                 <c:if test="${status == 0}">
                                     <a href="deletemenu?id=${m.menuID}" class="btn btn-sm btn-outline-danger" onclick="return confirm('Bạn có chắc chắn muốn xóa?');">Xóa</a>
                                 </c:if>
