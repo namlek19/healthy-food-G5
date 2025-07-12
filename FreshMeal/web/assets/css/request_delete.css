@@ -1,0 +1,87 @@
+/* style.css */
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Font chữ thân thiện */
+    background-color: #e8f5e9; /* Màu nền xanh lá nhạt, tạo cảm giác tươi mát */
+    color: #333; /* Màu chữ tổng thể */
+    line-height: 1.6;
+}
+
+.container {
+    background-color: #ffffff; /* Nền trắng cho nội dung chính */
+    padding: 30px;
+    border-radius: 12px; /* Bo tròn các góc mềm mại hơn */
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); /* Đổ bóng nhẹ nhàng */
+    max-width: 500px; /* Giới hạn chiều rộng để tập trung nội dung */
+    margin-top: 60px; /* Đẩy xuống một chút từ mép trên */
+}
+
+h3 {
+    color: #2e7d32; /* Màu xanh lá cây đậm cho tiêu đề, gợi nhớ đến thực phẩm lành mạnh */
+    text-align: center; /* Căn giữa tiêu đề */
+    margin-bottom: 30px;
+    font-weight: 600; /* Tiêu đề rõ ràng hơn */
+}
+
+.form-label {
+    font-weight: 500; /* Nhãn rõ ràng hơn */
+    color: #4CAF50; /* Màu xanh lá cho nhãn */
+    margin-bottom: 8px;
+}
+
+.form-control {
+    border: 1px solid #a5d6a7; /* Viền màu xanh lá nhạt */
+    border-radius: 8px; /* Bo tròn input và textarea */
+    padding: 12px 15px;
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.05); /* Đổ bóng nhẹ bên trong */
+    transition: all 0.3s ease; /* Hiệu ứng chuyển động mượt mà khi focus */
+}
+
+.form-control:focus {
+    border-color: #66bb6a; /* Màu xanh lá đậm hơn khi focus */
+    box-shadow: 0 0 0 0.25rem rgba(76, 175, 80, 0.25); /* Hiệu ứng focus của Bootstrap nhưng với màu xanh lá */
+    outline: none;
+}
+
+textarea.form-control {
+    resize: vertical; /* Cho phép thay đổi kích thước theo chiều dọc */
+}
+
+.btn-danger {
+    background-color: #ef5350; /* Màu đỏ nhẹ hơn, ít gay gắt hơn */
+    border-color: #ef5350;
+    padding: 10px 25px;
+    border-radius: 8px;
+    font-weight: 500;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.btn-danger:hover {
+    background-color: #e53935; /* Đỏ đậm hơn khi hover */
+    border-color: #e53935;
+    transform: translateY(-2px); /* Hiệu ứng nhấc nhẹ lên khi hover */
+}
+
+.btn-secondary {
+    background-color: #90a4ae; /* Màu xám xanh nhẹ nhàng hơn */
+    border-color: #90a4ae;
+    padding: 10px 25px;
+    border-radius: 8px;
+    font-weight: 500;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.btn-secondary:hover {
+    background-color: #78909c; /* Xám xanh đậm hơn khi hover */
+    border-color: #78909c;
+    transform: translateY(-2px);
+}
+
+a.btn {
+    text-decoration: none; /* Bỏ gạch chân cho link là button */
+}
+
+/* Tùy chỉnh màu text-danger để phù hợp với chủ đề */
+.text-danger {
+    color: #d32f2f !important; /* Đảm bảo màu đỏ vẫn đủ nổi bật khi cần */
+}
