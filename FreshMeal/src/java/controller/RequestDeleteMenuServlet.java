@@ -11,6 +11,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.util.List;
 
 /**
  *
@@ -86,11 +87,16 @@ public class RequestDeleteMenuServlet extends HttpServlet {
         boolean updated = dao.updateMenuStatus(menuID, 4);
 
         if (updated) {
-            // Gửi mail cho manager
+            // Gửi mail cho tất cả manager
             String subject = "Yêu cầu xóa Menu ID " + menuID;
             String content = "Nutritionist ID " + userID + " đã gửi yêu cầu xóa Menu ID " + menuID
                     + "\nLý do: " + reason;
-            SendMail.send("ducnamle432@gmail.com", subject, content);
+
+            List<String> managerEmails = dao.getAllManagerEmails(); // lấy danh sách email
+
+            for (String email : managerEmails) {
+                SendMail.send(email, subject, content);
+            }
         }
 
         // Quay lại trang quản lý

@@ -4,12 +4,11 @@
 <head>
     <title>Gửi yêu cầu xóa Menu</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
-</head>
-<body style="background:#f0f7f4;">
+    <link rel="stylesheet" href="assets/css/request_delete.css"> </head>
+<body>
     <div class="container mt-5">
         <h3 class="text-danger mb-4">Gửi yêu cầu xóa Menu</h3>
         <form method="post" action="requestdeletemenu">
-            <!-- Sửa đúng chỗ này: lấy menuID từ attribute -->
             <input type="hidden" name="menuID" value="${menuID}"/>
             <div class="mb-3">
                 <label class="form-label">Lý do xóa:</label>

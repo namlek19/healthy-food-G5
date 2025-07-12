@@ -260,6 +260,21 @@ public List<String> getProductNamesByMenu(int menuID) {
     return productNames;
 }
 
+public List<String> getAllManagerEmails() {
+    List<String> emails = new ArrayList<>();
+    try {
+        String sql = "SELECT email FROM Users WHERE roleid = 3";
+        PreparedStatement ps = getConnection().prepareStatement(sql);
+        ResultSet rs = ps.executeQuery();
+        while (rs.next()) {
+            emails.add(rs.getString("email"));
+        }
+    } catch (Exception e) {
+        e.printStackTrace();
+    }
+    return emails;
+}
+
 
 }
 
