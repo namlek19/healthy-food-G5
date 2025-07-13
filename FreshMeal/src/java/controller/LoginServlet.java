@@ -24,12 +24,17 @@ import java.security.NoSuchAlgorithmException;
 
 
 public class LoginServlet extends HttpServlet {
+
     private static final String GOOGLE_CLIENT_ID = "423890706733-eo05uhbjo9aup4pkpq714evrohqjqcq1.apps.googleusercontent.com";
     private static final String GOOGLE_TOKEN_VERIFICATION_URL = "https://oauth2.googleapis.com/tokeninfo?id_token=";
+<<<<<<< HEAD
     private static final String REMEMBER_ME_COOKIE = "rememberMe";
     private static final String REMEMBER_ME_SECRET = "SomeSecretKey123!";
     private static final int REMEMBER_ME_DAYS = 7;
     
+=======
+
+>>>>>>> origin/main
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
@@ -156,9 +161,8 @@ public class LoginServlet extends HttpServlet {
                 session.setAttribute("userID", user.getUserID());
                 session.setAttribute("roleID", user.getRoleID());
 
-                // ==== ĐOẠN ĐỒNG BỘ GIỎ HÀNG CHO USER ĐĂNG NHẬP ====
                 CartDAO cartDAO = new CartDAO();
-                // 1. Đảm bảo user có cart trong DB
+
                 if (!cartDAO.hasCart(user.getUserID())) {
                     cartDAO.createCartForUser(user.getUserID());
                 }
@@ -173,7 +177,6 @@ public class LoginServlet extends HttpServlet {
                 // 3. Luôn lấy lại cart từ DB cập nhật session (cho cart.jsp luôn chính xác)
                 List<CartItem> dbCart = cartDAO.getCartItemsByUser(user.getUserID());
                 session.setAttribute("cart", dbCart);
-                // ==== KẾT THÚC ĐOẠN ĐỒNG BỘ GIỎ HÀNG ====
 
                 if (user.getRoleID() == 1) {
                     // Admin: redirect to dashboard servlet
@@ -182,6 +185,14 @@ public class LoginServlet extends HttpServlet {
                 } else if (user.getRoleID() == 5) {
                     // Nutritionist: chuyển thẳng vào trang blog list
                     response.sendRedirect(request.getContextPath() + "/blogmanage");
+                } else if (user.getRoleID() == 3) {
+                    // Manager: chuyển vào trang quản lý menu chờ duyệt
+                    response.sendRedirect(request.getContextPath() + "/pending-menu.jsp");
+                    
+                }else if (user.getRoleID() == 6) {
+                   
+                    response.sendRedirect(request.getContextPath() + "/ShipperOrderServlet");
+                    
                 } else {
                     // Các role khác vào homepage như thường
                     response.sendRedirect("index.jsp");
@@ -265,7 +276,6 @@ public class LoginServlet extends HttpServlet {
             session.setAttribute("isGoogleUser", true);
 
             CartDAO cartDAO = new CartDAO();
-            // 1. Đảm bảo user có cart trong DB
             if (!cartDAO.hasCart(user.getUserID())) {
                 cartDAO.createCartForUser(user.getUserID());
             }
@@ -290,15 +300,15 @@ public class LoginServlet extends HttpServlet {
             out.write("{\"success\": false, \"message\": \"" + escapeJsonString(e.getMessage()) + "\"}");
         }
     }
-    
+
     // Helper to verify token and return parsed JSON with user info
     private JsonObject verifyGoogleToken(String idToken) {
         try {
             HttpClient client = HttpClient.newHttpClient();
             HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create(GOOGLE_TOKEN_VERIFICATION_URL + idToken))
-                .GET()
-                .build();
+                    .uri(URI.create(GOOGLE_TOKEN_VERIFICATION_URL + idToken))
+                    .GET()
+                    .build();
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
             if (response.statusCode() == 200) {
                 JsonObject jsonResponse = JsonParser.parseString(response.body()).getAsJsonObject();
@@ -322,7 +332,7 @@ public class LoginServlet extends HttpServlet {
             return null;
         }
     }
-    
+
     private String generateSecurePassword() {
         return UUID.randomUUID().toString();
     }
@@ -332,9 +342,9 @@ public class LoginServlet extends HttpServlet {
             return "";
         }
         return input.replace("\"", "\\\"")
-                   .replace("\n", "\\n")
-                   .replace("\r", "\\r")
-                   .replace("\t", "\\t");
+                .replace("\n", "\\n")
+                .replace("\r", "\\r")
+                .replace("\t", "\\t");
     }
 
     private boolean isValidPassword(String password) {
@@ -402,8 +412,8 @@ public class LoginServlet extends HttpServlet {
 
 
             if (!isValidPassword(params.get("password"))) {
-                request.getSession().setAttribute("errorMessage", 
-                    "Password must be at least 8 characters long and contain at least one number");
+                request.getSession().setAttribute("errorMessage",
+                        "Password must be at least 8 characters long and contain at least one number");
                 response.sendRedirect("login.jsp?action=signup");
                 return;
             }

@@ -15,7 +15,7 @@
     <header class="bg-white shadow-sm">
         <div class="container d-flex align-items-center justify-content-between py-3">
             <div class="logo">
-                <a href="index.jsp"><img src="assets/images/logo.png" alt="logo"></a>
+                <a href="index.jsp"><img src="assets/images/logoreal.png" alt="logo"></a>
             </div>
             <nav>
                 <ul class="nav">

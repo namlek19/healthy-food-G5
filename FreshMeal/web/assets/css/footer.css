@@ -1,0 +1,43 @@
+.custom-footer {
+    background-color: #A9D06D;
+    padding: 0px 0; /* nhỏ gọn toàn bộ footer */
+}
+
+.footer-row {
+    padding: 0; /* bỏ padding nội row */
+    margin: 0;
+}
+
+.footer-logo {
+    width: 200px; /* nhỏ hơn chút để cân đối */
+    height: auto;
+}
+
+.contact-info h5,
+.social-icons h5 {
+    font-size: 18px;
+    margin-bottom: 6px;
+    color: black;
+}
+
+.contact-info p {
+    font-size: 15px;
+    margin-bottom: 4px;
+    color: black;
+}
+
+
+.social-icons a {
+    color: black;
+    font-size: 20px;
+    margin-left: 10px;
+    transition: 0.3s;
+}
+
+.social-icons a:hover {
+    color: #d4f1b3;
+}
+
+.footer-row > div {
+    padding: 4px 6px;
+}

@@ -1,0 +1,28 @@
+/* assets/css/menu_manage.css */
+
+/* Giảm chiều rộng của main-container để tránh đè lên sidebar */
+.main-container {
+    max-width: 1200px;    /* hoặc 90% nếu muốn linh hoạt */
+    margin: 20px auto 20px 360px;    /* căn giữa */
+    padding: 20px;
+    background-color: #fff;   /* nhẹ nhàng, phân biệt với sidebar */
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.05);
+}
+
+/* Giảm cỡ chữ bảng nếu muốn gọn hơn */
+.table td, .table th {
+    font-size: 14px;
+    vertical-align: middle;
+}
+
+/* Ảnh nhỏ lại để gọn hơn */
+.table img {
+    width: 60px;
+    border-radius: 6px;
+}
+
+/* Giảm padding của table để đỡ chiếm không gian */
+.table {
+    margin-bottom: 0;
+}
