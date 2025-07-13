@@ -8,15 +8,16 @@ import model.User;
 import dal.DBContext;
 
 public class UserDAO {
+
     private Connection conn = null;
     private PreparedStatement ps = null;
     private ResultSet rs = null;
     private DBContext db;
-    
+
     public UserDAO() {
         db = new DBContext();
     }
-    
+
     public User checkLogin(String email, String password) {
         try {
             String query = "SELECT * FROM Users WHERE Email = ? AND PasswordHash = ?";
@@ -25,17 +26,17 @@ public class UserDAO {
             ps.setString(1, email);
             ps.setString(2, password);
             rs = ps.executeQuery();
-            
+
             if (rs.next()) {
                 return new User(
-                    rs.getInt("UserID"),
-                    rs.getString("FullName"),
-                    rs.getString("Email"),
-                    rs.getString("PasswordHash"),
-                    rs.getString("City"),
-                    rs.getString("District"),
-                    rs.getString("Address"),
-                    rs.getInt("RoleID")
+                        rs.getInt("UserID"),
+                        rs.getString("FullName"),
+                        rs.getString("Email"),
+                        rs.getString("PasswordHash"),
+                        rs.getString("City"),
+                        rs.getString("District"),
+                        rs.getString("Address"),
+                        rs.getInt("RoleID")
                 );
             }
         } catch (Exception e) {
@@ -51,7 +52,7 @@ public class UserDAO {
         }
         return null;
     }
-    
+
     public boolean registerUser(User user) {
         try {
             System.out.println("DEBUG: Starting user registration for email: " + user.getEmail());
@@ -59,7 +60,7 @@ public class UserDAO {
                     + "VALUES (?, ?, ?, ?, ?, ?, ?)";
             conn = db.getConnection();
             ps = conn.prepareStatement(query);
-            
+
             ps.setString(1, user.getFullName());
             ps.setString(2, user.getEmail());
             ps.setString(3, user.getPasswordHash());
@@ -67,7 +68,7 @@ public class UserDAO {
             ps.setString(5, user.getDistrict());
             ps.setString(6, user.getAddress());
             ps.setInt(7, 2); // Default role as Customer (RoleID = 2)
-            
+
             boolean result = ps.executeUpdate() > 0;
             System.out.println("DEBUG: Registration result: " + result);
             return result;
@@ -85,7 +86,7 @@ public class UserDAO {
             }
         }
     }
-    
+
     public boolean checkEmailExists(String email) {
         try {
             String query = "SELECT COUNT(*) FROM Users WHERE Email = ?";
@@ -93,7 +94,7 @@ public class UserDAO {
             ps = conn.prepareStatement(query);
             ps.setString(1, email);
             rs = ps.executeQuery();
-            
+
             if (rs.next()) {
                 return rs.getInt(1) > 0;
             }
@@ -110,7 +111,41 @@ public class UserDAO {
         }
         return false;
     }
-    
+
+    public User getUserByID(int userID) {
+        try {
+            String query = "SELECT * FROM Users WHERE UserID = ?";
+            conn = db.getConnection();
+            ps = conn.prepareStatement(query);
+            ps.setInt(1, userID);
+            rs = ps.executeQuery();
+
+            if (rs.next()) {
+                return new User(
+                        rs.getInt("UserID"),
+                        rs.getString("FullName"),
+                        rs.getString("Email"),
+                        rs.getString("PasswordHash"),
+                        rs.getString("City"),
+                        rs.getString("District"),
+                        rs.getString("Address"),
+                        rs.getInt("RoleID")
+                );
+            }
+        } catch (Exception e) {
+            System.out.println("Error in getUserByID: " + e.getMessage());
+        } finally {
+            try {
+                if (db != null) {
+                    db.closeConnection(conn, ps, rs);
+                }
+            } catch (SQLException e) {
+                System.out.println("Error closing resources: " + e.getMessage());
+            }
+        }
+        return null;
+    }
+
     public User getUserByEmail(String email) {
         try {
             String query = "SELECT * FROM Users WHERE Email = ?";
@@ -118,17 +153,17 @@ public class UserDAO {
             ps = conn.prepareStatement(query);
             ps.setString(1, email);
             rs = ps.executeQuery();
-            
+
             if (rs.next()) {
                 return new User(
-                    rs.getInt("UserID"),
-                    rs.getString("FullName"),
-                    rs.getString("Email"),
-                    rs.getString("PasswordHash"),
-                    rs.getString("City"),
-                    rs.getString("District"),
-                    rs.getString("Address"),
-                    rs.getInt("RoleID")
+                        rs.getInt("UserID"),
+                        rs.getString("FullName"),
+                        rs.getString("Email"),
+                        rs.getString("PasswordHash"),
+                        rs.getString("City"),
+                        rs.getString("District"),
+                        rs.getString("Address"),
+                        rs.getInt("RoleID")
                 );
             }
         } catch (Exception e) {
@@ -144,7 +179,7 @@ public class UserDAO {
         }
         return null;
     }
-    
+
     public boolean updatePassword(String email, String newPassword) {
         try {
             String query = "UPDATE Users SET PasswordHash = ? WHERE Email = ?";
@@ -152,7 +187,7 @@ public class UserDAO {
             ps = conn.prepareStatement(query);
             ps.setString(1, newPassword);
             ps.setString(2, email);
-            
+
             return ps.executeUpdate() > 0;
         } catch (Exception e) {
             System.out.println("Error in updatePassword: " + e.getMessage());
@@ -167,7 +202,7 @@ public class UserDAO {
             }
         }
     }
-    
+
     public User findUserByEmail(String email) {
         try {
             String query = "SELECT * FROM Users WHERE Email = ?";
@@ -175,17 +210,17 @@ public class UserDAO {
             ps = conn.prepareStatement(query);
             ps.setString(1, email);
             rs = ps.executeQuery();
-            
+
             if (rs.next()) {
                 User user = new User(
-                    rs.getInt("UserID"),
-                    rs.getString("FullName"),
-                    rs.getString("Email"),
-                    rs.getString("PasswordHash"),
-                    rs.getString("City"),
-                    rs.getString("District"),
-                    rs.getString("Address"),
-                    rs.getInt("RoleID")
+                        rs.getInt("UserID"),
+                        rs.getString("FullName"),
+                        rs.getString("Email"),
+                        rs.getString("PasswordHash"),
+                        rs.getString("City"),
+                        rs.getString("District"),
+                        rs.getString("Address"),
+                        rs.getInt("RoleID")
                 );
                 return user;
             }
@@ -202,7 +237,7 @@ public class UserDAO {
         }
         return null;
     }
-    
+
     public boolean updateUser(User user) {
         try {
             String query = "UPDATE Users SET FullName = ?, City = ?, District = ?, Address = ? WHERE UserID = ?";
@@ -227,4 +262,4 @@ public class UserDAO {
             }
         }
     }
-} 
+}
