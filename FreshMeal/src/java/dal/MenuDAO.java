@@ -236,7 +236,33 @@ public class MenuDAO extends DBContext {
         }
         return list;
     }
-
+    public List<Menu> getMenusByStatuses34() {
+        List<Menu> list = new ArrayList<>();
+        String query = "SELECT * FROM Menu WHERE Status IN (3, 4) ORDER BY MenuID DESC";
+        try (Connection conn = getConnection(); PreparedStatement ps = conn.prepareStatement(query)) {
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                Menu m = new Menu(
+                        rs.getInt("MenuID"),
+                        rs.getString("MenuName"),
+                        rs.getString("Description"),
+                        rs.getString("ImageURL"),
+                        rs.getString("BMICategory"),
+                        rs.getInt("NutritionistID")
+                );
+                m.setProducts(getProductsInMenu(m.getMenuID(), conn));
+                double total = 0;
+                for (Product p : m.getProducts()) {
+                    total += p.getPrice();
+                }
+                m.setTotalPrice(total);
+                list.add(m);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
     public List<Menu> getMenusByNutritionist(int nutritionistID) {
         List<Menu> list = new ArrayList<>();
         String query = "SELECT * FROM Menu WHERE NutritionistID = ?";

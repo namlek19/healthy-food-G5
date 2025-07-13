@@ -90,6 +90,22 @@
         <servlet-name>IndexServlet</servlet-name>
         <servlet-class>controller.IndexServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>ManageProductSellerServlet</servlet-name>
+        <servlet-class>controller.ManageProductSellerServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ManageComboSellerServlet</servlet-name>
+        <servlet-class>controller.ManageComboSellerServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>PostComboSellerServlet</servlet-name>
+        <servlet-class>controller.PostComboSellerServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>PostComboServlet</servlet-name>
+        <servlet-class>controller.PostComboServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>LoginServlet</servlet-name>
         <url-pattern>/login</url-pattern>
@@ -177,6 +193,22 @@
     <servlet-mapping>
         <servlet-name>IndexServlet</servlet-name>
         <url-pattern>/index</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ManageProductSellerServlet</servlet-name>
+        <url-pattern>/manageProductSeller</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ManageComboSellerServlet</servlet-name>
+        <url-pattern>/manageComboSeller</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>PostComboSellerServlet</servlet-name>
+        <url-pattern>/postComboSeller</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>PostComboServlet</servlet-name>
+        <url-pattern>/postCombo</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>30</session-timeout>

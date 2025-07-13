@@ -125,6 +125,9 @@ public class LoginServlet extends HttpServlet {
                 }else if (user.getRoleID() == 6) {
                    
                     response.sendRedirect(request.getContextPath() + "/ShipperOrderServlet");
+                }else if (user.getRoleID() == 4) {
+                   
+                    response.sendRedirect(request.getContextPath() + "/manageProductSeller");
                     
                 } else {
                     // Các role khác vào homepage như thường
