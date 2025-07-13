@@ -78,6 +78,10 @@
         <servlet-name>RequestDeleteMenuServlet</servlet-name>
         <servlet-class>controller.RequestDeleteMenuServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>RequestEditMenuServlet</servlet-name>
+        <servlet-class>controller.RequestEditMenuServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>LoginServlet</servlet-name>
         <url-pattern>/login</url-pattern>
@@ -153,6 +157,10 @@
     <servlet-mapping>
         <servlet-name>RequestDeleteMenuServlet</servlet-name>
         <url-pattern>/requestdeletemenu</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>RequestEditMenuServlet</servlet-name>
+        <url-pattern>/requestEditMenu</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>30</session-timeout>

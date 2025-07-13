@@ -444,6 +444,98 @@ private List<Product> getProductsFromSuaMenu(int menuId) {
 }
 
 
+public boolean copyMenuToSuaMenu(int menuID) {
+    try (Connection conn = getConnection()) {
+        // Kiểm tra nếu đã có SuaMenu thì không cần copy lại
+        String checkSql = "SELECT COUNT(*) FROM SuaMenu WHERE MenuID = ?";
+        try (PreparedStatement ps = conn.prepareStatement(checkSql)) {
+            ps.setInt(1, menuID);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next() && rs.getInt(1) > 0) return true; // đã tồn tại
+        }
+
+        // Copy sang SuaMenu
+        String insertSuaMenu = "INSERT INTO SuaMenu (MenuID, MenuName, Description, ImageURL, BMICategory, NutritionistID) "
+                + "SELECT MenuID, MenuName, Description, ImageURL, BMICategory, NutritionistID FROM Menu WHERE MenuID = ?";
+        try (PreparedStatement ps = conn.prepareStatement(insertSuaMenu)) {
+            ps.setInt(1, menuID);
+            ps.executeUpdate();
+        }
+
+        // Copy sang SuaMenuProduct
+        String insertSuaMenuProduct = "INSERT INTO SuaMenuProduct(MenuID, ProductID) "
+                + "SELECT MenuID, ProductID FROM MenuProduct WHERE MenuID = ?";
+        try (PreparedStatement ps = conn.prepareStatement(insertSuaMenuProduct)) {
+            ps.setInt(1, menuID);
+            ps.executeUpdate();
+        }
+
+        return true;
+    } catch (Exception e) {
+        e.printStackTrace();
+    }
+    return false;
+}
+
+
+public boolean updateSuaMenu(int menuID, String name, String desc, String img, String bmi) {
+    String sql = "UPDATE SuaMenu SET MenuName = ?, Description = ?, ImageURL = ?, BMICategory = ? WHERE MenuID = ?";
+    try (Connection conn = getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+        ps.setString(1, name);
+        ps.setString(2, desc);
+        ps.setString(3, img);
+        ps.setString(4, bmi);
+        ps.setInt(5, menuID);
+        ps.executeUpdate();
+        return true;
+    } catch (Exception e) {
+        e.printStackTrace();
+    }
+    return false;
+}
+
+public List<Product> getAllProducts() {
+    List<Product> list = new ArrayList<>();
+    String sql = "SELECT * FROM Product";
+    try (Connection conn = getConnection(); PreparedStatement ps = conn.prepareStatement(sql); ResultSet rs = ps.executeQuery()) {
+        while (rs.next()) {
+            list.add(new Product(
+                rs.getInt("ProductID"),
+                rs.getString("Name"),
+                rs.getString("Description"),
+                rs.getString("NutritionInfo"),
+                rs.getString("Origin"),
+                rs.getString("ImageURL"),
+                rs.getString("StorageInstructions"),
+                rs.getDouble("Price"),
+                rs.getInt("CategoryID"),
+                rs.getInt("Calories")
+            ));
+        }
+    } catch (Exception e) {
+        e.printStackTrace();
+    }
+    return list;
+}
+
+
+public List<Integer> getProductIDsByMenu(int menuID) {
+    List<Integer> ids = new ArrayList<>();
+    String sql = "SELECT ProductID FROM MenuProduct WHERE MenuID = ?";
+    try (Connection conn = getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+        ps.setInt(1, menuID);
+        ResultSet rs = ps.executeQuery();
+        while (rs.next()) {
+            ids.add(rs.getInt("ProductID"));
+        }
+    } catch (Exception e) {
+        e.printStackTrace();
+    }
+    return ids;
+}
+
+
+
 
 }
 
