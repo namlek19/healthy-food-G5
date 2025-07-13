@@ -3,7 +3,7 @@
 <header class="main-header">
     <div class="container header-container">
         <div class="logo">
-            <a href="index.jsp">
+            <a href="index">
                 <img src="assets/images/logotext.png" alt="logo">
             </a>
         </div>

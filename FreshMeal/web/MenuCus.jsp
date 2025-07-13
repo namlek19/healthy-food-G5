@@ -30,11 +30,11 @@
     <body>
         <jsp:include page="includes/header.jsp" />
 
-        <div class="search-bar">
-            <form action="search">
-                <input type="text" placeholder="Searching for menu..." required />        
-            </form>
-        </div>
+        <!--        <div class="search-bar">
+                    <form action="search">
+                        <input type="text" placeholder="Searching for menu..." required />        
+                    </form>
+                </div>-->
 
         <div class="container">
             <form method="get" action="menucus">
@@ -58,6 +58,13 @@
         <div class="container mb-3 text-center">
             <h5 class="fw-bold text-success">${categoryName}</h5>
         </div>
+
+        <c:if test="${not empty sessionScope.bmiValue && not empty sessionScope.bmiType}">
+            <div class="alert alert-success text-center">
+                BMI của bạn là: <strong>${sessionScope.bmiValue}</strong> - Nhóm: <strong>${sessionScope.bmiType}</strong>
+            </div>
+        </c:if>
+
 
         <div class="container">
             <c:forEach var="menu" items="${menuList}" varStatus="status">

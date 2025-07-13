@@ -21,11 +21,11 @@
     <body>
         <jsp:include page="includes/header.jsp" />
 
-        <div class="search-bar">
+<!--        <div class="search-bar">
             <form action="search">
                 <input type="text" placeholder="Searching for food..." required />        
             </form>
-        </div>
+        </div>-->
 
         <div class="container">
             <form method="get" action="productlistcontrol">
