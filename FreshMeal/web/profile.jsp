@@ -15,10 +15,12 @@
     }
     if (request.getMethod().equalsIgnoreCase("POST")) {
         String fullName = request.getParameter("fullName");
+        String email = request.getParameter("email");
         String city = request.getParameter("city");
         String district = request.getParameter("district");
         String address = request.getParameter("address");
         user.setFullName(fullName);
+        user.setEmail(email);
         user.setCity(city);
         user.setDistrict(district);
         user.setAddress(address);
@@ -33,6 +35,8 @@
     }
     String firstName = user.getFirstName() != null ? user.getFirstName() : "";
     String lastName = user.getLastName() != null ? user.getLastName() : "";
+    String mode = request.getParameter("mode");
+    if (mode == null) mode = "view";
 %>
 <!DOCTYPE html>
 <html lang="en">
@@ -40,13 +44,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Profile - <%= user.getFullName() %></title>
-    <link rel="stylesheet" href="assets/css/style.css">
-    <link rel="stylesheet" href="assets/css/loginstyle.css">
+    <link rel="stylesheet" href="assets/css/profile.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
 </head>
 <body>
     <header>
-        <div class="container">
+        <div class="header-container">
             <div class="logo">
                 <img src="assets/images/logo.png" alt="logo">
             </div>
@@ -73,13 +76,34 @@
             <input type="text" placeholder="Searching for food..." required />        
         </form>
     </div>
-    <div class="container">
-        <div class="auth-container" style="max-width: 500px; margin: 40px auto;">
-            <div style="text-align: center; margin-bottom: 24px;">
-                <img src="assets/images/default-avatar.png" alt="User Avatar" style="width: 100px; height: 100px; border-radius: 50%; object-fit: cover; margin-bottom: 12px;">
-                <h2 style="color: #27ae60; margin-bottom: 4px;"><%= user.getFullName() %></h2>
-                <p style="color: #888; margin-bottom: 0;">Customer</p>
-            </div>
+    <div class="container" style="display: flex; gap: 40px; margin-top: 40px; align-items: flex-start; min-height: 600px;">
+        <!-- Sidebar -->
+        <aside style="width: 280px; background: #fff; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.04); padding: 32px 20px 24px 20px; text-align: center;">
+            <img src="assets/images/default-avatar.png" alt="User Avatar" style="width: 90px; height: 90px; border-radius: 50%; object-fit: cover; margin-bottom: 16px;">
+            <h3 style="margin-bottom: 4px; color: #222; font-size: 1.3rem;"><%= user.getFullName() %></h3>
+            <p style="color: #888; margin-bottom: 24px;">Customer</p>
+            <nav style="text-align: left;">
+                <ul style="list-style: none; padding: 0; margin: 0;">
+                    <li style="margin-bottom: 8px;">
+                        <a href="order-history" style="display: flex; align-items: center; gap: 10px; padding: 10px 16px; border-radius: 6px; text-decoration: none; font-weight: 500; color: #333;">
+                            <span style="font-size: 1.1em;">🛒</span> View Shopping History
+                        </a>
+                    </li>
+                    <li style="margin-bottom: 8px;">
+                        <a href="profile.jsp" style="display: flex; align-items: center; gap: 10px; padding: 10px 16px; border-radius: 6px; text-decoration: none; font-weight: 500; <%= (!"edit".equals(mode)) ? "background: #27ae60; color: #fff;" : "color: #333;" %>">
+                            <span style="font-size: 1.1em;">👤</span> Profile
+                        </a>
+                    </li>
+                    <li>
+                        <a href="profile.jsp?mode=edit" style="display: flex; align-items: center; gap: 10px; padding: 10px 16px; border-radius: 6px; text-decoration: none; font-weight: 500; <%= ("edit".equals(mode)) ? "background: #27ae60; color: #fff;" : "color: #333;" %>">
+                            <span style="font-size: 1.1em;">✏️</span> Update Profile
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </aside>
+        <!-- Main Content -->
+        <main style="flex: 1; background: #fff; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.04); padding: 32px 32px 24px 32px; min-width: 0;">
             <% if (message != null) { %>
                 <div class="alert alert-success" style="margin-bottom: 16px;"><%= message %></div>
             <% } %>
@@ -88,23 +112,24 @@
                     <%= passwordMessage %>
                 </div>
             <% } %>
-            <% if (edit == null) { %>
+            <% if (!"edit".equals(mode)) { %>
+                <div class="section-header">Profile Details</div>
                 <div class="form-group"><label>First Name:</label> <span><%= firstName %></span></div>
                 <div class="form-group"><label>Last Name:</label> <span><%= lastName %></span></div>
                 <div class="form-group"><label>Email:</label> <span><%= user.getEmail() %></span></div>
                 <div class="form-group"><label>City:</label> <span><%= user.getCity() %></span></div>
                 <div class="form-group"><label>District:</label> <span><%= user.getDistrict() %></span></div>
                 <div class="form-group"><label>Address:</label> <span><%= user.getAddress() %></span></div>
-                
-                <form method="get" style="text-align: center; margin-top: 24px;">
-                    <input type="hidden" name="edit" value="true">
-                    <button type="submit" class="auth-button">Edit Account</button>
-                </form>
             <% } else { %>
-                <form method="post" action="profile" style="margin-top: 16px;">
+                <form method="post" action="profile" style="margin-top: 0;">
+                    <div class="section-header">Update Profile</div>
                     <div class="form-group">
                         <label>Full Name:</label>
                         <input type="text" name="fullName" value="<%= user.getFullName() %>" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Email:</label>
+                        <input type="email" name="email" value="<%= user.getEmail() %>" required>
                     </div>
                     <div class="form-group">
                         <label>City:</label>
@@ -118,10 +143,7 @@
                         <label>Address:</label>
                         <input type="text" name="address" value="<%= user.getAddress() %>" required>
                     </div>
-                    
-                    <!-- Password Change Section -->
-                    <div style="margin-top: 32px; padding-top: 24px; border-top: 1px solid #eee;">
-                        <h3 style="margin-bottom: 16px; color: #333;">Change Password</h3>
+                    <div id="change-password-section">
                         <div class="form-group">
                             <label>Current Password:</label>
                             <input type="password" name="oldPassword" required>
@@ -137,14 +159,13 @@
                             <input type="password" name="confirmPassword" id="confirmPassword" required>
                         </div>
                     </div>
-                    
-                    <div style="text-align: center; margin-top: 24px;">
+                    <div class="button-row">
                         <button type="submit" class="auth-button">Save Changes</button>
-                        <a href="profile.jsp" class="auth-button" style="background: #ccc; color: #333; margin-left: 8px;">Cancel</a>
+                        <a href="profile.jsp" class="auth-button" style="background: #ccc; color: #333;">Cancel</a>
                     </div>
                 </form>
             <% } %>
-        </div>
+        </main>
     </div>
     <footer>
         <div class="container">

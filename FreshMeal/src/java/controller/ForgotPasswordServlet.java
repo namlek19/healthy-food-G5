@@ -20,7 +20,6 @@ public class ForgotPasswordServlet extends HttpServlet {
         String action = request.getParameter("action");
         
         if ("resend".equals(action)) {
-            // Handle resend verification code
             HttpSession session = request.getSession();
             String email = (String) session.getAttribute("resetEmail");
             if (email != null) {
@@ -46,16 +45,14 @@ public class ForgotPasswordServlet extends HttpServlet {
                 User user = userDAO.getUserByEmail(email);
                 
                 if (user != null) {
-                    // Generate verification code
+                    
                     String verificationCode = generateVerificationCode();
                     
-                    // Store in session
+                    
                     session.setAttribute("verificationCode", verificationCode);
                     session.setAttribute("resetEmail", email);
-                    session.setMaxInactiveInterval(10 * 60); // 10 minutes expiry
+                    session.setMaxInactiveInterval(10 * 60); 
                     
-                    // In a real application, you would send this code via email
-                    // For now, we'll just show it in a message
                     request.setAttribute("message", "Your verification code is: " + verificationCode);
                     request.setAttribute("showVerificationForm", true);
                 } else {
@@ -105,7 +102,7 @@ public class ForgotPasswordServlet extends HttpServlet {
     
     private String generateVerificationCode() {
         Random random = new Random();
-        int code = 100000 + random.nextInt(900000); // Generates 6-digit code
+        int code = 100000 + random.nextInt(900000); 
         return String.valueOf(code);
     }
 } 

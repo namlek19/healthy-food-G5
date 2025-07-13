@@ -378,3 +378,16 @@ table tr:last-child td {
     table th { background: #e3fff2; }
     table td { border: none; border-bottom: 1px solid #eee; }
 }
+.payment-method label {
+    display: flex;
+    align-items: center;
+    gap: 8px; /* khoảng cách giữa radio và text */
+    font-size: 1.15rem;
+    margin-bottom: 16px;
+    cursor: pointer;
+}
+.payment-method input[type="radio"] {
+    accent-color: #2b9348; /* cho màu radio nếu muốn */
+    width: 18px;
+    height: 18px;
+}

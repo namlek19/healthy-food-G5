@@ -20,7 +20,7 @@ public class BlogManageServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        // Lấy nutritionistID từ session (giả sử đã đăng nhập)
+        
         HttpSession session = request.getSession();
         Integer nutritionistID = (Integer) session.getAttribute("userID");
         if (nutritionistID == null) nutritionistID = 1; // test cứng nếu chưa có login
@@ -44,7 +44,7 @@ public class BlogManageServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        // Xử lý xóa bài viết
+        
         request.setCharacterEncoding("UTF-8");
         String action = request.getParameter("action");
         BlogDAO blogDAO = new BlogDAO();

@@ -1,10 +1,15 @@
-<%@ page import="model.*, java.util.*" %>
+<%@ page import="model.*, java.util.*, dal.CartDAO" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%
+    // Khai báo biến user MỘT LẦN DUY NHẤT ở đây, dùng cho toàn trang
+    User user = (User) session.getAttribute("user");
+%>
 <html>
     <head>
         <title>Giỏ Hàng</title>
         <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/checkout.css">
-        <link rel="stylesheet" href="assets/css/anhtdcss.css">
+        <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/header-user.css">
+        <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/style.css">
         <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
         <style>
             table {
@@ -33,125 +38,154 @@
         </style>
     </head>
     <body>
-        <header>
-            <div class="container header-flex">
-                <div class="logo">
-                    <a href="index.jsp">
-                        <img src="assets/images/logo.png" alt="logo">
-                    </a>
-                </div>
-                <nav>
-                    <ul class="nav-menu">
-                        <li><a href="index.jsp">Home</a></li>
-                        <li><a href="#">Order</a></li>
-                        <li><a href="#">Menu</a></li>
-                        <li><a href="#">Blog</a></li>
-                        <li><a href="#">About Us</a></li>
-                    </ul>
-                </nav>
-                <div class="header-right">
-                    <a href="cart.jsp" class="cart" title="Cart">
-                        <img src="assets/images/shopping-cart.png" alt="Cart" />
-                    </a>
-                    <div class="auth-buttons">
-                        <%
-                            User user = (User) session.getAttribute("user");
-                            if (user == null) {
-                        %>
-                            <a href="login.jsp" class="auth-button">Sign In</a>
-                            <a href="login.jsp?action=signup" class="auth-button">Sign Up</a>
-                        <%
-                            } else {
-                        %>
-                            <a href="profile.jsp" class="auth-button">Chào, <%= user.getFirstName() != null ? user.getFirstName() : user.getFullName() %></a>
-                            <a href="login?action=logout" class="auth-button">Logout</a>
-                        <%
-                            }
-                        %>
+    <!-- ===== HEADER BEGIN ===== -->
+    <header class="bg-white shadow-sm">
+        <div class="container d-flex align-items-center justify-content-between py-3">
+            <div class="logo">
+                <a href="index.jsp"><img src="assets/images/logo.png" alt="logo"></a>
+            </div>
+            <nav>
+                <ul class="nav">
+                    <li class="nav-item"><a href="productlistcontrol?category=" class="nav-link text-dark">Product</a></li>
+                    <li class="nav-item"><a href="MenuCus.jsp" class="nav-link text-dark">Menu</a></li>
+                    <li class="nav-item"><a href="blogcus.jsp" class="nav-link text-dark">Blog</a></li>
+                </ul>
+            </nav>
+            <div class="header-right d-flex align-items-center gap-3">
+                <a href="cart.jsp" class="cart-btn">
+                    <span class="cart-icon-wrap">
+                        <img src="assets/images/shopping-cart.png" alt="Cart" class="cart-icon">
+                    </span>
+                    <span class="cart-text">Giỏ hàng</span>
+                </a>
+                <%-- Sử dụng biến user đã khai báo ở đầu --%>
+                <% if (user != null) { %>
+                <div class="user-menu">
+                    <button class="user-menu-btn" type="button">
+                        <img src="assets/images/user-icon.png" alt="User" class="avatar" style="width:32px;">
+                        <span>
+                            <%= user.getFirstName() != null && !user.getFirstName().isEmpty()
+                                ? user.getFirstName()
+                                : user.getFullName() %>
+                        </span>
+                        <span class="dropdown-arrow">&#9662;</span>
+                    </button>
+                    <div class="user-dropdown">
+                        <a href="profile.jsp">Thông tin cá nhân</a>
+                        <a href="order-history">Lịch sử đơn hàng</a>
+                        <a href="login?action=logout">Đăng xuất</a>
                     </div>
                 </div>
+                <% } else { %>
+                <div class="auth-buttons">
+                    <a href="login.jsp" class="btn btn-outline-success btn-sm">Sign In</a>
+                    <a href="login.jsp?action=signup" class="btn btn-outline-success btn-sm">Sign Up</a>
+                </div>
+                <% } %>
             </div>
-        </header>
-
-        <h2>Giỏ hàng của bạn</h2>
-        <%
-            List<CartItem> cart = (List<CartItem>) session.getAttribute(
-                session.getAttribute("user") != null ? "cart" : "guest_cart"
-            );
-            double total = 0;
-            if (cart != null && !cart.isEmpty()) {
-        %>
-        <table>
-            <tr>
-                <th>Mã SP</th>
-                <th>Tên</th>
-                <th>Ảnh</th>
-                <th>Giá</th>
-                <th>Số lượng</th>
-                <th>Thành tiền</th>
-                <th>Xóa</th>
-            </tr>
-            <%
-                for (CartItem item : cart) {
-                    Product p = item.getProduct();
-                    double subtotal = item.getTotalPrice();
-                    total += subtotal;
-            %>
-            <tr>
-                <td><%= p.getProductID() %></td>
-                <td><%= p.getName() %></td>
-                <td>
-                    <%
-                        String imgUrl = p.getImageURL();
-                        boolean isOnline = imgUrl != null && imgUrl.startsWith("http");
-                        String finalImgUrl = isOnline ? imgUrl : "assets/images/" + imgUrl.replace("/images/", "");
-                    %>
-                    <img src="<%= finalImgUrl %>" alt="<%= p.getName() %>" width="60"/>
-                </td>
-                <td><%= p.getPrice() %> đ</td>
-                <td>
-                    <form action="UpdateCartServlet" method="post" style="display:inline;">
-                        <input type="hidden" name="id" value="<%= p.getProductID() %>" />
-                        <input type="hidden" name="action" value="dec" />
-                        <button type="submit">−</button>
-                    </form>
-                    <strong><%= item.getQuantity() %></strong>
-                    <form action="UpdateCartServlet" method="post" style="display:inline;">
-                        <input type="hidden" name="id" value="<%= p.getProductID() %>" />
-                        <input type="hidden" name="action" value="inc" />
-                        <button type="submit">+</button>
-                    </form>
-                </td>
-                <td><%= subtotal %> đ</td>
-                <td>
-                    <form action="UpdateCartServlet" method="post">
-                        <input type="hidden" name="id" value="<%= p.getProductID() %>" />
-                        <input type="hidden" name="action" value="remove" />
-                        <button type="submit" class="trash-button">
-                            <img src="assets/images/delete.png" alt="Xóa" style="width:20px;">
-                        </button>
-                    </form>
-                </td>
-            </tr>
-            <% } %>
-            <tr>
-                <td colspan="5" align="right"><strong>Tổng cộng:</strong></td>
-                <td colspan="2"><strong><%= total %> đ</strong></td>
-            </tr>
-        </table>
-        <div class="checkout-button" style="text-align:center; margin-top:20px;">
-            <form action="checkout.jsp" method="get">
-                <button type="submit" class="checkout-btn">Thanh toán</button>
-            </form>
         </div>
+    </header>
+    <script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var userMenu = document.querySelector('.user-menu');
+        if (userMenu) {
+            var btn = userMenu.querySelector('.user-menu-btn');
+            btn.addEventListener('click', function (e) {
+                e.stopPropagation();
+                userMenu.classList.toggle('open');
+            });
+            document.addEventListener('click', function () {
+                userMenu.classList.remove('open');
+            });
+        }
+    });
+    </script>
+    <!-- ===== HEADER END ===== -->
+
+    <h2>Giỏ hàng của bạn</h2>
+    <%
+        List<CartItem> cart = null;
+        if (user != null) {
+            // Lấy lại giỏ hàng từ database mỗi lần vào trang
+            CartDAO cartDAO = new CartDAO();
+            cart = cartDAO.getCartItemsByUser(user.getUserID());
+        } else {
+            cart = (List<CartItem>) session.getAttribute("guest_cart");
+        }
+        double total = 0;
+        if (cart != null && !cart.isEmpty()) {
+    %>
+    <table>
+        <tr>
+            <th>Mã SP</th>
+            <th>Tên</th>
+            <th>Ảnh</th>
+            <th>Giá</th>
+            <th>Số lượng</th>
+            <th>Thành tiền</th>
+            <th>Xóa</th>
+        </tr>
         <%
-            } else {
+            for (CartItem item : cart) {
+                Product p = item.getProduct();
+                double subtotal = item.getTotalPrice();
+                total += subtotal;
         %>
-        <p class="empty">Giỏ hàng trống.</p>
+        <tr>
+            <td><%= p.getProductID() %></td>
+            <td><%= p.getName() %></td>
+            <td>
+                <%
+                    String imgUrl = p.getImageURL();
+                    boolean isOnline = imgUrl != null && imgUrl.startsWith("http");
+                    String finalImgUrl = isOnline ? imgUrl : "assets/images/" + imgUrl.replace("/images/", "");
+                %>
+                <img src="<%= finalImgUrl %>" alt="<%= p.getName() %>" width="60"/>
+            </td>
+            <td><%= p.getPrice() %> đ</td>
+            <td>
+                <form action="UpdateCartServlet" method="post" style="display:inline;">
+                    <input type="hidden" name="id" value="<%= p.getProductID() %>" />
+                    <input type="hidden" name="action" value="dec" />
+                    <button type="submit">−</button>
+                </form>
+                <strong><%= item.getQuantity() %></strong>
+                <form action="UpdateCartServlet" method="post" style="display:inline;">
+                    <input type="hidden" name="id" value="<%= p.getProductID() %>" />
+                    <input type="hidden" name="action" value="inc" />
+                    <button type="submit">+</button>
+                </form>
+            </td>
+            <td><%= subtotal %> đ</td>
+            <td>
+                <form action="UpdateCartServlet" method="post">
+                    <input type="hidden" name="id" value="<%= p.getProductID() %>" />
+                    <input type="hidden" name="action" value="remove" />
+                    <button type="submit" class="trash-button">
+                        <img src="assets/images/delete.png" alt="Xóa" style="width:20px;">
+                    </button>
+                </form>
+            </td>
+        </tr>
         <% } %>
+        <tr>
+            <td colspan="5" align="right"><strong>Tổng cộng:</strong></td>
+            <td colspan="2"><strong><%= total %> đ</strong></td>
+        </tr>
+    </table>
+    <div class="checkout-button" style="text-align:center; margin-top:20px;">
+        <form action="checkout.jsp" method="get">
+            <button type="submit" class="checkout-btn">Thanh toán</button>
+        </form>
+    </div>
+    <%
+        } else {
+    %>
+    <p class="empty">Giỏ hàng trống.</p>
+    <% } %>
 
-        <div class="back">
-           <a href="productlistcontrol?category=">Quay lại mua sắm</a>
-        </div>
+    <div class="back">
+       <a href="productlistcontrol?category=">Quay lại mua sắm</a>
+    </div>
     </body>
 </html>

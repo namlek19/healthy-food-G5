@@ -42,7 +42,7 @@ public class UpdateCartServlet extends HttpServlet {
                         break;
                     }
                 }
-                // Cập nhật lại session cart
+                
                 session.setAttribute("cart", cartDAO.getCartItemsByUser(user.getUserID()));
             } catch (Exception e) {
                 e.printStackTrace();

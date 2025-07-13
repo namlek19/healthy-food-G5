@@ -205,14 +205,15 @@ public class UserDAO {
     
     public boolean updateUser(User user) {
         try {
-            String query = "UPDATE Users SET FullName = ?, City = ?, District = ?, Address = ? WHERE UserID = ?";
+            String query = "UPDATE Users SET FullName = ?, Email = ?, City = ?, District = ?, Address = ? WHERE UserID = ?";
             conn = db.getConnection();
             ps = conn.prepareStatement(query);
             ps.setString(1, user.getFullName());
-            ps.setString(2, user.getCity());
-            ps.setString(3, user.getDistrict());
-            ps.setString(4, user.getAddress());
-            ps.setInt(5, user.getUserID());
+            ps.setString(2, user.getEmail());
+            ps.setString(3, user.getCity());
+            ps.setString(4, user.getDistrict());
+            ps.setString(5, user.getAddress());
+            ps.setInt(6, user.getUserID());
             return ps.executeUpdate() > 0;
         } catch (Exception e) {
             System.out.println("Error in updateUser: " + e.getMessage());
@@ -226,5 +227,118 @@ public class UserDAO {
                 System.out.println("Error closing resources: " + e.getMessage());
             }
         }
+    }
+
+    public boolean addUser(User user) {
+        try {
+            String query = "INSERT INTO Users (FullName, Email, PasswordHash, City, District, Address, RoleID, isActive) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+            conn = db.getConnection();
+            ps = conn.prepareStatement(query);
+            ps.setString(1, user.getFullName());
+            ps.setString(2, user.getEmail());
+            ps.setString(3, user.getPasswordHash());
+            ps.setString(4, user.getCity());
+            ps.setString(5, user.getDistrict());
+            ps.setString(6, user.getAddress());
+            ps.setInt(7, user.getRoleID());
+            ps.setInt(8, user.getActive());
+            return ps.executeUpdate() > 0;
+        } catch (Exception e) {
+            System.out.println("Error in addUser: " + e.getMessage());
+            return false;
+        } finally {
+            try {
+                if (db != null) {
+                    db.closeConnection(conn, ps, rs);
+                }
+            } catch (SQLException e) {
+                System.out.println("Error closing resources: " + e.getMessage());
+            }
+        }
+    }
+
+    public boolean updateUserByAdmin(User user) {
+        try {
+            String query = "UPDATE Users SET FullName=?, Email=?, PasswordHash=?, City=?, District=?, Address=?, RoleID=?, isActive=? WHERE UserID=?";
+            conn = db.getConnection();
+            ps = conn.prepareStatement(query);
+            ps.setString(1, user.getFullName());
+            ps.setString(2, user.getEmail());
+            ps.setString(3, user.getPasswordHash());
+            ps.setString(4, user.getCity());
+            ps.setString(5, user.getDistrict());
+            ps.setString(6, user.getAddress());
+            ps.setInt(7, user.getRoleID());
+            ps.setInt(8, user.getActive());
+            ps.setInt(9, user.getUserID());
+            return ps.executeUpdate() > 0;
+        } catch (Exception e) {
+            System.out.println("Error in updateUserByAdmin: " + e.getMessage());
+            return false;
+        } finally {
+            try {
+                if (db != null) {
+                    db.closeConnection(conn, ps, rs);
+                }
+            } catch (SQLException e) {
+                System.out.println("Error closing resources: " + e.getMessage());
+            }
+        }
+    }
+
+    public boolean deleteUser(int userID) {
+        try {
+            String query = "DELETE FROM Users WHERE UserID=?";
+            conn = db.getConnection();
+            ps = conn.prepareStatement(query);
+            ps.setInt(1, userID);
+            return ps.executeUpdate() > 0;
+        } catch (Exception e) {
+            System.out.println("Error in deleteUser: " + e.getMessage());
+            return false;
+        } finally {
+            try {
+                if (db != null) {
+                    db.closeConnection(conn, ps, rs);
+                }
+            } catch (SQLException e) {
+                System.out.println("Error closing resources: " + e.getMessage());
+            }
+        }
+    }
+
+    public java.util.List<User> getAllUsers() {
+        java.util.List<User> users = new java.util.ArrayList<>();
+        try {
+            String query = "SELECT * FROM Users";
+            conn = db.getConnection();
+            ps = conn.prepareStatement(query);
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                User user = new User(
+                    rs.getInt("UserID"),
+                    rs.getString("FullName"),
+                    rs.getString("Email"),
+                    rs.getString("PasswordHash"),
+                    rs.getString("City"),
+                    rs.getString("District"),
+                    rs.getString("Address"),
+                    rs.getInt("RoleID")
+                );
+                try { user.setActive(rs.getInt("isActive")); } catch(Exception e) { user.setActive(1); }
+                users.add(user);
+            }
+        } catch (Exception e) {
+            System.out.println("Error in getAllUsers: " + e.getMessage());
+        } finally {
+            try {
+                if (db != null) {
+                    db.closeConnection(conn, ps, rs);
+                }
+            } catch (SQLException e) {
+                System.out.println("Error closing resources: " + e.getMessage());
+            }
+        }
+        return users;
     }
 } 

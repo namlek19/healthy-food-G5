@@ -2,52 +2,54 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
+
 package controller;
 
-import dal.BlogDAO;
+import dal.MenuDAO;
+import dal.ProductDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.util.List;
+import model.Menu;
+import model.Product;
 
 /**
  *
  * @author DuyHung
  */
-public class BlogPostServlet extends HttpServlet {
-
-    /**
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
-     * methods.
-     *
+public class MenuPostServlet extends HttpServlet {
+   
+    /** 
+     * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
      * @param request servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+    throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet BlogPostServlet</title>");
+            out.println("<title>Servlet MenuPostServlet</title>");  
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet BlogPostServlet at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet MenuPostServlet at " + request.getContextPath () + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
-    }
+    } 
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
-    /**
+    /** 
      * Handles the HTTP <code>GET</code> method.
-     *
      * @param request servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
@@ -55,13 +57,17 @@ public class BlogPostServlet extends HttpServlet {
      */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        request.getRequestDispatcher("blog_post.jsp").forward(request, response);
-    }
+    throws ServletException, IOException {
+        ProductDAO productDAO = new ProductDAO();
+        List<Product> productList = productDAO.getAllProduct();
+        request.setAttribute("productList", productList);
 
-    /**
+        // Nếu cần: lấy thêm info BMI, profile...
+        request.getRequestDispatcher("menu_post.jsp").forward(request, response);
+    } 
+
+    /** 
      * Handles the HTTP <code>POST</code> method.
-     *
      * @param request servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
@@ -69,39 +75,32 @@ public class BlogPostServlet extends HttpServlet {
      */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+    throws ServletException, IOException {
         request.setCharacterEncoding("UTF-8");
+    String menuName = request.getParameter("menuName");
+    String description = request.getParameter("description");
+    String bmiCategory = request.getParameter("bmiCategory");
+    String imageURL = request.getParameter("menuImage"); // (xử lý upload file hoặc base64, nếu có)
+    String[] productIDs = request.getParameter("selectedProductIDs").split(",");
+    int nutritionistID = (Integer) request.getSession().getAttribute("userID"); // hoặc user.getUserID()
 
-        String title = request.getParameter("title");
-        String description = request.getParameter("description");
-        String imageURL = request.getParameter("imageURL");
-        System.out.println("imageURL = " + imageURL);
+    Menu menu = new Menu();
+    menu.setMenuName(menuName);
+    menu.setDescription(description);
+    menu.setBmiCategory(bmiCategory);
+    menu.setImageURL(imageURL);
+    menu.setNutritionistID(nutritionistID);
 
-        
-        Integer nutritionistID = (Integer) request.getSession().getAttribute("userID");
-
-        
-        if (nutritionistID == null) {
-            response.sendRedirect("login.jsp");
-            return;
-        }
-
-        
-        if (title != null && !title.trim().isEmpty() && description != null && !description.trim().isEmpty()) {
-            BlogDAO blogDAO = new BlogDAO();
-            blogDAO.addBlog(title, imageURL, description, nutritionistID);
-            response.sendRedirect("blogmanage"); 
-        } else {
-            
-            request.setAttribute("error", "Tiêu đề và nội dung không được để trống!");
-            request.getRequestDispatcher("blog_post.jsp").forward(request, response);
-        }
-
+    MenuDAO menuDAO = new MenuDAO();
+    int menuID = menuDAO.addMenu(menu);
+    for (String pid : productIDs) {
+        menuDAO.addMenuProduct(menuID, Integer.parseInt(pid));
+    }
+    response.sendRedirect("menupost"); // hoặc về trang menu đã post
     }
 
-    /**
+    /** 
      * Returns a short description of the servlet.
-     *
      * @return a String containing servlet description
      */
     @Override

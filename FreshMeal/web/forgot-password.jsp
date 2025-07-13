@@ -39,7 +39,7 @@
         </div>
 
         <div class="auth-container">
-            <h2 style="text-align: center; margin: 20px 0; color: #333;">Forgot Password</h2>
+            <h2 style="text-align: center; margin: 20px 0; color: #333;">Reset Password</h2>
             
             <% if (request.getAttribute("error") != null) { %>
                 <div style="color: #dc3545; text-align: center; margin-bottom: 15px;">

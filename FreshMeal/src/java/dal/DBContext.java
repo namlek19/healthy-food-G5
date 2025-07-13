@@ -10,7 +10,7 @@ public class DBContext {
     private final String serverName = "localhost";
 
 
-    private final String dbName = "SWPproject2";
+    private final String dbName = "SWPproject3";
 
 
     private final String portNumber = "1433";

@@ -15,6 +15,7 @@ public class User {
     private float bmi;  // This is now read-only, calculated by the database
     private String bmiCategory;
     private int roleID;
+    private int active = 1;
     
     public User() {
     }
@@ -183,5 +184,12 @@ public class User {
 
     public void setRoleID(int roleID) {
         this.roleID = roleID;
+    }
+
+    public int getActive() {
+        return active;
+    }
+    public void setActive(int active) {
+        this.active = active;
     }
 } 

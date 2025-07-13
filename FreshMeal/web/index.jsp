@@ -78,6 +78,9 @@
                         <div class="user-dropdown">
                             <a href="profile.jsp">Thông tin cá nhân</a>
                             <a href="order-history">Lịch sử đơn hàng</a>
+                            <% if (user.getRoleID() == 1) { %>
+                                <a href="<%= request.getContextPath() %>/admin-dashboard">Quản trị Admin</a>
+                            <% } %>
                             <a href="login?action=logout">Đăng xuất</a>
                         </div>
                     </div>
