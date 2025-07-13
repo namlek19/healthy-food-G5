@@ -25,7 +25,7 @@ public class ForgotPasswordServlet extends HttpServlet {
             if (email != null) {
                 String newCode = generateVerificationCode();
                 session.setAttribute("verificationCode", newCode);
-                request.setAttribute("message", "A new verification code has been sent to your email.");
+                request.setAttribute("message", "Mã xác thực mới đã được gửi đến email của bạn.");
             }
         }
         
@@ -53,13 +53,13 @@ public class ForgotPasswordServlet extends HttpServlet {
                     session.setAttribute("resetEmail", email);
                     session.setMaxInactiveInterval(10 * 60); 
                     
-                    request.setAttribute("message", "Your verification code is: " + verificationCode);
+                    request.setAttribute("message", "Mã xác thực của bạn là: " + verificationCode);
                     request.setAttribute("showVerificationForm", true);
                 } else {
-                    request.setAttribute("error", "Email address not found.");
+                    request.setAttribute("error", "Không tìm thấy địa chỉ email.");
                 }
             } catch (Exception e) {
-                request.setAttribute("error", "An error occurred. Please try again.");
+                request.setAttribute("error", "Đã xảy ra lỗi. Vui lòng thử lại.");
             }
         } else if ("verify".equals(action)) {
             String code = request.getParameter("code");
@@ -69,12 +69,12 @@ public class ForgotPasswordServlet extends HttpServlet {
             String confirmPassword = request.getParameter("confirmPassword");
             
             if (storedCode == null || storedEmail == null) {
-                request.setAttribute("error", "Session expired. Please try again.");
+                request.setAttribute("error", "Phiên đã hết hạn. Vui lòng thử lại.");
             } else if (!storedCode.equals(code)) {
-                request.setAttribute("error", "Invalid verification code.");
+                request.setAttribute("error", "Mã xác thực không đúng.");
                 request.setAttribute("showVerificationForm", true);
             } else if (newPassword == null || !newPassword.equals(confirmPassword)) {
-                request.setAttribute("error", "Passwords do not match.");
+                request.setAttribute("error", "Mật khẩu không khớp.");
                 request.setAttribute("showVerificationForm", true);
             } else {
                 try {
@@ -87,11 +87,11 @@ public class ForgotPasswordServlet extends HttpServlet {
                         response.sendRedirect("login.jsp");
                         return;
                     } else {
-                        request.setAttribute("error", "Failed to update password. Please try again.");
+                        request.setAttribute("error", "Cập nhật mật khẩu thất bại. Vui lòng thử lại.");
                         request.setAttribute("showVerificationForm", true);
                     }
                 } catch (Exception e) {
-                    request.setAttribute("error", "Failed to reset password. Please try again.");
+                    request.setAttribute("error", "Đặt lại mật khẩu thất bại. Vui lòng thử lại.");
                     request.setAttribute("showVerificationForm", true);
                 }
             }

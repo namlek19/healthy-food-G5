@@ -1,4 +1,5 @@
 <%@ page contentType="text/html" pageEncoding="UTF-8"%>
+<%@ page import="model.User" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <!DOCTYPE html>
@@ -60,34 +61,7 @@
                                         %>
 
 
-                    <a href="cart.jsp" class="cart-btn">
-                        <span class="cart-icon-wrap">
-                            <img src="assets/images/shopping-cart.png" alt="Cart" class="cart-icon">
-                                                    </span>
-                        <span class="cart-text">Giỏ hàng</span>
-                    </a>
-
-                    <% User user = (User) session.getAttribute("user"); %>
-                    <% if (user != null) { %>
-                    <!-- Dropdown menu cho user đã login -->
-                    <div class="user-menu">
-                        <button class="user-menu-btn" type="button">
-                            <img src="assets/images/user-icon.png" alt="User" class="avatar">
-                            <span>
-                                <%= user.getFirstName() != null && !user.getFirstName().isEmpty()
-                                    ? user.getFirstName()
-                                    : user.getFullName() %>
-                            </span>
-                            <span class="dropdown-arrow">&#9662;</span>
-                        </button>
-                        <div class="user-dropdown">
-                            <a href="profile.jsp">Thông tin cá nhân</a>
-                            <a href="order-history">Lịch sử đơn hàng</a>
-                            <% if (user.getRoleID() == 1) { %>
-                                <a href="<%= request.getContextPath() %>/admin-dashboard">Quản trị Admin</a>
-                            <% } %>
-                            <a href="login?action=logout">Đăng xuất</a>
-                        </div>
+                  
 
                                         <% if (error != null) { %>
                                         <div class="alert alert-danger"><%= error %></div>

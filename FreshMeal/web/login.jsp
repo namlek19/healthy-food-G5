@@ -12,7 +12,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="Content-Security-Policy" content="script-src 'self' 'unsafe-inline' https://apis.google.com https://accounts.google.com https://www.gstatic.com; frame-src 'self' https://accounts.google.com https://content.googleapis.com;">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FreshMeal - Login & Sign Up</title>
+    <title>FreshMeal - Đăng nhập & Đăng ký</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="assets/css/loginstyle.css">
     <script src="https://accounts.google.com/gsi/client" async defer></script>
@@ -97,8 +97,8 @@
 <body>
     <div id="successPopup" class="popup success">
         <div class="popup-content">
-            <h3>Success!</h3>
-            <p>Your account has been created successfully.</p>
+            <h3>Thành công!</h3>
+            <p>Tài khoản của bạn đã được tạo thành công.</p>
         </div>
         <button class="popup-button" onclick="hidePopup()">OK</button>
     </div>
@@ -110,14 +110,14 @@
                 <img src="assets/images/logoreal.png" alt="FreshMeal">
             </div>
             <nav class="nav-links">
-                <a href="index.jsp">Home</a>
-                <a href="#">Order</a>
+                <a href="index.jsp">Trang chủ</a>
+                <a href="#">Đặt hàng</a>
                 <a href="#">Blog</a>
-                <a href="#">About Us</a>
+                <a href="#">Về chúng tôi</a>
             </nav>
             <div class="auth-buttons">
-                <a href="login.jsp" class="auth-button login-button">Log in</a>
-                <a href="login.jsp?action=signup" class="auth-button signup-button">Sign up</a>
+                <a href="login.jsp" class="auth-button login-button">Đăng nhập</a>
+                <a href="login.jsp?action=signup" class="auth-button signup-button">Đăng ký</a>
             </div>
         </header>
     </div>
@@ -125,7 +125,7 @@
 
     <div class="container">
         <div class="breadcrumb">
-            <a href="index.jsp">Home</a> > <%= request.getParameter("action") != null && request.getParameter("action").equals("signup") ? "Sign up" : "Log in" %>
+            <a href="index.jsp">Trang chủ</a> > <%= request.getParameter("action") != null && request.getParameter("action").equals("signup") ? "Đăng ký" : "Đăng nhập" %>
         </div>
 
         <div class="auth-container">
@@ -149,31 +149,31 @@
             <%  } %>
 
             <div class="auth-tabs">
-                <button class="auth-tab <%= request.getParameter("action") == null || !request.getParameter("action").equals("signup") ? "active" : "" %>" onclick="showTab('login')">Log in</button>
-                <button class="auth-tab <%= request.getParameter("action") != null && request.getParameter("action").equals("signup") ? "active" : "" %>" onclick="showTab('signup')">Sign up</button>
+                <button class="auth-tab <%= request.getParameter("action") == null || !request.getParameter("action").equals("signup") ? "active" : "" %>" onclick="showTab('login')">Đăng nhập</button>
+                <button class="auth-tab <%= request.getParameter("action") != null && request.getParameter("action").equals("signup") ? "active" : "" %>" onclick="showTab('signup')">Đăng ký</button>
             </div>
 
             <div id="loginForm" class="auth-form" <%= (request.getParameter("action") != null && request.getParameter("action").equals("signup")) ? "style=\"display: none;\"" : "style=\"display: block;\"" %>>
                 <form action="login" method="post" onsubmit="return handleLogin(event)">
                     <input type="hidden" name="action" value="login">
                     <div class="form-group">
-                        <label>Email Address</label>
-                        <input type="email" name="email" id="loginEmail" placeholder="Enter your email" required>
+                        <label>Địa chỉ Email</label>
+                        <input type="email" name="email" id="loginEmail" placeholder="Nhập email của bạn" required>
                     </div>
                     <div class="form-group">
-                        <label>Password</label>
-                        <input type="password" name="password" id="loginPassword" placeholder="Enter your password" required>
+                        <label>Mật khẩu</label>
+                        <input type="password" name="password" id="loginPassword" placeholder="Nhập mật khẩu" required>
                     </div>
                     <div class="remember-forgot">
                         <div>
                             <input type="checkbox" id="remember" name="remember">
-                            <label for="remember">Remember me?</label>
+                            <label for="remember">Ghi nhớ đăng nhập?</label>
                         </div>
-                        <a href="forgot-password.jsp">Forgot password?</a>
+                        <a href="forgot-password.jsp">Quên mật khẩu?</a>
                     </div>
-                    <button type="submit" class="submit-button">Log in</button>
+                    <button type="submit" class="submit-button">Đăng nhập</button>
                     <div class="social-login">
-                        <p>or sign in with</p>
+                        <p>hoặc đăng nhập với</p>
                         <!-- Google Sign-In Button (rendered by Google) -->
                         <div id="g_id_onload"
                              data-client_id="423890706733-eo05uhbjo9aup4pkpq714evrohqjqcq1.apps.googleusercontent.com"
@@ -190,43 +190,43 @@
                 <form action="login" method="post" onsubmit="return validateSignup(event)">
                     <input type="hidden" name="action" value="register">
                     <div class="form-group">
-                        <label>First Name</label>
-                        <input type="text" name="firstName" id="firstName" placeholder="Enter your first name" required value='<%= signupData != null && signupData.get("firstName") != null ? signupData.get("firstName") : "" %>'>
+                        <label>Họ</label>
+                        <input type="text" name="firstName" id="firstName" placeholder="Nhập họ của bạn" required value='<%= signupData != null && signupData.get("firstName") != null ? signupData.get("firstName") : "" %>'>
                     </div>
                     <div class="form-group">
-                        <label>Last Name</label>
-                        <input type="text" name="lastName" id="lastName" placeholder="Enter your last name" required value='<%= signupData != null && signupData.get("lastName") != null ? signupData.get("lastName") : "" %>'>
+                        <label>Tên</label>
+                        <input type="text" name="lastName" id="lastName" placeholder="Nhập tên của bạn" required value='<%= signupData != null && signupData.get("lastName") != null ? signupData.get("lastName") : "" %>'>
                     </div>
                     <div class="form-group">
-                        <label>Email Address</label>
-                        <input type="email" name="email" id="signupEmail" placeholder="Enter your email" required onblur="checkEmailExists(this.value)" value='<%= signupData != null && signupData.get("email") != null ? signupData.get("email") : "" %>'>
+                        <label>Địa chỉ Email</label>
+                        <input type="email" name="email" id="signupEmail" placeholder="Nhập email của bạn" required onblur="checkEmailExists(this.value)" value='<%= signupData != null && signupData.get("email") != null ? signupData.get("email") : "" %>'>
                         <div id="emailError" class="email-error"></div>
                     </div>
                     
                     <div class="form-group">
-                        <label>City</label>
-                        <input type="text" name="city" id="city" placeholder="Enter your city" required value='<%= signupData != null && signupData.get("city") != null ? signupData.get("city") : "" %>'>
+                        <label>Thành phố</label>
+                        <input type="text" name="city" id="city" placeholder="Nhập thành phố" required value='<%= signupData != null && signupData.get("city") != null ? signupData.get("city") : "" %>'>
                     </div>
                     <div class="form-group">
-                        <label>District</label>
-                        <input type="text" name="district" id="district" placeholder="Enter your district" required value='<%= signupData != null && signupData.get("district") != null ? signupData.get("district") : "" %>'>
+                        <label>Quận/Huyện</label>
+                        <input type="text" name="district" id="district" placeholder="Nhập quận/huyện" required value='<%= signupData != null && signupData.get("district") != null ? signupData.get("district") : "" %>'>
                     </div>
                     <div class="form-group">
-                        <label>Address</label>
-                        <input type="text" name="address" id="address" placeholder="Enter your address" required value='<%= signupData != null && signupData.get("address") != null ? signupData.get("address") : "" %>'>
+                        <label>Địa chỉ</label>
+                        <input type="text" name="address" id="address" placeholder="Nhập địa chỉ" required value='<%= signupData != null && signupData.get("address") != null ? signupData.get("address") : "" %>'>
                     </div>
                     <div class="form-group">
-                        <label>Password</label>
-                        <input type="password" name="password" id="signupPassword" placeholder="Enter your password" required>
-                        <small class="password-hint">Password must be at least 8 characters long and contain at least one number</small>
+                        <label>Mật khẩu</label>
+                        <input type="password" name="password" id="signupPassword" placeholder="Nhập mật khẩu" required>
+                        <small class="password-hint">Mật khẩu phải có ít nhất 8 ký tự và chứa ít nhất một số</small>
                     </div>
                     <div class="form-group">
-                        <label>Confirm Password</label>
-                        <input type="password" name="confirmPassword" id="confirmPassword" placeholder="Confirm your password" required>
+                        <label>Xác nhận mật khẩu</label>
+                        <input type="password" name="confirmPassword" id="confirmPassword" placeholder="Xác nhận mật khẩu" required>
                     </div>
-                    <button type="submit" class="submit-button">Sign up</button>
+                    <button type="submit" class="submit-button">Đăng ký</button>
                     <div class="social-login">
-                        <p>or sign in with</p>
+                        <p>hoặc đăng nhập với</p>
                         <!-- Google Sign-In Button (rendered by Google) -->
                         <div class="g_id_signin" data-type="standard" data-size="large" data-theme="filled_blue" data-text="signin_with" data-shape="rectangular" data-width="auto"></div>
                     </div>
@@ -239,12 +239,12 @@
         function validatePassword(password) {
             // Check length
             if (password.length < 8) {
-                return "Password must be at least 8 characters long";
+                return "Mật khẩu phải có ít nhất 8 ký tự";
             }
             
             // Check for numbers
             if (!/\d/.test(password)) {
-                return "Password must contain at least one number";
+                return "Mật khẩu phải chứa ít nhất một số";
             }
             
             return ""; // Empty string means valid
@@ -264,7 +264,7 @@
             
             // Check if passwords match
             if (password !== confirmPassword) {
-                alert('Passwords do not match!');
+                alert('Mật khẩu không khớp!');
                 return false;
             }
             
@@ -321,7 +321,7 @@
                 // const googleSignupBtn = document.getElementById('googleSignupBtn'); // No longer needed for Google-rendered button
 
                 if (data.exists) {
-                    errorDiv.textContent = 'This email is already registered';
+                    errorDiv.textContent = 'Email này đã được đăng ký';
                     errorDiv.style.display = 'block';
                     if (signupSubmitButton) signupSubmitButton.disabled = true;
                     // if (googleSignupBtn) googleSignupBtn.disabled = false; // No longer needed
@@ -350,10 +350,10 @@
                 if (data.success) {
                     window.location.href = 'index.jsp';
                 } else {
-                    alert(data.message || 'Failed to sign in with Google.');
+                    alert(data.message || 'Đăng nhập với Google thất bại.');
                 }
             })
-            .catch(() => alert('Failed to sign in with Google.'));
+            .catch(() => alert('Đăng nhập với Google thất bại.'));
         }
 
     

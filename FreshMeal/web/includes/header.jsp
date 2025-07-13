@@ -37,13 +37,16 @@
                 <div class="user-dropdown">
                     <a href="profile.jsp">Thông tin cá nhân</a>
                     <a href="order-history">Lịch sử đơn hàng</a>
+                    <% if (user.getRoleID() == 1) { %>
+                        <a href="<%= request.getContextPath() %>/admin-dashboard">Quản trị Admin</a>
+                    <% } %>
                     <a href="login?action=logout">Đăng xuất</a>
                 </div>
             </div>
             <% } else { %>
             <div class="auth-buttons">
-                <a href="login.jsp" class="btn btn-outline-success btn-sm">Sign In</a>
-                <a href="login.jsp?action=signup" class="btn btn-outline-success btn-sm">Sign Up</a>
+                <a href="login.jsp" class="btn btn-outline-success btn-sm">Đăng Nhập</a>
+                <a href="login.jsp?action=signup" class="btn btn-outline-success btn-sm">Đăng Ký</a>
             </div>
             <% } %>
         </div>

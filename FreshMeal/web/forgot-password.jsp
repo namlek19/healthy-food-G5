@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FreshMeal - Forgot Password</title>
+    <title>FreshMeal - Quên mật khẩu</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="assets/css/loginstyle.css">
 </head>
@@ -15,31 +15,31 @@
                 <img src="assets/images/logoreal.png" alt="FreshMeal">
             </div>
             <nav class="nav-links">
-                <a href="index.jsp">Home</a>
-                <a href="#">Order</a>
+                <a href="index.jsp">Trang chủ</a>
+                <a href="#">Đặt hàng</a>
                 <a href="#">Blog</a>
-                <a href="#">About Us</a>
+                <a href="#">Về chúng tôi</a>
             </nav>
             <div class="auth-buttons">
-                <a href="login.jsp" class="auth-button login-button">Log in</a>
-                <a href="login.jsp?action=signup" class="auth-button signup-button">Sign up</a>
+                <a href="login.jsp" class="auth-button login-button">Đăng nhập</a>
+                <a href="login.jsp?action=signup" class="auth-button signup-button">Đăng ký</a>
             </div>
         </header>
     </div>
 
     <div class="search-bar">
         <div class="container">
-            <input type="text" placeholder="Searching for food...">
+            <input type="text" placeholder="Tìm kiếm món ăn...">
         </div>
     </div>
 
     <div class="container">
         <div class="breadcrumb">
-            <a href="index.jsp">Home</a> > <a href="login.jsp">Log in</a> > Forgot Password
+            <a href="index.jsp">Trang chủ</a> > <a href="login.jsp">Đăng nhập</a> > Quên mật khẩu
         </div>
 
         <div class="auth-container">
-            <h2 style="text-align: center; margin: 20px 0; color: #333;">Reset Password</h2>
+            <h2 style="text-align: center; margin: 20px 0; color: #333;">Đặt lại mật khẩu</h2>
             
             <% if (request.getAttribute("error") != null) { %>
                 <div style="color: #dc3545; text-align: center; margin-bottom: 15px;">
@@ -58,12 +58,12 @@
                     <!-- Email Form -->
                     <form action="forgotpassword" method="post">
                         <div class="form-group">
-                            <label>Email Address</label>
-                            <input type="email" name="email" placeholder="Enter your email" required>
+                            <label>Địa chỉ Email</label>
+                            <input type="email" name="email" placeholder="Nhập email của bạn" required>
                         </div>
-                        <button type="submit" class="submit-button">Send Reset Code</button>
+                        <button type="submit" class="submit-button">Gửi mã đặt lại</button>
                         <div class="social-login">
-                            <p>Remember your password? <a href="login.jsp" style="color: #2ecc71; text-decoration: none;">Back to Login</a></p>
+                            <p>Bạn nhớ mật khẩu? <a href="login.jsp" style="color: #2ecc71; text-decoration: none;">Quay lại đăng nhập</a></p>
                         </div>
                     </form>
                 <% } else { %>
@@ -71,20 +71,20 @@
                     <form action="forgotpassword" method="post">
                         <input type="hidden" name="action" value="verify">
                         <div class="form-group">
-                            <label>Verification Code</label>
-                            <input type="text" name="code" placeholder="Enter verification code" required pattern="[0-9]{6}">
+                            <label>Mã xác thực</label>
+                            <input type="text" name="code" placeholder="Nhập mã xác thực" required pattern="[0-9]{6}">
                         </div>
                         <div class="form-group">
-                            <label>New Password</label>
-                            <input type="password" name="newPassword" placeholder="Enter new password" required>
+                            <label>Mật khẩu mới</label>
+                            <input type="password" name="newPassword" placeholder="Nhập mật khẩu mới" required>
                         </div>
                         <div class="form-group">
-                            <label>Confirm Password</label>
-                            <input type="password" name="confirmPassword" placeholder="Confirm new password" required>
+                            <label>Xác nhận mật khẩu</label>
+                            <input type="password" name="confirmPassword" placeholder="Xác nhận mật khẩu" required>
                         </div>
-                        <button type="submit" class="submit-button">Reset Password</button>
+                        <button type="submit" class="submit-button">Đặt lại mật khẩu</button>
                         <div class="social-login">
-                            <p>Didn't receive the code? <a href="forgotpassword?action=resend" style="color: #2ecc71; text-decoration: none;">Resend Code</a></p>
+                            <p>Không nhận được mã? <a href="forgotpassword?action=resend" style="color: #2ecc71; text-decoration: none;">Gửi lại mã</a></p>
                         </div>
                     </form>
                 <% } %>

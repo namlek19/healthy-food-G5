@@ -27,14 +27,12 @@ public class LoginServlet extends HttpServlet {
 
     private static final String GOOGLE_CLIENT_ID = "423890706733-eo05uhbjo9aup4pkpq714evrohqjqcq1.apps.googleusercontent.com";
     private static final String GOOGLE_TOKEN_VERIFICATION_URL = "https://oauth2.googleapis.com/tokeninfo?id_token=";
-<<<<<<< HEAD
+
     private static final String REMEMBER_ME_COOKIE = "rememberMe";
     private static final String REMEMBER_ME_SECRET = "SomeSecretKey123!";
-    private static final int REMEMBER_ME_DAYS = 7;
+    private static final int REMEMBER_ME_DAYS = 7;   
     
-=======
-
->>>>>>> origin/main
+    
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
@@ -120,7 +118,7 @@ public class LoginServlet extends HttpServlet {
         } catch (Exception e) {
             System.out.println("DEBUG: Unexpected error in servlet:");
             e.printStackTrace();
-            request.getSession().setAttribute("errorMessage", "An unexpected error occurred. Please try again.");
+            request.getSession().setAttribute("errorMessage", "Đã xảy ra lỗi không mong muốn. Vui lòng thử lại.");
             response.sendRedirect("login.jsp");
         }
     }
@@ -142,17 +140,21 @@ public class LoginServlet extends HttpServlet {
 
 
         if (email == null || email.trim().isEmpty() || password == null || password.trim().isEmpty()) {
-            request.getSession().setAttribute("errorMessage", "Email and password are required");
+            request.getSession().setAttribute("errorMessage", "Vui lòng nhập email và mật khẩu");
             response.sendRedirect("login.jsp");
             return;
         }
 
         try {
             UserDAO userDAO = new UserDAO();
+            System.out.println("DEBUG: About to call checkLogin with email: " + email);
             User user = userDAO.checkLogin(email, password);
+            System.out.println("DEBUG: checkLogin returned user: " + (user != null ? "NOT NULL" : "NULL"));
 
             if (user != null) {
+                System.out.println("DEBUG: User active status: " + user.getActive());
                 if (user.getActive() == 0) {
+                    System.out.println("DEBUG: User is inactive, redirecting to inactive.jsp");
                     response.sendRedirect("inactive.jsp");
                     return;
                 }
@@ -214,13 +216,13 @@ public class LoginServlet extends HttpServlet {
                 }
 
             } else {
-                request.getSession().setAttribute("errorMessage", "Invalid email or password");
+                request.getSession().setAttribute("errorMessage", "Email hoặc mật khẩu không đúng");
                 response.sendRedirect("login.jsp");
             }
         } catch (Exception e) {
             System.out.println("DEBUG: Error in login: " + e.getMessage());
             e.printStackTrace();
-            request.getSession().setAttribute("errorMessage", "An error occurred during login. Please try again.");
+            request.getSession().setAttribute("errorMessage", "Đã xảy ra lỗi. Vui lòng thử lại.");
             response.sendRedirect("login.jsp");
         }
     }
@@ -413,7 +415,7 @@ public class LoginServlet extends HttpServlet {
 
             if (!isValidPassword(params.get("password"))) {
                 request.getSession().setAttribute("errorMessage",
-                        "Password must be at least 8 characters long and contain at least one number");
+                        "Mật khẩu phải có ít nhất 8 ký tự và chứa ít nhất một số");
                 response.sendRedirect("login.jsp?action=signup");
                 return;
             }
@@ -435,7 +437,7 @@ public class LoginServlet extends HttpServlet {
 
             if (userDAO.checkEmailExists(params.get("email"))) {
                 System.out.println("DEBUG: Email already exists - " + params.get("email"));
-                request.getSession().setAttribute("errorMessage", "Email already exists");
+                request.getSession().setAttribute("errorMessage", "Email đã tồn tại");
                 response.sendRedirect("login.jsp?action=signup");
                 return;
             }
@@ -445,13 +447,13 @@ public class LoginServlet extends HttpServlet {
             System.out.println("DEBUG: Attempting to register user");
             if (userDAO.registerUser(user)) {
                 System.out.println("DEBUG: Registration successful for email: " + params.get("email"));
-                request.getSession().setAttribute("successMessage", "Registration successful! Please login.");
+                request.getSession().setAttribute("successMessage", "Đăng ký thành công! Vui lòng đăng nhập.");
                 response.sendRedirect("login.jsp");
                 // Clear signup data from session
                 request.getSession().removeAttribute("signupData");
             } else {
                 System.out.println("DEBUG: Registration failed for email: " + params.get("email"));
-                request.setAttribute("error", "Failed to create account. Please check your details.");
+                request.setAttribute("error", "Tạo tài khoản thất bại. Vui lòng kiểm tra lại thông tin.");
                 request.getSession().setAttribute("signupData", params);
                 request.getRequestDispatcher("login.jsp").forward(request, response);
             }

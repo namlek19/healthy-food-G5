@@ -19,15 +19,21 @@ public class UserDAO {
     
     public User checkLogin(String email, String password) {
         try {
+            // Trim input to avoid whitespace issues
+            String trimmedEmail = email == null ? null : email.trim();
+            String trimmedPassword = password == null ? null : password.trim();
+            System.out.println("DEBUG: Email param: '" + trimmedEmail + "'");
+            System.out.println("DEBUG: Password param: '" + trimmedPassword + "'");
             String query = "SELECT * FROM Users WHERE Email = ? AND PasswordHash = ?";
             conn = db.getConnection();
             ps = conn.prepareStatement(query);
-            ps.setString(1, email);
-            ps.setString(2, password);
+            ps.setString(1, trimmedEmail);
+            ps.setString(2, trimmedPassword);
             rs = ps.executeQuery();
             
             if (rs.next()) {
-                return new User(
+                System.out.println("DEBUG: User found in database");
+                User user = new User(
                     rs.getInt("UserID"),
                     rs.getString("FullName"),
                     rs.getString("Email"),
@@ -37,9 +43,23 @@ public class UserDAO {
                     rs.getString("Address"),
                     rs.getInt("RoleID")
                 );
+                // Set the active status from database
+                try {
+                    int activeStatus = rs.getInt("isActive");
+                    user.setActive(activeStatus);
+                    System.out.println("DEBUG: User active status from DB: " + activeStatus);
+                } catch (Exception e) {
+                    user.setActive(1); // Default to active if field doesn't exist
+                    System.out.println("DEBUG: Error reading isActive field, defaulting to 1: " + e.getMessage());
+                }
+                System.out.println("DEBUG: Returning user with active status: " + user.getActive());
+                return user;
+            } else {
+                System.out.println("DEBUG: No user found with email: '" + trimmedEmail + "' and password: '" + trimmedPassword + "'");
             }
         } catch (Exception e) {
             System.out.println("Error in checkLogin: " + e.getMessage());
+            e.printStackTrace();
         } finally {
             try {
                 if (db != null) {
@@ -120,7 +140,7 @@ public class UserDAO {
             rs = ps.executeQuery();
             
             if (rs.next()) {
-                return new User(
+                User user = new User(
                     rs.getInt("UserID"),
                     rs.getString("FullName"),
                     rs.getString("Email"),
@@ -130,6 +150,13 @@ public class UserDAO {
                     rs.getString("Address"),
                     rs.getInt("RoleID")
                 );
+                // Set the active status from database
+                try {
+                    user.setActive(rs.getInt("isActive"));
+                } catch (Exception e) {
+                    user.setActive(1); // Default to active if field doesn't exist
+                }
+                return user;
             }
         } catch (Exception e) {
             System.out.println("Error in getUserByEmail: " + e.getMessage());
@@ -187,6 +214,12 @@ public class UserDAO {
                     rs.getString("Address"),
                     rs.getInt("RoleID")
                 );
+                // Set the active status from database
+                try {
+                    user.setActive(rs.getInt("isActive"));
+                } catch (Exception e) {
+                    user.setActive(1); // Default to active if field doesn't exist
+                }
                 return user;
             }
         } catch (Exception e) {

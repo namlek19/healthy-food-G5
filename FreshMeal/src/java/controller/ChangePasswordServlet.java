@@ -55,29 +55,29 @@ public class ChangePasswordServlet extends HttpServlet {
             User checkUser = userDAO.checkLogin(user.getEmail(), oldPassword);
             
             if (checkUser == null) {
-                message = "Current password is incorrect.";
+                message = "Mật khẩu hiện tại không đúng.";
             } else if (!newPassword.equals(confirmPassword)) {
-                message = "New passwords do not match.";
+                message = "Mật khẩu mới không khớp.";
             } else if (!isValidPassword(newPassword)) {
-                message = "Password must be at least 8 characters long and contain at least one number.";
+                message = "Mật khẩu phải có ít nhất 8 ký tự và chứa ít nhất một số.";
             } else {
                 // Update password
                 boolean passwordUpdated = userDAO.updatePassword(user.getEmail(), newPassword);
                 if (passwordUpdated) {
-                    message = "Profile updated successfully.";
+                    message = "Cập nhật hồ sơ thành công.";
                     // Update session user object
                     user.setPasswordHash(newPassword);
                     session.setAttribute("user", user);
                     success = true;
                 } else {
-                    message = "Profile updated but failed to update password.";
+                    message = "Cập nhật hồ sơ thành công nhưng đổi mật khẩu thất bại.";
                 }
             }
         } else if (profileUpdated) {
-            message = "Profile updated successfully.";
+            message = "Cập nhật hồ sơ thành công.";
             success = true;
         } else {
-            message = "Failed to update profile.";
+            message = "Cập nhật hồ sơ thất bại.";
         }
 
         session.setAttribute("passwordMessage", message);
