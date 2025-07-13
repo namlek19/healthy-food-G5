@@ -7,9 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 import model.Product;
 
-
 public class ProductDAO extends DBContext {
-
 
     Connection conn = null;
     PreparedStatement ps = null;
@@ -42,7 +40,6 @@ public class ProductDAO extends DBContext {
         return list;
     }
 
-   
     public Product getProductById(int id) {
         String sql = "SELECT * FROM Product WHERE ProductID = ?";
         try (Connection conn = getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
@@ -68,47 +65,71 @@ public class ProductDAO extends DBContext {
         return null;
     }
 
+    public List<Product> getNewestProducts(int limit) {
+        List<Product> list = new ArrayList<>();
+        String sql = "SELECT TOP (?) * FROM Product ORDER BY ProductID DESC";
+        try (Connection conn = getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, limit);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                list.add(new Product(
+                        rs.getInt("ProductID"),
+                        rs.getString("Name"),
+                        rs.getString("Description"),
+                        rs.getString("NutritionInfo"),
+                        rs.getString("Origin"),
+                        rs.getString("ImageURL"),
+                        rs.getString("StorageInstructions"),
+                        rs.getDouble("Price"),
+                        rs.getInt("CategoryID"),
+                        rs.getInt("Calories")
+                ));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
+
     public List<Product> getProductByCategory(String categoryId) {
-    List<Product> list = new ArrayList<>();
-    String query;
+        List<Product> list = new ArrayList<>();
+        String query;
 
-    if (categoryId == null || categoryId.isEmpty()) {
-        query = "SELECT * FROM Product";
-    } else {
-        query = "SELECT * FROM Product WHERE CategoryID = ?";
-    }
-
-    try {
-        conn = new DBContext().getConnection();
-        ps = conn.prepareStatement(query);
-
-        if (categoryId != null && !categoryId.isEmpty()) {
-            ps.setInt(1, Integer.parseInt(categoryId));
+        if (categoryId == null || categoryId.isEmpty()) {
+            query = "SELECT * FROM Product";
+        } else {
+            query = "SELECT * FROM Product WHERE CategoryID = ?";
         }
 
-        rs = ps.executeQuery();
-        while (rs.next()) {
-            list.add(new Product(
-                    rs.getInt("productID"),
-                    rs.getString("name"),
-                    rs.getString("description"),
-                    rs.getString("nutritionInfo"),
-                    rs.getString("origin"),
-                    rs.getString("imageURL"),
-                    rs.getString("storageInstructions"),
-                    rs.getDouble("price"),
-                    rs.getInt("categoryID"),
-                    rs.getInt("calories")
-            ));
+        try {
+            conn = new DBContext().getConnection();
+            ps = conn.prepareStatement(query);
+
+            if (categoryId != null && !categoryId.isEmpty()) {
+                ps.setInt(1, Integer.parseInt(categoryId));
+            }
+
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                list.add(new Product(
+                        rs.getInt("productID"),
+                        rs.getString("name"),
+                        rs.getString("description"),
+                        rs.getString("nutritionInfo"),
+                        rs.getString("origin"),
+                        rs.getString("imageURL"),
+                        rs.getString("storageInstructions"),
+                        rs.getDouble("price"),
+                        rs.getInt("categoryID"),
+                        rs.getInt("calories")
+                ));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-    } catch (Exception e) {
-        e.printStackTrace();
+        return list;
     }
-    return list;
-}
-    
-    
-    
+
     public static void main(String[] args) {
         ProductDAO dao = new ProductDAO();
         List<Product> list = dao.getAllProduct();
@@ -117,4 +138,3 @@ public class ProductDAO extends DBContext {
         }
     }
 }
-
