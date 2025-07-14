@@ -298,7 +298,7 @@ public boolean deleteMenuWithResult(int menuID) {
 }
 public boolean applySuaMenuWithResult(int menuID) {
     try (Connection conn = getConnection()) {
-        conn.setAutoCommit(false); // Bắt đầu giao dịch
+        conn.setAutoCommit(false); 
 
         // Lấy thông tin từ SuaMenu
         String getSuaMenu = "SELECT MenuName, Description, ImageURL, BMICategory FROM SuaMenu WHERE MenuID = ?";
