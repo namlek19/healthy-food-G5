@@ -1,0 +1,64 @@
+<%@ page import="java.util.List" %>
+<%@ page import="model.Product" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Quản lý món ăn</title>
+        <link rel="stylesheet" href="assets/css/blog.css">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+        <style>
+            .product-card {
+                border: 1px solid #ddd;
+                border-radius: 10px;
+                padding: 16px;
+                margin-bottom: 20px;
+            }
+            .product-img {
+                max-height: 150px;
+                object-fit: cover;
+                border-radius: 8px;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="d-flex">
+            <jsp:include page="includes/sidebarSeller.jsp">
+                <jsp:param name="currentPage" value="manageproductseller" />
+            </jsp:include>
+
+            <div style="margin-left: 250px; padding: 20px;">
+                <h3 class="text-success">Danh sách món ăn</h3>
+
+                <table class="table table-striped table-bordered">
+                    <thead class="table-success">
+                        <tr>
+                            <th>#</th>
+                            <th>Tên món</th>
+                            <th>Calories (kcal)</th>
+                            <th>Giá (VNĐ)</th>
+                            <th>Xuất xứ</th>
+                            <th>Hành động</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <c:forEach var="p" items="${productList}" varStatus="loop">
+                            <tr>
+                                <td>${loop.index + 1}</td>
+                                <td>${p.name}</td>
+                                <td>${p.calories}</td>
+                                <td><fmt:formatNumber value="${p.price}" type="number" maxFractionDigits="0"/></td>
+                                <td>${p.origin}</td>
+                                <td>
+                                    <a href="productdetail?id=${p.productID}" class="btn btn-outline-success btn-sm">Xem chi tiết</a>
+                                </td>
+                            </tr>
+                        </c:forEach>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </body>
+</html>

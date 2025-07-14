@@ -78,6 +78,34 @@
         <servlet-name>RequestDeleteMenuServlet</servlet-name>
         <servlet-class>controller.RequestDeleteMenuServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>RequestEditMenuServlet</servlet-name>
+        <servlet-class>controller.RequestEditMenuServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>BMISerlvet</servlet-name>
+        <servlet-class>controller.BMISerlvet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>IndexServlet</servlet-name>
+        <servlet-class>controller.IndexServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ManageProductSellerServlet</servlet-name>
+        <servlet-class>controller.ManageProductSellerServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ManageComboSellerServlet</servlet-name>
+        <servlet-class>controller.ManageComboSellerServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>PostComboSellerServlet</servlet-name>
+        <servlet-class>controller.PostComboSellerServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>PostComboServlet</servlet-name>
+        <servlet-class>controller.PostComboServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>LoginServlet</servlet-name>
         <url-pattern>/login</url-pattern>
@@ -154,10 +182,38 @@
         <servlet-name>RequestDeleteMenuServlet</servlet-name>
         <url-pattern>/requestdeletemenu</url-pattern>
     </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>RequestEditMenuServlet</servlet-name>
+        <url-pattern>/requestEditMenu</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>BMISerlvet</servlet-name>
+        <url-pattern>/bmi</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>IndexServlet</servlet-name>
+        <url-pattern>/index</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ManageProductSellerServlet</servlet-name>
+        <url-pattern>/manageProductSeller</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ManageComboSellerServlet</servlet-name>
+        <url-pattern>/manageComboSeller</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>PostComboSellerServlet</servlet-name>
+        <url-pattern>/postComboSeller</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>PostComboServlet</servlet-name>
+        <url-pattern>/postCombo</url-pattern>
+    </servlet-mapping>
     <session-config>
         <session-timeout>30</session-timeout>
     </session-config>
     <welcome-file-list>
-        <welcome-file>index.jsp</welcome-file>
+        <welcome-file>index</welcome-file>
     </welcome-file-list>
 </web-app>
