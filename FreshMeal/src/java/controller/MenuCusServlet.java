@@ -64,12 +64,12 @@ public class MenuCusServlet extends HttpServlet {
         List<Menu> menuList;
         if (bmi == null || bmi.isEmpty()) {
             menuList = new ArrayList<>();
-            menuList.addAll(dao.getMenusByStatusAndBMICategory(3, "Underweight"));
-            menuList.addAll(dao.getMenusByStatusAndBMICategory(3, "Normal"));
-            menuList.addAll(dao.getMenusByStatusAndBMICategory(3, "Overweight"));
-            menuList.addAll(dao.getMenusByStatusAndBMICategory(3, "Obese"));
+            menuList.addAll(dao.getMenusByStatusesAndBMICategory(Arrays.asList(3, 4), "Underweight"));
+            menuList.addAll(dao.getMenusByStatusesAndBMICategory(Arrays.asList(3, 4), "Normal"));
+            menuList.addAll(dao.getMenusByStatusesAndBMICategory(Arrays.asList(3, 4), "Overweight"));
+            menuList.addAll(dao.getMenusByStatusesAndBMICategory(Arrays.asList(3, 4), "Obese"));
         } else {
-            menuList = dao.getMenusByStatusAndBMICategory(3, bmi);
+            menuList = dao.getMenusByStatusesAndBMICategory(Arrays.asList(3, 4), bmi);
         }
         request.setAttribute("menuList", menuList);
         request.setAttribute("categoryName", categoryName);

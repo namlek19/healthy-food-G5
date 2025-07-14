@@ -110,7 +110,7 @@
                 <img src="assets/images/logoreal.png" alt="FreshMeal">
             </div>
             <nav class="nav-links">
-                <a href="index.jsp">Home</a>
+                <a href="index">Home</a>
                 <a href="#">Order</a>
                 <a href="#">Blog</a>
                 <a href="#">About Us</a>
