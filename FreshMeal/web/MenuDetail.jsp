@@ -55,17 +55,24 @@
                                 </div>
                                 <div class="row mt-3 align-items-center">
                                     <div class="col-md-6 mb-2">
-                                        <form>
-                                            <button type="button" class="btn btn-outline-success w-100" 
-                                                    onclick="alert('Chức năng sẽ sớm được cập nhật!');">Thêm vào giỏ</button>
+                                        <form action="CartServlet" method="post">
+                                            <input type="hidden" name="menu_id" value="${menu.menuID}">
+                                            <input type="hidden" name="action" value="add_menu">
+                                            <input type="hidden" name="redirect" value="menudetail?id=${menu.menuID}">
+                                            <button type="submit" class="btn btn-outline-success w-100" 
+                                                    onclick="alert('Thêm thực đơn vào giỏ hàng thành công!');">Thêm vào giỏ</button>
                                         </form>
                                     </div>
+
                                     <div class="col-md-6 mb-2">
-                                        <form>
-                                            <button type="button" class="btn btn-success w-100"
-                                                    onclick="alert('Chức năng sẽ sớm được cập nhật!');">Mua ngay</button>
+                                        <form action="CartServlet" method="post">
+                                            <input type="hidden" name="menu_id" value="${menu.menuID}">
+                                            <input type="hidden" name="action" value="add_menu">
+                                            <input type="hidden" name="redirect" value="cart.jsp">
+                                            <button type="submit" class="btn btn-success w-100">Mua ngay</button>
                                         </form>
                                     </div>
+
                                 </div>
                             </div>
                         </div>

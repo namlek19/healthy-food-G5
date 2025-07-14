@@ -77,8 +77,7 @@ public class MenuDAO extends DBContext {
         }
         return list;
     }
-
-    private List<Product> getProductsInMenu(int menuID, Connection conn) throws SQLException {
+private List<Product> getProductsInMenu(int menuID, Connection conn) throws SQLException {
         List<Product> list = new ArrayList<>();
         String sql = "SELECT p.* FROM Product p JOIN MenuProduct mp ON p.ProductID = mp.ProductID WHERE mp.MenuID = ?";
         try (PreparedStatement ps = conn.prepareStatement(sql)) {
@@ -146,7 +145,7 @@ public class MenuDAO extends DBContext {
                         rs.getInt("NutritionistID")
                 );
                 m.setProducts(getProductsInMenu(m.getMenuID(), conn));
-                double total = 0;
+double total = 0;
                 for (Product p : m.getProducts()) {
                     total += p.getPrice();
                 }
@@ -219,7 +218,7 @@ public class MenuDAO extends DBContext {
                         rs.getInt("MenuID"),
                         rs.getString("MenuName"),
                         rs.getString("Description"),
-                        rs.getString("ImageURL"),
+rs.getString("ImageURL"),
                         rs.getString("BMICategory"),
                         rs.getInt("NutritionistID")
                 );
@@ -294,7 +293,7 @@ public class MenuDAO extends DBContext {
 
     public Map<Integer, Integer> getStatusMapByNutritionist(int nutritionistID) {
         Map<Integer, Integer> map = new HashMap<>();
-        String sql = "SELECT MenuID, Status FROM Menu WHERE NutritionistID = ?";
+String sql = "SELECT MenuID, Status FROM Menu WHERE NutritionistID = ?";
         try (Connection conn = getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setInt(1, nutritionistID);
             ResultSet rs = ps.executeQuery();
@@ -369,7 +368,7 @@ public class MenuDAO extends DBContext {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return emails;
+return emails;
     }
 
     public boolean deleteMenuWithResult(int menuID) {
@@ -439,7 +438,7 @@ public class MenuDAO extends DBContext {
                 }
 
                 // Xóa bảng sửa
-                try (PreparedStatement ps5 = conn.prepareStatement("DELETE FROM SuaMenuProduct WHERE MenuID = ?")) {
+try (PreparedStatement ps5 = conn.prepareStatement("DELETE FROM SuaMenuProduct WHERE MenuID = ?")) {
                     ps5.setInt(1, menuID);
                     ps5.executeUpdate();
                 }
@@ -519,7 +518,7 @@ public class MenuDAO extends DBContext {
 
     private List<Product> getProductsFromSuaMenu(int menuId) {
         List<Product> products = new ArrayList<>();
-        String sql = "SELECT p.ProductID, p.Name, p.Description, p.ImageURL, p.Price "
+String sql = "SELECT p.ProductID, p.Name, p.Description, p.ImageURL, p.Price "
                 + "FROM Product p "
                 + "JOIN SuaMenuProduct smp ON p.ProductID = smp.ProductID "
                 + "WHERE smp.MenuID = ?";
@@ -588,7 +587,7 @@ public class MenuDAO extends DBContext {
             ps.setInt(5, menuID);
             ps.executeUpdate();
             return true;
-        } catch (Exception e) {
+} catch (Exception e) {
             e.printStackTrace();
         }
         return false;
