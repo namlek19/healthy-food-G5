@@ -88,9 +88,12 @@ public class RequestDeleteMenuServlet extends HttpServlet {
 
         if (updated) {
             // Gửi mail cho tất cả manager
-            String subject = "Yêu cầu xóa Menu ID " + menuID;
-            String content = "Nutritionist ID " + userID + " đã gửi yêu cầu xóa Menu ID " + menuID
-                    + "\nLý do: " + reason;
+            String menuName = dao.getMenuById(menuID).getMenuName();
+            String userName = dao.getUserNameByID(userID);
+            String subject = "Yêu cầu xóa combo: " + menuName + " (ID " + menuID + ")";
+            String content = "Nutritionist \"" + userName + "\" (UserID: " + userID + ") đã gửi yêu cầu xóa combo \""
+                    + menuName + "\" (MenuID: " + menuID + ")\n"
+                    + "Lý do: " + reason;
 
             List<String> managerEmails = dao.getAllManagerEmails(); // lấy danh sách email
 

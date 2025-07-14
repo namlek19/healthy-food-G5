@@ -631,5 +631,22 @@ String sql = "SELECT p.ProductID, p.Name, p.Description, p.ImageURL, p.Price "
         }
         return ids;
     }
+    
+    public String getUserNameByID(int userID) {
+    String sql = "SELECT fullName FROM Users WHERE userID = ?";
+    try (Connection conn = getConnection();
+         PreparedStatement ps = conn.prepareStatement(sql)) {
+        ps.setInt(1, userID);
+        ResultSet rs = ps.executeQuery();
+        if (rs.next()) {
+            return rs.getString("fullName");
+        }
+    } catch (Exception e) {
+        e.printStackTrace();
+    }
+    return "Unknown";
+}
+
+    
 
 }

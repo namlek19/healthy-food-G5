@@ -18,6 +18,12 @@
 
             <h2 class="text-success mb-4" style="font-weight:700;">Tạo Thực Đơn Mới</h2>
 
+            <c:if test="${not empty errorMessage}">
+                <div class="alert alert-danger" role="alert">
+                    ${errorMessage}
+                </div>
+            </c:if>
+
             <form action="menupost" method="post" id="menuForm">
                 <div class="mb-4">
                     <div class="card p-3 shadow-sm">
