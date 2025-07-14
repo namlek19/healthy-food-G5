@@ -4,7 +4,7 @@
 <div class="sidebar">
     <div class="sidebar-header">
         <i class="fas fa-leaf sidebar-logo-icon"></i>
-        <h2>QUẢN LÝ</h2>
+        <h2>Nutritionist</h2>
     </div>
     
     <ul class="sidebar-menu">

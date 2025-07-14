@@ -90,8 +90,13 @@ public class RequestEditMenuServlet extends HttpServlet {
         MenuDAO dao = new MenuDAO();
         dao.updateSuaMenu(menuID, menuName, desc, img, bmi);
 
-        String subject = "Yêu cầu sửa Menu ID " + menuID;
-        String content = "Nutritionist ID " + nutritionistID + " đã gửi yêu cầu sửa Menu ID " + menuID + "\nLý do: " + reason;
+        String tenmenu = dao.getMenuById(menuID).getMenuName();
+        String userName = dao.getUserNameByID(nutritionistID);
+        String subject = "Yêu cầu sửa combo: " + tenmenu + " (ID " + menuID + ")";
+        String content = "Nutritionist \"" + userName + "\" (UserID: " + nutritionistID + ") đã gửi yêu cầu sửa combo \""
+                + tenmenu + "\" (MenuID: " + menuID + ")\n"
+                + "Lý do: " + reason;
+
         for (String email : dao.getAllManagerEmails()) {
             SendMail.send(email, subject, content);
         }

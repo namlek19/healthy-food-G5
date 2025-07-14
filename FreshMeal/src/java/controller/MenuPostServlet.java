@@ -85,9 +85,23 @@ public class MenuPostServlet extends HttpServlet {
         String menuName = request.getParameter("menuName");
         String description = request.getParameter("description");
         String bmiCategory = request.getParameter("bmiCategory");
-        String imageURL = request.getParameter("imageURL");   //  
-        String[] productIDs = request.getParameter("selectedProductIDs").split(",");
-        int nutritionistID = (Integer) request.getSession().getAttribute("userID"); // hoặc user.getUserID()
+        String imageURL = request.getParameter("imageURL");
+        String selectedProductIDsStr = request.getParameter("selectedProductIDs");
+        int nutritionistID = (Integer) request.getSession().getAttribute("userID");
+
+        // Kiểm tra xem có chọn product không
+        if (selectedProductIDsStr == null || selectedProductIDsStr.trim().isEmpty()) {
+            // Gửi lại trang với thông báo lỗi
+            request.setAttribute("errorMessage", "Bạn phải chọn ít nhất một món ăn!");
+            ProductDAO productDAO = new ProductDAO();
+            List<Product> productList = productDAO.getAllProduct();
+            request.setAttribute("productList", productList);
+            request.setAttribute("currentPage", "menupost");
+            request.getRequestDispatcher("menu_post.jsp").forward(request, response);
+            return;
+        }
+
+        String[] productIDs = selectedProductIDsStr.split(",");
 
         Menu menu = new Menu();
         menu.setMenuName(menuName);
@@ -98,10 +112,14 @@ public class MenuPostServlet extends HttpServlet {
 
         MenuDAO menuDAO = new MenuDAO();
         int menuID = menuDAO.addMenu(menu);
+
         for (String pid : productIDs) {
-            menuDAO.addMenuProduct(menuID, Integer.parseInt(pid));
+            if (!pid.isEmpty()) { // tránh lỗi nếu có phần tử rỗng
+                menuDAO.addMenuProduct(menuID, Integer.parseInt(pid));
+            }
         }
-        response.sendRedirect("menupost"); // hoặc về trang menu đã post
+
+        response.sendRedirect("menupost");
     }
 
     /**
