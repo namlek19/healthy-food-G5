@@ -85,12 +85,12 @@
     <servlet>
         <servlet-name>BMISerlvet</servlet-name>
         <servlet-class>controller.BMISerlvet</servlet-class>
-    </servlet>
+    </servlet>                              
     <servlet>
         <servlet-name>IndexServlet</servlet-name>
         <servlet-class>controller.IndexServlet</servlet-class>
     </servlet>
-    <servlet>
+    <servlet>   
         <servlet-name>ManageProductSellerServlet</servlet-name>
         <servlet-class>controller.ManageProductSellerServlet</servlet-class>
     </servlet>
@@ -121,7 +121,7 @@
     <servlet>
         <servlet-name>OrderDetailServlet</servlet-name>
         <servlet-class>controller.OrderDetailServlet</servlet-class>
-    </servlet>
+    </servlet>              
     <servlet-mapping>
         <servlet-name>LoginServlet</servlet-name>
         <url-pattern>/login</url-pattern>
