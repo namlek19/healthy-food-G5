@@ -1,4 +1,5 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%
     request.setAttribute("currentPage", "blogpost");
 %>
@@ -20,6 +21,12 @@
         <%@ include file="sidebar.jsp" %>
 
         <div class="blog-form-container">
+            <c:if test="${error != null && error != ''}">
+    <div class="alert alert-danger" role="alert">
+        ${error}
+    </div>
+</c:if>
+
             <div class="blog-form-title">Đăng bài viết mới</div>
             <form action="blogpost" method="post" autocomplete="off">
                 <label class="blog-form-label" for="title">Tiêu đề:</label>

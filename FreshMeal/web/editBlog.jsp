@@ -9,7 +9,7 @@
         <link rel="stylesheet" href="assets/css/editBlog.css">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"/>
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-        
+
     </head>
     <body>
 
@@ -17,6 +17,13 @@
 
         <div class="main-container">
             <h2>Chỉnh sửa bài Blog</h2>
+
+            <c:if test="${not empty errorMessage}">
+                <div class="alert alert-danger" role="alert">
+                    ${errorMessage}
+                </div>
+            </c:if>
+
 
             <c:if test="${not empty blog}">
                 <form action="blog" method="post">

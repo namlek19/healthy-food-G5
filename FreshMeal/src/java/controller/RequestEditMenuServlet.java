@@ -79,15 +79,53 @@ public class RequestEditMenuServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        request.setCharacterEncoding("UTF-8");
         int menuID = Integer.parseInt(request.getParameter("menuID"));
         String menuName = request.getParameter("menuName");
         String desc = request.getParameter("description");
         String img = request.getParameter("imageURL");
         String bmi = request.getParameter("bmiCategory");
         String reason = request.getParameter("reason");
+        String selectedProductIDsStr = request.getParameter("selectedProductIDs");
         int nutritionistID = (Integer) request.getSession().getAttribute("userID");
 
         MenuDAO dao = new MenuDAO();
+
+        
+        request.setAttribute("menuID", menuID);
+        request.setAttribute("menu", dao.getMenuById(menuID));
+        request.setAttribute("selectedProductIDs", selectedProductIDsStr);
+
+        
+        if (img == null || img.trim().isEmpty()) {
+            request.setAttribute("errorMessage", "Bạn phải chọn ảnh cho thực đơn!");
+            request.getRequestDispatcher("request_edit_menu.jsp").forward(request, response);
+            return;
+        }
+
+        
+        if (reason == null || reason.trim().isEmpty()) {
+            request.setAttribute("errorMessage", "Bạn phải nhập lý do gửi yêu cầu sửa!");
+            request.getRequestDispatcher("request_edit_menu.jsp").forward(request, response);
+            return;
+        }
+
+        
+        if (selectedProductIDsStr == null || selectedProductIDsStr.trim().isEmpty()) {
+            request.setAttribute("errorMessage", "Bạn phải chọn ít nhất một món ăn trong thực đơn!");
+            request.getRequestDispatcher("request_edit_menu.jsp").forward(request, response);
+            return;
+        }
+
+        
+        if (menuName == null || menuName.trim().isEmpty()
+                || desc == null || desc.trim().isEmpty()) {
+            request.setAttribute("errorMessage", "Tên thực đơn và mô tả không được để trống!");
+            request.getRequestDispatcher("request_edit_menu.jsp").forward(request, response);
+            return;
+        }
+
+        // Thực hiện update lại thông tin menu
         dao.updateSuaMenu(menuID, menuName, desc, img, bmi);
 
         String tenmenu = dao.getMenuById(menuID).getMenuName();
