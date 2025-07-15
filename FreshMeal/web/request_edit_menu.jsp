@@ -1,4 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+
 <%@ page import="dal.MenuDAO, model.Menu, java.util.List, model.Product" %>
 <%
     int menuID = Integer.parseInt(request.getParameter("menuID"));
@@ -21,6 +23,14 @@
         <%@ include file="sidebar.jsp" %>
         <div class="main-container">
             <h2 class="text-success mb-4" style="font-weight:700;">Yêu cầu sửa Menu ID <%=menuID%></h2>
+
+            <c:if test="${errorMessage != null && errorMessage != ''}">
+                <div class="alert alert-danger" role="alert">
+                    ${errorMessage}
+                </div>
+            </c:if>
+
+
 
             <form action="requestEditMenu" method="post" id="editMenuForm">
                 <input type="hidden" name="menuID" value="<%=menuID%>">

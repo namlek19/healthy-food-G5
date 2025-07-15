@@ -11,7 +11,6 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import model.Blog;
 
-
 @WebServlet(name = "BlogListServlet", urlPatterns = {"/blog"})
 public class BlogListServlet extends HttpServlet {
 
@@ -21,7 +20,6 @@ public class BlogListServlet extends HttpServlet {
         String action = request.getParameter("action");
         BlogDAO blogDAO = new BlogDAO();
 
-        
         jakarta.servlet.http.HttpSession session = request.getSession(false);
         model.User currentUser = (session != null) ? (model.User) session.getAttribute("user") : null;
 
@@ -33,14 +31,14 @@ public class BlogListServlet extends HttpServlet {
                 RequestDispatcher rd = request.getRequestDispatcher("editBlog.jsp");
                 rd.forward(request, response);
             } catch (NumberFormatException e) {
-                
+
                 response.sendRedirect(request.getContextPath() + "/blog");
             }
         } else {
-            
+
             List<Blog> blogs = blogDAO.getAllBlogs();
             request.setAttribute("blogs", blogs);
-            
+
             if (currentUser != null) {
                 request.setAttribute("myUserID", currentUser.getUserID());
             }
@@ -52,7 +50,7 @@ public class BlogListServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
+
         request.setCharacterEncoding("UTF-8");
 
         String action = request.getParameter("action");
@@ -69,6 +67,19 @@ public class BlogListServlet extends HttpServlet {
                     String imageURL = request.getParameter("imageURL");
                     String description = request.getParameter("description");
 
+                    
+                    if (title == null || title.trim().isEmpty()
+                            || description == null || description.trim().isEmpty()
+                            || imageURL == null || imageURL.trim().isEmpty()) {
+
+                        // Lấy lại blog cũ để hiển thị lại dữ liệu
+                        Blog blog = blogDAO.getBlogByID(id);
+                        request.setAttribute("blog", blog);
+                        request.setAttribute("errorMessage", "Tiêu đề, nội dung và ảnh không được để trống!");
+                        request.getRequestDispatcher("editBlog.jsp").forward(request, response);
+                        return;
+                    }
+
                     Blog blog = new Blog();
                     blog.setBlogID(id);
                     blog.setTitle(title);
@@ -82,7 +93,6 @@ public class BlogListServlet extends HttpServlet {
             }
         }
 
-        
         response.sendRedirect(request.getContextPath() + "/blogmanage");
     }
 

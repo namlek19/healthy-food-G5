@@ -94,16 +94,24 @@ public class MenuPostServlet extends HttpServlet {
         request.setAttribute("productList", productList);
         request.setAttribute("currentPage", "menupost");
 
-        // Kiểm tra có chọn món không
+        
         if (selectedProductIDsStr == null || selectedProductIDsStr.trim().isEmpty()) {
             request.setAttribute("errorMessage", "Bạn phải chọn ít nhất một món ăn!");
             request.getRequestDispatcher("menu_post.jsp").forward(request, response);
             return;
         }
 
-        // Kiểm tra có chọn ảnh không
+        
         if (imageURL == null || imageURL.trim().isEmpty()) {
             request.setAttribute("errorMessage", "Bạn phải chọn ảnh cho thực đơn!");
+            request.getRequestDispatcher("menu_post.jsp").forward(request, response);
+            return;
+        }
+
+        
+        if (menuName == null || menuName.trim().isEmpty()
+                || description == null || description.trim().isEmpty()) {
+            request.setAttribute("errorMessage", "Tên thực đơn và mô tả không được để trống!");
             request.getRequestDispatcher("menu_post.jsp").forward(request, response);
             return;
         }

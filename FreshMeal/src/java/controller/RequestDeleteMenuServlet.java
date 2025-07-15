@@ -81,6 +81,14 @@ public class RequestDeleteMenuServlet extends HttpServlet {
         String reason = request.getParameter("reason");
         int userID = (Integer) request.getSession().getAttribute("userID");
 
+        
+        if (reason == null || reason.trim().isEmpty()) {
+            request.setAttribute("errorMessage", "Bạn phải nhập lý do xóa thực đơn!");
+            request.setAttribute("menuID", menuID); // giữ lại ID để form hiển thị đúng
+            request.getRequestDispatcher("request_delete_reason.jsp").forward(request, response);
+            return;
+        }
+
         MenuDAO dao = new MenuDAO();
 
         // Cập nhật status = 4 (chờ duyệt xóa)
