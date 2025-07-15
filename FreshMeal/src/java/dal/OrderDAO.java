@@ -32,6 +32,35 @@ public class OrderDAO extends DBContext {
         }
         return list;
     }
+    public List<Order> getAllOrdersByShipperID(int shipperId) {
+        List<Order> list = new ArrayList<>();
+        String sql = "SELECT * FROM [Order] WHERE ShipperID = ? AND (Status = 'Confirmed' OR Status = 'Delivering') ORDER BY OrderDate DESC";
+
+        try (Connection conn = getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, shipperId);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                Order order = new Order();
+                order.setOrderID(rs.getInt("OrderID"));
+                order.setUserID(rs.getInt("UserID"));
+                order.setShipperID(rs.getInt("ShipperID"));
+                order.setReceiverName(rs.getString("ReceiverName"));
+                order.setPhone(rs.getString("Phone"));
+                order.setDeliveryAddress(rs.getString("DeliveryAddress"));
+                order.setDistrict(rs.getString("District"));
+                order.setTotalAmount(rs.getDouble("TotalAmount"));
+                order.setOrderDate(rs.getTimestamp("OrderDate"));
+                order.setStatus(rs.getString("Status"));
+                order.setEmail(rs.getString("Email"));
+                order.setItems(getOrderItems(order.getOrderID()));
+                list.add(order);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return list;
+    }
 
     public List<Order> getOrdersByUserId(int userId) {
         List<Order> orders = new ArrayList<>();
