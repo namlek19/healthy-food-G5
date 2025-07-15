@@ -1,60 +1,73 @@
-<%@ page contentType="text/html;charset=UTF-8" %>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-
 <!DOCTYPE html>
 <html>
     <head>
         <title>Thêm món mới</title>
-        <link rel="stylesheet" href="assets/css/style.css">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+        <link rel="stylesheet" href="assets/css/addProductSeller.css">
     </head>
-    <jsp:include page="includes/sidebarSeller.jsp" />
     <body>
-        <div class="container" style="margin-left: 270px; padding-top: 30px;">
+
+        <jsp:include page="includes/sidebarSeller.jsp" />
+
+        <div class="form-container">
             <h2>Thêm món mới</h2>
-            <form action="addProductSeller" method="post" enctype="multipart/form-data">
-                <div>
-                    <label>Tên món:</label>
-                    <input type="text" name="name" required />
+            <form action="addProductSeller" method="post">
+                <div class="mb-3">
+                    <label class="form-label">Tên món:</label>
+                    <input type="text" name="name" class="form-control" required />
                 </div>
-                <div>
-                    <label>Mô tả:</label>
-                    <textarea name="description" required></textarea>
+                <div class="mb-3">
+                    <label class="form-label">Mô tả:</label>
+                    <textarea name="description" class="form-control" required></textarea>
                 </div>
-                <div>
-                    <label>Calories:</label>
-                    <input type="number" name="calories" required />
+                <div class="mb-3">
+                    <label class="form-label">Calories:</label>
+                    <input type="number" name="calories" class="form-control" required />
                 </div>
-                <div>
-                    <label>Thông tin dinh dưỡng:</label>
-                    <textarea name="nutritionInfo" required></textarea>
+                <div class="mb-3">
+                    <label class="form-label">Thông tin dinh dưỡng:</label>
+                    <textarea name="nutritionInfo" class="form-control" required></textarea>
                 </div>
-                <div>
-                    <label>Nguồn gốc:</label>
-                    <input type="text" name="origin" required />
+                <div class="mb-3">
+                    <label class="form-label">Nguồn gốc:</label>
+                    <input type="text" name="origin" class="form-control" required />
                 </div>
-                <div>
-                    <label>Ảnh:</label>
-                    <input type="file" name="image" accept="image/*" required />
+
+                <div class="mb-3">
+                    <label class="form-label">Ảnh món:</label>
+                    <div class="image-upload-wrapper" id="imageDropArea" title="Nhấn, kéo thả hoặc Ctrl+V để chọn ảnh">
+                        <span class="plus-icon" id="plusIcon">+</span>
+                        <input type="file" id="imageInput" accept="image/*" style="display:none;">
+                        <img id="previewImage" />
+                    </div>
+                    <input type="hidden" name="imageURL" id="imageURL">
                 </div>
-                <div>
-                    <label>Hướng dẫn bảo quản:</label>
-                    <input type="text" name="storageInstructions" required />
+
+                <div class="mb-3">
+                    <label class="form-label">Hướng dẫn bảo quản:</label>
+                    <input type="text" name="storageInstructions" class="form-control" required />
                 </div>
-                <div>
-                    <label>Giá:</label>
-                    <input type="number" step="0.01" name="price" required />
+                <div class="mb-3">
+                    <label class="form-label">Giá:</label>
+                    <input type="number" step="0.01" name="price" class="form-control" required />
                 </div>
-                <div>
-                    <label>Danh mục:</label>
-                    <select name="categoryID" required>
+                <div class="mb-3">
+                    <label class="form-label">Danh mục:</label>
+                    <select name="categoryID" class="form-select" required>
                         <option value="1">Món chính</option>
                         <option value="2">Món phụ</option>
                         <option value="3">Tráng miệng</option>
                         <option value="4">Đồ uống</option>
                     </select>
                 </div>
-                <button type="submit">Thêm món</button>
+                <button type="submit" class="btn btn-submit">Thêm món</button>
             </form>
         </div>
+
+        <script src="js/addProductSeller_script.js"></script>
+
+
     </body>
 </html>

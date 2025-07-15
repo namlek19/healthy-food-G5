@@ -14,14 +14,14 @@
         <div class="container" style="margin-left: 270px; padding-top: 30px;">
             <h3 class="text-success mb-4">Chi tiết Order #${order.orderID}</h3>
 
-            <p><strong>Tên người mua:</strong> <c:out value="${buyer.fullName}" default="null" /></p>
+            <p><strong>Tên người mua:</strong> <c:out value="${order.receiverName}" default="null" /></p>
             <p><strong>Số điện thoại:</strong> <c:out value="${order.phone}" default="null" /></p>
             <p><strong>Địa chỉ:</strong> ${order.deliveryAddress}, ${order.district}</p>
             <p><strong>Email:</strong> <c:out value="${order.email}" default="null" /></p>
 
             <h5 class="mt-4">Danh sách món ăn</h5>
             <table class="table table-bordered">
-                <thead class="table-light">
+                <thead class="table-success">
                     <tr>
                         <th>#</th>
                         <th>Tên món</th>

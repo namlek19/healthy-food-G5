@@ -57,27 +57,27 @@ public class VnpayReturn extends HttpServlet {
             }
             String signValue = Config.hashAllFields(fields);
             if (signValue.equalsIgnoreCase(vnp_SecureHash)) {
-                // Lấy orderId thực tế
+               
                 String orderIdStr = request.getParameter("vnp_TxnRef");
                 int orderId = Integer.parseInt(orderIdStr);
 
                 boolean transSuccess = false;
                 String status;
                 if ("00".equals(request.getParameter("vnp_TransactionStatus"))) {
-                    status = "Succesful";
+                    status = "Pending";
                     transSuccess = true;
                 } else {
                     status = "Failed";
                 }
 
-                // Cập nhật trạng thái đơn hàng ĐÚNG
+          
                 orderDao.updateOrderStatus(orderId, status);
 
                 request.setAttribute("transResult", transSuccess);
                 request.setAttribute("orderId", orderId);
                 request.getRequestDispatcher("paymentResult.jsp").forward(request, response);
             } else {
-                //RETURN PAGE ERROR
+              
                 System.out.println("GD KO HOP LE (invalid signature)");
                 request.setAttribute("transResult", false);
                 request.setAttribute("orderId", "");
