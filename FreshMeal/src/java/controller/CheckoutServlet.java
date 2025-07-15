@@ -46,6 +46,7 @@ public class CheckoutServlet extends HttpServlet {
         Order order = new Order();
         order.setUserID(user != null ? user.getUserID() : 0);
         order.setReceiverName(fullname);
+        order.setPhone(phone);
         order.setDeliveryAddress(address);
         order.setDistrict(district);
         order.setTotalAmount(total);
