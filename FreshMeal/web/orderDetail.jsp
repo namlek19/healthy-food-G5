@@ -43,10 +43,16 @@
                 </tbody>
             </table>
 
-            <h5 class="mt-3">Tổng tiền: <span class="text-danger fw-bold">${order.totalAmount}đ</span></h5>
+            <h5 class="mt-3">
+                Tổng tiền: <span class="text-danger fw-bold">${order.totalAmount}đ</span>
+                <c:if test="${order.status == 'QRPending'}">
+                    <span class="badge bg-success ms-2">Đã thanh toán QR</span>
+                </c:if>
+            </h5>
 
             <form action="confirmOrder" method="post" class="mt-4">
                 <input type="hidden" name="orderID" value="${order.orderID}" />
+                <input type="hidden" name="currentStatus" value="${order.status}" />
                 <h5>Chọn shipper:</h5>
                 <table class="table table-bordered table-hover">
                     <thead class="table-success">

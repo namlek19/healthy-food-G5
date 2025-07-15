@@ -55,7 +55,7 @@ public class AjaxServlet extends HttpServlet {
         order.setDeliveryAddress(address);
         order.setDistrict(district);
         order.setTotalAmount(total);
-        order.setStatus("Pending");
+        order.setStatus("QRPending");
         order.setOrderDate(new Date());
         order.setPhone(phone);
         order.setEmail(email);

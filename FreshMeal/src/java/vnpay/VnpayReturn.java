@@ -64,7 +64,7 @@ public class VnpayReturn extends HttpServlet {
                 boolean transSuccess = false;
                 String status;
                 if ("00".equals(request.getParameter("vnp_TransactionStatus"))) {
-                    status = "Pending";
+                    status = "QRPending";
                     transSuccess = true;
                 } else {
                     status = "Failed";

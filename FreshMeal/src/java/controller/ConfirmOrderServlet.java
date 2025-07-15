@@ -10,11 +10,17 @@ public class ConfirmOrderServlet extends HttpServlet {
         try {
             int orderID = Integer.parseInt(request.getParameter("orderID"));
             int shipperID = Integer.parseInt(request.getParameter("shipperID"));
+            String currentStatus = request.getParameter("currentStatus");  // lấy status hiện tại từ form
 
             OrderDAO dao = new OrderDAO();
-            dao.confirmOrder(orderID, shipperID);
 
-            response.sendRedirect("orderSeller");
+            if ("QRPending".equalsIgnoreCase(currentStatus)) {
+                dao.confirmOrderWithStatus(orderID, shipperID, "QRConfirmed");
+            } else {
+                dao.confirmOrderWithStatus(orderID, shipperID, "Confirmed");
+            }
+
+            response.sendRedirect("orderSeller?message=confirmed");
         } catch (Exception e) {
             e.printStackTrace();
             response.sendRedirect("orderSeller.jsp?error=1");

@@ -97,6 +97,7 @@
                 <th>MÃ ĐƠN</th>
                 <th>NGÀY ĐẶT</th>
                 <th>TỔNG TIỀN</th>
+                <th>PHƯƠNG THỨC</th>
                 <th>TRẠNG THÁI</th>
                 <th>SẢN PHẨM</th>
                 <th>XEM</th>
@@ -106,7 +107,32 @@
                 <td>#<%= order.getOrderID() %></td>
                 <td><%= sdf.format(order.getOrderDate()) %></td>
                 <td><%= String.format("%,.0f", order.getTotalAmount()) %> đ</td>
-                <td><%= order.getStatus() %></td>
+                
+                    <%
+                        String status = order.getStatus();
+                        String method = (status.startsWith("QR")) ? "QR" : "COD";
+                        String statusText = "Không xác định";
+                        switch (status) {
+                            case "Pending":
+                            case "QRPending":
+                                statusText = "Chưa xác nhận";
+                                break;
+                            case "Confirmed":
+                            case "QRConfirmed":
+                                statusText = "Đã xác nhận";
+                                break;
+                            case "Delivering":
+                            case "QRDelivering":
+                                statusText = "Đang giao hàng";
+                                break;
+                            case "Delivered":
+                            case "QRDelivered":
+                                statusText = "Đã giao hàng";
+                                break;
+                        }
+                    %>
+                <td><%= method %></td>
+                <td><%= statusText %></td>
                 <td>
                     <div class="product-list">
                         <% 

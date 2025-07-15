@@ -65,6 +65,16 @@ public class ProductDAO extends DBContext {
         return null;
     }
 
+    public void deleteProduct(int productId) {
+        String sql = "DELETE FROM Product WHERE ProductID = ?";
+        try (Connection conn = getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, productId);
+            ps.executeUpdate();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     public List<Product> getNewestProducts(int limit) {
         List<Product> list = new ArrayList<>();
         String sql = "SELECT TOP (?) * FROM Product ORDER BY ProductID DESC";
@@ -163,6 +173,18 @@ public class ProductDAO extends DBContext {
             e.printStackTrace();
         }
         return list;
+    }
+
+    public boolean isProductInAnyMenu(int productID) {
+        String sql = "SELECT 1 FROM MenuProduct WHERE ProductID = ?";
+        try (Connection conn = getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, productID);
+            ResultSet rs = ps.executeQuery();
+            return rs.next();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
     }
 
     public static void main(String[] args) {
