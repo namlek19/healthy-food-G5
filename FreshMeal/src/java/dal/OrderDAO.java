@@ -44,7 +44,7 @@ public class OrderDAO extends DBContext {
                 order.setOrderID(rs.getInt("OrderID"));
                 order.setUserID(rs.getInt("UserID"));
                 order.setReceiverName(rs.getString("ReceiverName"));
-                order.setPhone(rs.getString("Phone")); // ✅
+                order.setPhone(rs.getString("Phone")); 
                 order.setDeliveryAddress(rs.getString("DeliveryAddress"));
                 order.setDistrict(rs.getString("District"));
                 order.setTotalAmount(rs.getDouble("TotalAmount"));
@@ -70,7 +70,7 @@ public class OrderDAO extends DBContext {
                 order.setOrderID(rs.getInt("OrderID"));
                 order.setUserID(rs.getInt("UserID"));
                 order.setReceiverName(rs.getString("ReceiverName"));
-                order.setPhone(rs.getString("Phone")); // ✅
+                order.setPhone(rs.getString("Phone")); 
                 order.setDeliveryAddress(rs.getString("DeliveryAddress"));
                 order.setDistrict(rs.getString("District"));
                 order.setTotalAmount(rs.getDouble("TotalAmount"));
@@ -124,7 +124,7 @@ public class OrderDAO extends DBContext {
             }
 
             psOrder.setString(2, order.getReceiverName());
-            psOrder.setString(3, order.getPhone()); // ✅
+            psOrder.setString(3, order.getPhone()); 
             psOrder.setString(4, order.getDeliveryAddress());
             psOrder.setString(5, order.getDistrict());
             psOrder.setDouble(6, order.getTotalAmount());
