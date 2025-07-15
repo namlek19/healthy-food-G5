@@ -8,7 +8,7 @@ public class Order {
     private int userID;
     private int shipperID;
     private String receiverName;
-    private String phone; // ✅ Thêm phone
+    private String phone; 
     private String deliveryAddress;
     private String district;
     private double totalAmount;

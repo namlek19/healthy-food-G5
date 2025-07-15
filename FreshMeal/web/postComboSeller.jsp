@@ -34,7 +34,7 @@
                             <td>
                                 <form action="postCombo" method="post" onsubmit="return confirm('Xác nhận đăng combo này?');">
                                     <input type="hidden" name="menuID" value="${combo.menuID}">
-                                    <button type="submit" class="btn btn-success btn-sm">Đăng</button>
+                                    <button type="submit" class="btn btn-outline-success btn-sm"">Đăng</button>
                                 </form>
                             </td>
                         </tr>

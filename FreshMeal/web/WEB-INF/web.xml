@@ -106,6 +106,22 @@
         <servlet-name>PostComboServlet</servlet-name>
         <servlet-class>controller.PostComboServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>ConfirmOrderServlet</servlet-name>
+        <servlet-class>controller.ConfirmOrderServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>RejectOrderServlet</servlet-name>
+        <servlet-class>controller.RejectOrderServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>OrderSellerServlet</servlet-name>
+        <servlet-class>controller.OrderSellerServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>OrderDetailServlet</servlet-name>
+        <servlet-class>controller.OrderDetailServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>LoginServlet</servlet-name>
         <url-pattern>/login</url-pattern>
@@ -209,6 +225,22 @@
     <servlet-mapping>
         <servlet-name>PostComboServlet</servlet-name>
         <url-pattern>/postCombo</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ConfirmOrderServlet</servlet-name>
+        <url-pattern>/confirmOrder</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>RejectOrderServlet</servlet-name>
+        <url-pattern>/rejectOrder</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>OrderSellerServlet</servlet-name>
+        <url-pattern>/orderSeller</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>OrderDetailServlet</servlet-name>
+        <url-pattern>/orderDetail</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>30</session-timeout>

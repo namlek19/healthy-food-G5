@@ -33,7 +33,7 @@
                 <td><fmt:formatNumber value="${c.totalPrice}" type="number" maxFractionDigits="0" /> VNĐ</td>
                 <td>${c.bmiCategory}</td>
                 <td>
-                    <a href="menudetail?id=${c.menuID}" class="btn btn-outline-success btn-sm">Xem chi tiết</a>
+                    <a href="menudetail?id=${c.menuID}" class="btn btn-outline-success btn-sm"">Xem chi tiết</a>
                 </td>
             </tr>
         </c:forEach>

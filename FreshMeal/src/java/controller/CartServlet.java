@@ -70,7 +70,7 @@ public class CartServlet extends HttpServlet {
                     }
                     session.setAttribute("guest_cart", guestCart);
                 }
-                session.setAttribute("msg", "✔ Đã thêm toàn bộ thực đơn vào giỏ hàng!");
+                session.setAttribute("msg", " Đã thêm toàn bộ thực đơn vào giỏ hàng!");
             }
         } else if (productIdParam != null) {
             // Adding single product
@@ -94,7 +94,7 @@ public class CartServlet extends HttpServlet {
                     if (!found) guestCart.add(new CartItem(product, quantity));
                     session.setAttribute("guest_cart", guestCart);
                 }
-                session.setAttribute("msg", "✔ Đã thêm vào giỏ hàng!");
+                session.setAttribute("msg", " Đã thêm vào giỏ hàng!");
             }
         }
 

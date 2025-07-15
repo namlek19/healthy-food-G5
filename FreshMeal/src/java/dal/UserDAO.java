@@ -241,7 +241,7 @@ public class UserDAO {
 
     public List<User> getAllShippers() {
         List<User> list = new ArrayList<>();
-        String sql = "SELECT * FROM Users WHERE RoleID = 4"; // giả sử RoleID = 4 là shipper
+        String sql = "SELECT * FROM Users WHERE RoleID = 6"; 
         try {
             conn = db.getConnection();
             ps = conn.prepareStatement(sql);

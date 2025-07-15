@@ -44,7 +44,7 @@ public class OrderDAO extends DBContext {
                 order.setOrderID(rs.getInt("OrderID"));
                 order.setUserID(rs.getInt("UserID"));
                 order.setReceiverName(rs.getString("ReceiverName"));
-                order.setPhone(rs.getString("Phone")); // ✅
+                order.setPhone(rs.getString("Phone")); 
                 order.setDeliveryAddress(rs.getString("DeliveryAddress"));
                 order.setDistrict(rs.getString("District"));
                 order.setTotalAmount(rs.getDouble("TotalAmount"));
@@ -60,6 +60,38 @@ public class OrderDAO extends DBContext {
         return orders;
     }
 
+    public void confirmOrder(int orderId, int shipperId) {
+        String sql = "UPDATE [Order] SET Status = 'Confirmed', ShipperID = ? WHERE OrderID = ?";
+        try (Connection conn = getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, shipperId);
+            ps.setInt(2, orderId);
+            ps.executeUpdate();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void deleteOrder(int orderId) {
+        String deleteItemsSql = "DELETE FROM OrderItem WHERE OrderID = ?";
+        String deleteOrderSql = "DELETE FROM [Order] WHERE OrderID = ?";
+
+        try (Connection conn = getConnection()) {
+
+            try (PreparedStatement ps1 = conn.prepareStatement(deleteItemsSql)) {
+                ps1.setInt(1, orderId);
+                ps1.executeUpdate();
+            }
+
+            try (PreparedStatement ps2 = conn.prepareStatement(deleteOrderSql)) {
+                ps2.setInt(1, orderId);
+                ps2.executeUpdate();
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     public Order getOrderById(int orderId) {
         String sql = "SELECT * FROM [Order] WHERE OrderID = ?";
         try (Connection conn = getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
@@ -70,7 +102,7 @@ public class OrderDAO extends DBContext {
                 order.setOrderID(rs.getInt("OrderID"));
                 order.setUserID(rs.getInt("UserID"));
                 order.setReceiverName(rs.getString("ReceiverName"));
-                order.setPhone(rs.getString("Phone")); // ✅
+                order.setPhone(rs.getString("Phone")); 
                 order.setDeliveryAddress(rs.getString("DeliveryAddress"));
                 order.setDistrict(rs.getString("District"));
                 order.setTotalAmount(rs.getDouble("TotalAmount"));
@@ -124,7 +156,7 @@ public class OrderDAO extends DBContext {
             }
 
             psOrder.setString(2, order.getReceiverName());
-            psOrder.setString(3, order.getPhone()); // ✅
+            psOrder.setString(3, order.getPhone()); 
             psOrder.setString(4, order.getDeliveryAddress());
             psOrder.setString(5, order.getDistrict());
             psOrder.setDouble(6, order.getTotalAmount());
@@ -170,7 +202,33 @@ public class OrderDAO extends DBContext {
         }
         return false;
     }
-    
+
+    public List<Order> getOrdersByStatus(String status) {
+        List<Order> orders = new ArrayList<>();
+        String sql = "SELECT * FROM [Order] WHERE Status = ? ORDER BY OrderDate DESC";
+        try (Connection conn = getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setString(1, status);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                Order order = new Order();
+                order.setOrderID(rs.getInt("OrderID"));
+                order.setUserID(rs.getInt("UserID"));
+                order.setReceiverName(rs.getString("ReceiverName"));
+                order.setPhone(rs.getString("Phone"));
+                order.setDeliveryAddress(rs.getString("DeliveryAddress"));
+                order.setDistrict(rs.getString("District"));
+                order.setTotalAmount(rs.getDouble("TotalAmount"));
+                order.setOrderDate(rs.getTimestamp("OrderDate"));
+                order.setStatus(rs.getString("Status"));
+                order.setEmail(rs.getString("Email"));
+                order.setItems(getOrderItems(order.getOrderID()));
+                orders.add(order);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return orders;
+    }
 
     public void updateOrderStatus(int orderId, String status) {
         String sql = "UPDATE [Order] SET Status = ? WHERE OrderID = ?";

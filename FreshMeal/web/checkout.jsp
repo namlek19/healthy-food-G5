@@ -16,7 +16,7 @@
 
                 <%
                     User user = (User) session.getAttribute("user");
-                    boolean isCustomer = (user != null && user.getRoleID() == 2); // Giả sử roleID = 2 là Customer
+                    boolean isCustomer = (user != null && user.getRoleID() == 2); 
                     String userDistrict = user != null ? user.getDistrict() : "";
                     String userAddress = user != null ? user.getAddress() : "";
                 %>
@@ -165,7 +165,7 @@
                 districtSelect.value = "";
                 addressTextarea.value = "";
             } else {
-                // Lấy địa chỉ từ profile (đã render sẵn trong data-default)
+           
                 districtSelect.disabled = true;
                 addressTextarea.disabled = true;
                 districtSelect.value = districtSelect.getAttribute('data-default');
