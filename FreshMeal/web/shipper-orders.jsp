@@ -19,11 +19,9 @@
     </head>
     <body>
 
-        <!-- ✅ NAVBAR -->
         <div class="navbar">
             <div class="navbar-left">
-                <img src="assets/images/logoreal.png" alt="Logo" style="height: 40px;">
-                <span class="brand-name">FreshMeal</span>
+                <img src="assets/images/logotext.png" alt="Logo" style="height: 60px;">
             </div>
             <div class="navbar-right">
                 <span>Xin chào, <strong><%= shipper.getFullName() %></strong></span>
@@ -68,13 +66,13 @@
                         <td><%= String.format("%,.0f", o.getTotalAmount()) %> đ</td>
                         <td>
                             <form action="UpdateOrderStatusServlet" method="post">
-                                <td>
+                                
                                     <select name="status" <%= "Delivered".equals(o.getStatus()) ? "disabled" : "" %>>
                                         <option value="Confirmed" <%= "Confirmed".equals(o.getStatus()) ? "selected" : "" %>>Confirmed</option>
                                         <option value="Delivering" <%= "Delivering".equals(o.getStatus()) ? "selected" : "" %>>Delivering</option>
                                         <option value="Delivered" <%= "Delivered".equals(o.getStatus()) ? "selected" : "" %>>Delivered</option>
                                     </select>
-                                </td>
+                                
 
                         </td>
                         <td>
