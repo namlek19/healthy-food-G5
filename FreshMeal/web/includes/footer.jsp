@@ -1,14 +1,14 @@
-<!-- footer.jsp -->
+
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <footer class="custom-footer text-white">
     <div class="container">
         <div class="row text-white footer-row">
-            <!-- Logo bên trái -->
+            
             <div class="col-md-4 d-flex justify-content-center justify-content-md-start align-items-center">
                 <img src="${pageContext.request.contextPath}/assets/images/logo.png" alt="Logo" class="footer-logo">
             </div>
 
-            <!-- Thông tin liên hệ ở giữa -->
+            
             <div class="col-md-4 d-flex flex-column justify-content-center align-items-start text-start contact-info">
                 <h5 class="mb-2">LIÊN HỆ</h5>
                 <p><i class="bi bi-geo-alt-fill"></i> Số 28 Phố Lê Thái Tổ, Phường Hàng Trống, Quận Hoàn Kiếm, Hà Nội</p>
@@ -16,7 +16,7 @@
                 <p><i class="bi bi-envelope-fill"></i> ducnamle432@gmail.com</p>
             </div>
 
-            <!-- Mạng xã hội bên phải -->
+            
             <div class="col-md-4 d-flex flex-column justify-content-center align-items-center align-items-md-end social-icons text-center text-md-end">
                 <h5 class="mb-2">THEO DÕI CHÚNG TÔI</h5>
                 <div>

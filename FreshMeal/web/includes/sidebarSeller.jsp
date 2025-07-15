@@ -38,7 +38,7 @@
     <ul class="sidebar-menu">
         <li class="menu-category-title">Order</li>
         <li>
-            <a href="orderSeller.jsp" class="${currentPage eq 'orderseller' ? 'active' : ''}">
+            <a href="orderSeller" class="${currentPage eq 'orderSeller' ? 'active' : ''}">
                 <i class="fas fa-plus-circle menu-icon"></i> Danh sách Order
             </a>
         </li>
