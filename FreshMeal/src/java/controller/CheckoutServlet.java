@@ -51,7 +51,7 @@ public class CheckoutServlet extends HttpServlet {
         order.setTotalAmount(total);
         order.setOrderDate(new Date());
         order.setEmail(email);
-        order.setStatus("Chờ xác nhận");
+        order.setStatus("Pending");
 
         OrderDAO orderDAO = new OrderDAO();
 
