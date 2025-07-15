@@ -5,7 +5,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import model.User;
-import dal.DBContext;
+import java.util.ArrayList;
+import java.util.List;
 
 public class UserDAO {
 
@@ -236,6 +237,39 @@ public class UserDAO {
             }
         }
         return null;
+    }
+
+    public List<User> getAllShippers() {
+        List<User> list = new ArrayList<>();
+        String sql = "SELECT * FROM Users WHERE RoleID = 4"; // giả sử RoleID = 4 là shipper
+        try {
+            conn = db.getConnection();
+            ps = conn.prepareStatement(sql);
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                list.add(new User(
+                        rs.getInt("UserID"),
+                        rs.getString("FullName"),
+                        rs.getString("Email"),
+                        rs.getString("PasswordHash"),
+                        rs.getString("City"),
+                        rs.getString("District"),
+                        rs.getString("Address"),
+                        rs.getInt("RoleID")
+                ));
+            }
+        } catch (Exception e) {
+            System.out.println("Error in getAllShippers: " + e.getMessage());
+        } finally {
+            try {
+                if (db != null) {
+                    db.closeConnection(conn, ps, rs);
+                }
+            } catch (SQLException e) {
+                System.out.println("Error closing resources: " + e.getMessage());
+            }
+        }
+        return list;
     }
 
     public boolean updateUser(User user) {

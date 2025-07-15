@@ -8,22 +8,24 @@ public class Order {
     private int userID;
     private int shipperID;
     private String receiverName;
+    private String phone; // ✅ Thêm phone
     private String deliveryAddress;
     private String district;
     private double totalAmount;
     private Date orderDate;
     private String status;
-    String Email;
+    private String Email;
     private List<OrderItem> items;
 
     public Order() {
     }
 
-    public Order(int orderID, int userID, int shipperID, String receiverName, String deliveryAddress, String district, double totalAmount, Date orderDate, String status, String Email, List<OrderItem> items) {
+    public Order(int orderID, int userID, int shipperID, String receiverName, String phone, String deliveryAddress, String district, double totalAmount, Date orderDate, String status, String Email, List<OrderItem> items) {
         this.orderID = orderID;
         this.userID = userID;
         this.shipperID = shipperID;
         this.receiverName = receiverName;
+        this.phone = phone;
         this.deliveryAddress = deliveryAddress;
         this.district = district;
         this.totalAmount = totalAmount;
@@ -63,6 +65,14 @@ public class Order {
 
     public void setReceiverName(String receiverName) {
         this.receiverName = receiverName;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
     }
 
     public String getDeliveryAddress() {
