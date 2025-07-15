@@ -29,7 +29,9 @@
 
                 </c:if>
             </div>
-            <div class="blog-title preserve-whitespace">${blog.title}</div>
+            <!--<div class="blog-title preserve-whitespace">${blog.title}</div>-->
+                    <div class="blog-title">${blog.title}</div>
+
             <div class="blog-meta">
                 Người đăng: <b>${blog.nutritionistName}</b> | 
                 <fmt:formatDate value="${blog.createdAt}" pattern="dd/MM/yyyy"/>

@@ -90,7 +90,9 @@ public class BlogPostServlet extends HttpServlet {
         if (title != null && !title.trim().isEmpty() && description != null && !description.trim().isEmpty()) {
             BlogDAO blogDAO = new BlogDAO();
             blogDAO.addBlog(title, imageURL, description, nutritionistID);
-            response.sendRedirect("blogmanage");
+//            response.sendRedirect("blogmanage");
+            response.sendRedirect("blog_post.jsp?success=true");
+
         } else {
 
             request.setAttribute("error", "Tiêu đề và nội dung không được để trống!");

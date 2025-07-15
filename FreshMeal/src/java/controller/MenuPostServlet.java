@@ -89,14 +89,21 @@ public class MenuPostServlet extends HttpServlet {
         String selectedProductIDsStr = request.getParameter("selectedProductIDs");
         int nutritionistID = (Integer) request.getSession().getAttribute("userID");
 
-        // Kiểm tra xem có chọn product không
+        ProductDAO productDAO = new ProductDAO();
+        List<Product> productList = productDAO.getAllProduct();
+        request.setAttribute("productList", productList);
+        request.setAttribute("currentPage", "menupost");
+
+        // Kiểm tra có chọn món không
         if (selectedProductIDsStr == null || selectedProductIDsStr.trim().isEmpty()) {
-            // Gửi lại trang với thông báo lỗi
             request.setAttribute("errorMessage", "Bạn phải chọn ít nhất một món ăn!");
-            ProductDAO productDAO = new ProductDAO();
-            List<Product> productList = productDAO.getAllProduct();
-            request.setAttribute("productList", productList);
-            request.setAttribute("currentPage", "menupost");
+            request.getRequestDispatcher("menu_post.jsp").forward(request, response);
+            return;
+        }
+
+        // Kiểm tra có chọn ảnh không
+        if (imageURL == null || imageURL.trim().isEmpty()) {
+            request.setAttribute("errorMessage", "Bạn phải chọn ảnh cho thực đơn!");
             request.getRequestDispatcher("menu_post.jsp").forward(request, response);
             return;
         }
@@ -119,7 +126,9 @@ public class MenuPostServlet extends HttpServlet {
             }
         }
 
-        response.sendRedirect("menupost");
+//        response.sendRedirect("menupost");
+        response.sendRedirect("menupost?success=true");
+
     }
 
     /**

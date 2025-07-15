@@ -7,15 +7,15 @@
     <head>
         <meta charset="UTF-8">
         <title>Đăng bài viết mới</title>
-        
-       <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+
+        <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
         <link rel="stylesheet" href="assets/css/blog.css">
         <link rel="stylesheet" href="assets/css/blog_post.css">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"/>
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 
     </head>
-    
+
     <body>
         <%@ include file="sidebar.jsp" %>
 
@@ -38,7 +38,7 @@
 
                 <button type="submit" class="blog-form-btn">Đăng bài</button>
             </form>
-            <a href="blog" class="blog-form-back">Quay lại danh sách bài viết</a>
+            <a href="blogmanage" class="blog-form-back">Quay lại danh sách bài viết</a>
         </div>
 
         <script>
@@ -104,5 +104,32 @@
                 reader.readAsDataURL(file);
             }
         </script>
+
+
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+        <script>
+            function getParam(name) {
+                return new URLSearchParams(window.location.search).get(name);
+            }
+
+            if (getParam('success') === 'true') {
+                const toastEl = document.createElement('div');
+                toastEl.className = 'toast align-items-center text-bg-success border-0 position-fixed top-0 end-0 m-3';
+                toastEl.setAttribute('role', 'alert');
+                toastEl.setAttribute('aria-live', 'assertive');
+                toastEl.setAttribute('aria-atomic', 'true');
+                toastEl.innerHTML = `
+                    <div class="d-flex">
+                        <div class="toast-body">
+                             Đăng bài thành công!
+                        </div>
+                        <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+                    </div>`;
+                document.body.appendChild(toastEl);
+                const toast = new bootstrap.Toast(toastEl);
+                toast.show();
+            }
+        </script>
+
     </body>
 </html>
