@@ -91,6 +91,41 @@ public class ProductDAO extends DBContext {
         return list;
     }
 
+    public void insertProduct(Product p) {
+        String sql = "INSERT INTO Product (Name, Description, Calories, NutritionInfo, Origin, ImageURL, StorageInstructions, Price, CategoryID) "
+                + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        try (Connection conn = getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setString(1, p.getName());
+            ps.setString(2, p.getDescription());
+            ps.setInt(3, p.getCalories());
+            ps.setString(4, p.getNutritionInfo());
+            ps.setString(5, p.getOrigin());
+            ps.setString(6, p.getImageURL());
+            ps.setString(7, p.getStorageInstructions());
+            ps.setDouble(8, p.getPrice());
+            ps.setInt(9, p.getCategoryID());
+            ps.executeUpdate();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public List<Object[]> getAllCategoryPairs() {
+        List<Object[]> list = new ArrayList<>();
+        String sql = "SELECT CategoryID, CategoryName FROM ProductCategory";
+        try (Connection conn = getConnection(); PreparedStatement ps = conn.prepareStatement(sql); ResultSet rs = ps.executeQuery()) {
+            while (rs.next()) {
+                Object[] row = new Object[2];
+                row[0] = rs.getInt("CategoryID");
+                row[1] = rs.getString("CategoryName");
+                list.add(row);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
+
     public List<Product> getProductByCategory(String categoryId) {
         List<Product> list = new ArrayList<>();
         String query;

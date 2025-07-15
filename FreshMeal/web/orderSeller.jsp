@@ -33,7 +33,7 @@
                     <c:forEach var="o" items="${pendingOrders}" varStatus="loop">
                         <tr>
                             <td>${loop.index + 1}</td>
-                            <td><strong>${o.receiverName}</strong></td>
+                            <td>${o.receiverName}</td>
                             <td><strong>
                                 <fmt:formatDate value="${o.orderDate}" pattern="HH:mm" />
                                 </strong>
