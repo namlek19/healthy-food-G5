@@ -14,7 +14,7 @@ public class ConfirmOrderServlet extends HttpServlet {
             OrderDAO dao = new OrderDAO();
             dao.confirmOrder(orderID, shipperID);
 
-            response.sendRedirect("orderSeller.jsp");
+            response.sendRedirect("orderSeller");
         } catch (Exception e) {
             e.printStackTrace();
             response.sendRedirect("orderSeller.jsp?error=1");

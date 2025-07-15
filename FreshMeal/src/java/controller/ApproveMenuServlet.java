@@ -24,7 +24,7 @@ public class ApproveMenuServlet extends HttpServlet {
 
         switch (action) {
             case "approve":
-                updated = dao.updateMenuStatus(menuId, 2); // 2 = Đã duyệt
+                updated = dao.updateMenuStatus(menuId, 2); 
                 msg = updated ? "Duyệt menu thành công!" : "Duyệt menu thất bại!";
                 break;
 
@@ -39,7 +39,7 @@ public class ApproveMenuServlet extends HttpServlet {
                 break;
 
             case "rejectDeleteRequest":
-                updated = dao.updateMenuStatus(menuId, 3); // 3 = Đã duyệt trở lại
+                updated = dao.updateMenuStatus(menuId, 3); 
                 msg = updated ? "Đã từ chối yêu cầu xóa." : "Không thể cập nhật lại trạng thái!";
                 break;
 

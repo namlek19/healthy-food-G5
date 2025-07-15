@@ -13,7 +13,7 @@ public class RejectOrderServlet extends HttpServlet {
             OrderDAO dao = new OrderDAO();
             dao.deleteOrder(orderID);
 
-            response.sendRedirect("orderSeller.jsp");
+            response.sendRedirect("orderSeller");
         } catch (Exception e) {
             e.printStackTrace();
             response.sendRedirect("orderSeller.jsp?error=1");
