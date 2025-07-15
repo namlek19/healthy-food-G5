@@ -45,7 +45,7 @@
 
                 <label>Quận nội thành Hà Nội <span class="required">*</span></label>
                 <select name="district" id="district" onchange="enableAddress()" required
-                        <%= isCustomer ? "disabled" : "" %> data-default="<%= userDistrict %>">
+                        <%= isCustomer ? "readonly" : "" %> data-default="<%= userDistrict %>">
                     <option value="">-- Chọn quận --</option>
                     <option <%= userDistrict.equals("Hoàn Kiếm") ? "selected" : "" %>>Hoàn Kiếm</option>
                     <option <%= userDistrict.equals("Ba Đình") ? "selected" : "" %>>Ba Đình</option>
@@ -60,7 +60,7 @@
 
                 <label>Địa chỉ cụ thể <span class="required">*</span></label>
                 <textarea name="address" id="address" placeholder="Số nhà, ngõ, đường..." required
-                          <%= isCustomer ? "disabled" : "" %> data-default="<%= userAddress %>"><%= userAddress %></textarea>
+                          <%= isCustomer ? "readonly" : "" %> data-default="<%= userAddress %>"><%= userAddress %></textarea>
 
                 <h3 style="margin: 32px 0 12px 0; color: #1b813e; font-size: 1.12rem; font-weight: bold;">Sản phẩm đã đặt</h3>
                 <div style="background: #fff; border-radius:8px; padding:18px; border:1px solid #e1f5ea; margin-bottom:16px;">
