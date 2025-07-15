@@ -32,9 +32,38 @@ public class OrderDAO extends DBContext {
         }
         return list;
     }
-    public List<Order> getAllOrdersByShipperID(int shipperId) {
+    public List<Order> getAllCODOrdersByShipperID(int shipperId) {
         List<Order> list = new ArrayList<>();
         String sql = "SELECT * FROM [Order] WHERE ShipperID = ? AND (Status = 'Confirmed' OR Status = 'Delivering') ORDER BY OrderDate DESC";
+
+        try (Connection conn = getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, shipperId);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                Order order = new Order();
+                order.setOrderID(rs.getInt("OrderID"));
+                order.setUserID(rs.getInt("UserID"));
+                order.setShipperID(rs.getInt("ShipperID"));
+                order.setReceiverName(rs.getString("ReceiverName"));
+                order.setPhone(rs.getString("Phone"));
+                order.setDeliveryAddress(rs.getString("DeliveryAddress"));
+                order.setDistrict(rs.getString("District"));
+                order.setTotalAmount(rs.getDouble("TotalAmount"));
+                order.setOrderDate(rs.getTimestamp("OrderDate"));
+                order.setStatus(rs.getString("Status"));
+                order.setEmail(rs.getString("Email"));
+                order.setItems(getOrderItems(order.getOrderID()));
+                list.add(order);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return list;
+    }
+    public List<Order> getAllQROrdersByShipperID(int shipperId) {
+        List<Order> list = new ArrayList<>();
+        String sql = "SELECT * FROM [Order] WHERE ShipperID = ? AND (Status = 'QRConfirmed' OR Status = 'QRDelivering') ORDER BY OrderDate DESC";
 
         try (Connection conn = getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setInt(1, shipperId);
@@ -89,17 +118,17 @@ public class OrderDAO extends DBContext {
         return orders;
     }
 
-    public void confirmOrder(int orderId, int shipperId) {
-        String sql = "UPDATE [Order] SET Status = 'Confirmed', ShipperID = ? WHERE OrderID = ?";
+    public void confirmOrderWithStatus(int orderId, int shipperId, String newStatus) {
+        String sql = "UPDATE [Order] SET Status = ?, ShipperID = ? WHERE OrderID = ?";
         try (Connection conn = getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setInt(1, shipperId);
-            ps.setInt(2, orderId);
+            ps.setString(1, newStatus);
+            ps.setInt(2, shipperId);
+            ps.setInt(3, orderId);
             ps.executeUpdate();
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
-
     public void deleteOrder(int orderId) {
         String deleteItemsSql = "DELETE FROM OrderItem WHERE OrderID = ?";
         String deleteOrderSql = "DELETE FROM [Order] WHERE OrderID = ?";

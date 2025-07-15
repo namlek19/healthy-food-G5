@@ -16,8 +16,10 @@ public class OrderSellerServlet extends HttpServlet {
 
         OrderDAO odao = new OrderDAO();
         List<Order> pendingOrders = odao.getOrdersByStatus("Pending");
+        List<Order> pendingQROrders = odao.getOrdersByStatus("QRPending");
 
         request.setAttribute("pendingOrders", pendingOrders);
+        request.setAttribute("pendingQROrders", pendingQROrders);
         request.getRequestDispatcher("orderSeller.jsp").forward(request, response);
     }
 }

@@ -24,12 +24,14 @@ public class ShipperOrderServlet extends HttpServlet {
             return;
         }
 
-        int shipperID = shipper.getUserID(); // ✅ Lấy shipperID
+        int shipperID = shipper.getUserID(); 
 
         OrderDAO dao = new OrderDAO();
-        List<Order> orders = dao.getAllOrdersByShipperID(shipperID);
+        List<Order> orders = dao.getAllCODOrdersByShipperID(shipperID);
+        List<Order> QRorders = dao.getAllQROrdersByShipperID(shipperID);
 
         request.setAttribute("orders", orders);
+        request.setAttribute("QRorders", QRorders);
         request.getRequestDispatcher("shipper-orders.jsp").forward(request, response);
     }
 }

@@ -15,7 +15,9 @@ import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.text.SimpleDateFormat;
 import java.util.*;
+
 public class AjaxServlet extends HttpServlet {
+
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
@@ -23,7 +25,6 @@ public class AjaxServlet extends HttpServlet {
         HttpSession session = req.getSession();
         User user = (User) session.getAttribute("user");
 
-        // Guest: lấy giỏ guest_cart, User: lấy cart
         List<CartItem> cart = (List<CartItem>) session.getAttribute(user != null ? "cart" : "guest_cart");
         if (cart == null || cart.isEmpty()) {
             resp.sendRedirect("cart.jsp");
@@ -43,20 +44,21 @@ public class AjaxServlet extends HttpServlet {
             total += item.getTotalPrice();
         }
 
-        // Tạo order: User có id, guest thì id = 0 hoặc null
+       
         Order order = new Order();
         if (user != null) {
             order.setUserID(user.getUserID());
         } else {
-            order.setUserID(0); // hoặc null tuỳ DB, phải sửa OrderDAO nếu dùng null
+            order.setUserID(0); 
         }
         order.setReceiverName(fullname);
         order.setDeliveryAddress(address);
         order.setDistrict(district);
         order.setTotalAmount(total);
-        order.setStatus("Pending");
+        order.setStatus("QRPending");
         order.setOrderDate(new Date());
-
+        order.setPhone(phone);
+        order.setEmail(email);
         OrderDAO orderDAO = new OrderDAO();
         int orderId = orderDAO.createOrder(order, cart);
         if (orderId <= 0) {

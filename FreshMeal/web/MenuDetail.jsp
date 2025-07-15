@@ -1,8 +1,14 @@
 <%@ page import="model.Menu" %>
 <%@ page import="model.Product" %>
+<%@ page import="model.User" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%
+    User user = (User) session.getAttribute("user");
+    int roleID = (user != null) ? user.getRoleID() : -1;
+    boolean isSeller = (roleID == 4);
+%>
 <!DOCTYPE html>
 <html>
     <head>
@@ -31,7 +37,9 @@
         </style>
     </head>
     <body>
+        <% if (!isSeller) { %>
         <jsp:include page="includes/header.jsp" />
+        <% } %>
 
         <div class="container mt-4">
             <c:choose>
@@ -53,6 +61,7 @@
                                         <fmt:formatNumber value="${menu.totalPrice}" type="number" maxFractionDigits="0"/> VNĐ
                                     </h5>
                                 </div>
+                                <% if (!isSeller) { %>    
                                 <div class="row mt-3 align-items-center">
                                     <div class="col-md-6 mb-2">
                                         <form action="CartServlet" method="post">
@@ -74,6 +83,7 @@
                                     </div>
 
                                 </div>
+                                <% } %>            
                             </div>
                         </div>
 
@@ -91,12 +101,20 @@
                                     </ul>
                                 </div>
                             </div>
+                            <c:if test="${roleID == 4}">
+                                <div class="mb-3">
+                                    <a href="manageComboSeller" class="btn btn-success">&larr; Quay lại trang quản lý combo</a>
+                                </div>
+                            </c:if>
                         </div>
                     </div>
                 </c:otherwise>
             </c:choose>
         </div>
 
-        <jsp:include page="includes/footer.jsp" />
+        <% if (!isSeller) { %>
+            <jsp:include page="includes/footer.jsp" />
+        <% } %>
+        
     </body>
 </html>

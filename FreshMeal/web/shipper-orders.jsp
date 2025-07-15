@@ -9,6 +9,8 @@
 
     List<Order> orders = (List<Order>) request.getAttribute("orders");
     if (orders == null) orders = Collections.emptyList();
+    List<Order> QRorders = (List<Order>) request.getAttribute("QRorders");
+    if (QRorders == null) QRorders = Collections.emptyList();
 %>
 <!DOCTYPE html>
 <html>
@@ -31,7 +33,7 @@
 
         <!-- ✅ MAIN CONTENT -->
         <div class="container">
-            <h2>Đơn hàng được giao</h2>
+            <h2>Đơn hàng COD cần giao</h2>
 
             <% if (request.getAttribute("message") != null) { %>
             <div class="success-message"><%= request.getAttribute("message") %></div>
@@ -68,9 +70,62 @@
                             <form action="UpdateOrderStatusServlet" method="post">
                                 
                                     <select name="status" <%= "Delivered".equals(o.getStatus()) ? "disabled" : "" %>>
-                                        <option value="Confirmed" <%= "Confirmed".equals(o.getStatus()) ? "selected" : "" %>>Confirmed</option>
-                                        <option value="Delivering" <%= "Delivering".equals(o.getStatus()) ? "selected" : "" %>>Delivering</option>
-                                        <option value="Delivered" <%= "Delivered".equals(o.getStatus()) ? "selected" : "" %>>Delivered</option>
+                                        <option value="Confirmed" <%= "Confirmed".equals(o.getStatus()) ? "selected" : "" %>>Đã xác nhận</option>
+                                        <option value="Delivering" <%= "Delivering".equals(o.getStatus()) ? "selected" : "" %>>Đang giao</option>
+                                        <option value="Delivered" <%= "Delivered".equals(o.getStatus()) ? "selected" : "" %>>Đã giao</option>
+                                    </select>
+                                
+
+                        </td>
+                        <td>
+                            <input type="hidden" name="orderId" value="<%= o.getOrderID() %>"/>
+                            <button type="submit">Cập nhật</button>
+                            </form>
+                        </td>
+                    </tr>
+                    <%  } } %>
+                </tbody>
+            </table>
+            <h2>Đơn hàng đã thanh toán QR cần giao</h2>
+
+            <% if (request.getAttribute("message") != null) { %>
+            <div class="success-message"><%= request.getAttribute("message") %></div>
+            <% } else if (request.getAttribute("error") != null) { %>
+            <div class="error-message"><%= request.getAttribute("error") %></div>
+            <% } %>
+
+            <table class="styled-table">
+                <thead>
+                    <tr>
+                        <th>Mã đơn</th>
+                        <th>Khách hàng</th>
+                        <th>Địa chỉ</th>
+                        <th>Ngày đặt</th>
+                        <th>Tổng tiền</th>
+                        <th>Trạng thái</th>
+                        <th>Cập nhật</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% if (QRorders.isEmpty()) { %>
+                    <tr>
+                        <td colspan="7" style="text-align:center;color:gray;">Không có đơn hàng nào để hiển thị.</td>
+                    </tr>
+                    <% } else {
+            for (Order o : QRorders) { %>
+                    <tr>
+                        <td><%= o.getOrderID() %></td>
+                        <td><%= o.getReceiverName() %></td>
+                        <td><%= o.getDeliveryAddress() %>, <%= o.getDistrict() %></td>
+                        <td><%= new java.text.SimpleDateFormat("dd/MM/yyyy HH:mm").format(o.getOrderDate()) %></td>
+                        <td><%= String.format("%,.0f", o.getTotalAmount()) %> đ</td>
+                        <td>
+                            <form action="UpdateOrderStatusServlet" method="post">
+                                
+                                    <select name="status" <%= "Delivered".equals(o.getStatus()) ? "disabled" : "" %>>
+                                        <option value="QRConfirmed" <%= "QRConfirmed".equals(o.getStatus()) ? "selected" : "" %>>Đã Xác nhận</option>
+                                        <option value="QRDelivering" <%= "QRDelivering".equals(o.getStatus()) ? "selected" : "" %>>Đang Giao</option>
+                                        <option value="QRDelivered" <%= "QRDelivered".equals(o.getStatus()) ? "selected" : "" %>>Đã giao</option>
                                     </select>
                                 
 

@@ -72,13 +72,35 @@
                 List<OrderItem> items = order.getItems();
                 SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
             %>
+            <%
+                        String statusVN = "";
+                        if (order.getStatus().equals("Pending") || order.getStatus().equals("QRPending")) {
+                            statusVN = "Chưa xác nhận";
+                        } else if (order.getStatus().equals("Confirmed") || order.getStatus().equals("QRConfirmed")) {
+                            statusVN = "Đã xác nhận";
+                        } else if (order.getStatus().equals("Delivering") || order.getStatus().equals("QRDelivering")) {
+                            statusVN = "Đang giao";
+                        } else if (order.getStatus().equals("Delivered") || order.getStatus().equals("QRDelivered")) {
+                            statusVN = "Đã giao";
+                        } else {
+                            statusVN = order.getStatus();
+                        }
+                        
+            %>
             <div class="order-info-row"><span class="order-info-label">Mã đơn:</span> #<%= order.getOrderID() %></div>
             <div class="order-info-row"><span class="order-info-label">Ngày đặt:</span> <%= sdf.format(order.getOrderDate()) %></div>
             <div class="order-info-row"><span class="order-info-label">Người nhận:</span> <%= order.getReceiverName() %></div>
             <div class="order-info-row"><span class="order-info-label">Địa chỉ:</span> <%= order.getDeliveryAddress() %>, <%= order.getDistrict() %></div>
-            <div class="order-info-row"><span class="order-info-label">Trạng thái:</span>
-                <span class="order-status"><%= order.getStatus() %></span>
+
+            <div class="order-info-row"><span class="order-info-label">Trạng thái:</span><span class="order-status"><%= statusVN %></span></div>
+
+            <div class="order-info-row"><span class="order-info-label">Phương thức thanh toán:</span>
+                <%
+                    String method = (order.getStatus() != null && order.getStatus().startsWith("QR")) ? "QR" : "COD";
+                %>
+                <%= method %>
             </div>
+
             <div class="order-info-row"><span class="order-info-label">Tổng tiền:</span> <span style="color:#16793a; font-weight: bold;"><%= String.format("%,.0f", order.getTotalAmount()) %> đ</span></div>
 
             <h4 style="margin:20px 0 10px 0; color:#25bb55;">Danh sách sản phẩm:</h4>

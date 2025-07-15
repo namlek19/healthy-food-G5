@@ -12,12 +12,13 @@
         <jsp:include page="includes/sidebarSeller.jsp"/>
 
         <div class="container" style="margin-left: 270px; padding-top: 30px;">
-            <h3 class="mb-4 text-success">Danh sách đơn hàng đang chờ xử lý</h3>
 
             <c:if test="${not empty sessionScope.msg}">
                 <div class="alert alert-info">${sessionScope.msg}</div>
                 <c:remove var="msg" scope="session"/>
             </c:if>
+
+            <h3 class="mb-4 text-success">Danh sách đơn hàng COD</h3>
 
             <table class="table table-bordered table-hover align-middle">
                 <thead class="table-success">
@@ -35,11 +36,47 @@
                             <td>${loop.index + 1}</td>
                             <td>${o.receiverName}</td>
                             <td><strong>
-                                <fmt:formatDate value="${o.orderDate}" pattern="HH:mm" />
+                                    <fmt:formatDate value="${o.orderDate}" pattern="HH:mm" />
                                 </strong>
                                 ngày
                                 <strong>
-                                <fmt:formatDate value="${o.orderDate}" pattern="dd/MM/yyyy" />
+                                    <fmt:formatDate value="${o.orderDate}" pattern="dd/MM/yyyy" />
+                                </strong>
+                            </td>
+                            <td>${o.totalAmount}đ</td>
+                            <td>
+                                <a href="orderDetail?orderID=${o.orderID}" class="btn btn-outline-info btn-sm">Xem chi tiết</a>
+                            </td>
+                        </tr>
+                    </c:forEach>
+                </tbody>
+            </table>
+            <c:if test="${empty pendingOrders}">
+                <div class="alert alert-info text-center">Hiện chưa có đơn hàng COD nào đang chờ xử lý.</div>
+            </c:if>
+            <h3 class="mb-4 text-success">Danh sách đơn hàng đã thanh toán QR</h3>
+
+            <table class="table table-bordered table-hover align-middle">
+                <thead class="table-success">
+                    <tr>
+                        <th>#</th>
+                        <th>Tên Người nhận</th>
+                        <th>Thời gian đặt</th>
+                        <th>Tổng tiền</th>
+                        <th>Hành động</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <c:forEach var="o" items="${pendingQROrders}" varStatus="loop">
+                        <tr>
+                            <td>${loop.index + 1}</td>
+                            <td>${o.receiverName}</td>
+                            <td><strong>
+                                    <fmt:formatDate value="${o.orderDate}" pattern="HH:mm" />
+                                </strong>
+                                ngày
+                                <strong>
+                                    <fmt:formatDate value="${o.orderDate}" pattern="dd/MM/yyyy" />
                                 </strong>
                             </td>
                             <td>${o.totalAmount}đ</td>
@@ -51,8 +88,8 @@
                 </tbody>
             </table>
 
-            <c:if test="${empty pendingOrders}">
-                <div class="alert alert-info text-center">Hiện chưa có đơn hàng nào đang chờ xử lý.</div>
+            <c:if test="${empty pendingQROrders}">
+                <div class="alert alert-info text-center">Hiện chưa có đơn hàng QR nào đang chờ xử lý.</div>
             </c:if>
         </div>
     </body>
