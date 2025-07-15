@@ -106,7 +106,7 @@
                         <div class="hero-text-box text-center">
                             <h1>COMBO CỦA HEALTHY MEAL</h1>
                             <p>Cùng thử ngay những combo phù hợp đặc biệt dành cho bạn theo chỉ số BMI nào.</p>
-                            <a href="menucus?bmi=${sessionScope.bmiType}" class="cta-button btn btn-success">Thử ngay</a>
+                            <a href="menucus?bmi=${sessionScope.bmiType}" class="cta-button btn btn-success"><i class="bi bi-cursor-fill"></i> Thử ngay</a>
                         </div>
                     </div>
 
