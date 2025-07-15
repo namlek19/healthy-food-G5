@@ -31,6 +31,12 @@
 
             <div style="margin-left: 250px; padding: 20px;">
                 <h3 class="text-success">Danh sách món ăn</h3>
+                <c:if test="${param.error == 'containedInMenu'}">
+                    <div class="alert alert-danger">Không thể xóa! Món này đang nằm trong một combo.</div>
+                </c:if>
+                <c:if test="${param.message == 'deleted'}">
+                    <div class="alert alert-success">Xóa món thành công!</div>
+                </c:if>
 
                 <table class="table table-striped table-bordered">
                     <thead class="table-success">

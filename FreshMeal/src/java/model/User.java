@@ -3,8 +3,8 @@ package model;
 public class User {
     private int userID;
     private String fullName;
-    private String firstName;  // For form handling
-    private String lastName;   // For form handling
+    private String firstName;  
+    private String lastName;  
     private String email;
     private String passwordHash;
     private String city;
@@ -12,7 +12,7 @@ public class User {
     private String address;
     private float heightCm;
     private float weightKg;
-    private float bmi;  // This is now read-only, calculated by the database
+    private float bmi; 
     private String bmiCategory;
     private int roleID;
     
@@ -30,7 +30,7 @@ public class User {
         this.address = address;
         this.roleID = roleID;
         
-        // Split fullName into firstName and lastName if fullName contains a space
+        
         if (fullName != null && fullName.contains(" ")) {
             int lastSpaceIndex = fullName.lastIndexOf(" ");
             this.firstName = fullName.substring(0, lastSpaceIndex).trim();
@@ -41,7 +41,7 @@ public class User {
         }
     }
 
-    // Additional constructor for form handling
+    
     public User(int userID, String firstName, String lastName, String email, String passwordHash, 
                 String city, String district, String address, int roleID) {
         this.userID = userID;
@@ -70,7 +70,7 @@ public class User {
 
     public void setFullName(String fullName) {
         this.fullName = fullName;
-        // Update firstName and lastName when fullName is set
+        
         if (fullName != null && fullName.contains(" ")) {
             int lastSpaceIndex = fullName.lastIndexOf(" ");
             this.firstName = fullName.substring(0, lastSpaceIndex).trim();
@@ -99,7 +99,7 @@ public class User {
         updateFullName();
     }
 
-    // Helper method to update fullName when firstName or lastName changes
+    
     private void updateFullName() {
         this.fullName = (firstName + " " + lastName).trim();
     }
@@ -164,7 +164,7 @@ public class User {
         return bmi;
     }
 
-    // This setter should only be used when loading from database
+    
     public void setBmi(float bmi) {
         this.bmi = bmi;
     }

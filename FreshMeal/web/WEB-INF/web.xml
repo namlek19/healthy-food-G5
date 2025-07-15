@@ -126,6 +126,10 @@
         <servlet-name>AddProductSellerServlet</servlet-name>
         <servlet-class>controller.AddProductSellerServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>DeleteProductServlet</servlet-name>
+        <servlet-class>controller.DeleteProductServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>LoginServlet</servlet-name>
         <url-pattern>/login</url-pattern>
@@ -249,6 +253,10 @@
     <servlet-mapping>
         <servlet-name>AddProductSellerServlet</servlet-name>
         <url-pattern>/addProductSeller</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>DeleteProductServlet</servlet-name>
+        <url-pattern>/deleteProduct</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>30</session-timeout>
