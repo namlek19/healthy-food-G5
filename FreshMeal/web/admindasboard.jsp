@@ -46,6 +46,7 @@
                         <th>ID khách hàng</th>
                         <th>Tên khách hàng</th>
                         <th>Email</th>
+                        <th>Địa chỉ</th>
                         <th>Vai trò</th>
                         <th>Trạng thái</th>
                         <th>Tính năng</th>
@@ -57,6 +58,7 @@
                             <td>${user.userID}</td>
                             <td>${user.fullName}</td>
                             <td>${user.email}</td>
+                            <td>${user.address}</td>
                             <td>
                                 <form method="post" action="login" class="inline">
                                     <input type="hidden" name="action" value="editUser" />
@@ -83,12 +85,6 @@
                                 </form>
                             </td>
                             <td>
-                                <form method="post" action="login" class="inline" style="display:inline;">
-                                    <input type="hidden" name="action" value="editUser" />
-                                    <input type="hidden" name="userID" value="${user.userID}" />
-                                    <input type="hidden" name="roleID" value="${user.roleID}" />
-                                    <button type="submit" class="admin-action-btn edit" title="Edit"><span>&#9998;</span></button>
-                                </form>
                                 <form method="post" action="login" class="inline" style="display:inline;" onsubmit="return confirm('Are you sure you want to delete this user?');">
                                     <input type="hidden" name="action" value="deleteUser" />
                                     <input type="hidden" name="userID" value="${user.userID}" />
