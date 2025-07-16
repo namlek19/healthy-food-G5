@@ -33,7 +33,7 @@
                         <h4 class="text-success mb-4 text-center">TÍNH CHỈ SỐ BMI CỦA BẠN NGAY NÀO</h4>
                         <form action="bmi" method="post">
                             <div class="row">
-                                <!-- Nhập liệu -->
+                               
                                 <div class="col-md-6 pe-md-3">
                                     <small class="text-muted">*Chuẩn nhất khi áp dụng cho người từ 18 tuổi trở lên.</small>
 

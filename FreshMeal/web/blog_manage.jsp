@@ -29,7 +29,6 @@
         <%@ include file="sidebar.jsp" %>
 
         <div class="main-container">
-            <!-- ...container quản lý blog như code của bạn... -->
             <h2>Quản lý bài viết đã đăng</h2>
             <form class="search-bar" action="blogmanage" method="get">
                 <input type="text" name="search" placeholder="Tìm kiếm blog..." value="${search != null ? search : ''}">

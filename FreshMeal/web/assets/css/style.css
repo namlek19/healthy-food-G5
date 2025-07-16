@@ -97,8 +97,7 @@ nav a {
 input:focus,
 input:not(:placeholder-shown){
     width: 250px;
-    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2),
-        0 6px 20px 0 #FFBB70;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
 }
 
 .cta-button {
@@ -179,7 +178,7 @@ footer {
 }
 
 .bmi-form-box {
-    background-color: #F0FDF4; /* Màu xanh lá nhạt */
+    background-color: #F0FDF4; 
     padding: 25px;
     border-radius: 12px;
     box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);

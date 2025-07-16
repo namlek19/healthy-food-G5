@@ -1,7 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
-
 <!DOCTYPE html>
 <html>
     <head>
@@ -47,6 +46,7 @@
                 Tổng tiền: <span class="text-danger fw-bold">${order.totalAmount}đ</span>
                 <c:if test="${order.status == 'QRPending'}">
                     <span class="badge bg-success ms-2">Đã thanh toán QR</span>
+                    <small class="text-muted">*Đã thanh toán, không được hủy đơn. Vui lòng xác nhận và liên hệ khách hàng nếu có vấn đề</smail>
                 </c:if>
             </h5>
 
@@ -77,11 +77,12 @@
 
                 <button type="submit" class="btn btn-success">Xác nhận</button>
             </form>
-
-            <form action="rejectOrder" method="post" class="mt-2" onsubmit="return confirm('Bạn chắc chắn muốn từ chối đơn này?');">
-                <input type="hidden" name="orderID" value="${order.orderID}" />
-                <button class="btn btn-danger">Từ chối</button>
-            </form>
+            <c:if test="${order.status == 'Pending'}">
+                <form action="rejectOrder" method="post" class="mt-2" onsubmit="return confirm('Bạn chắc chắn muốn từ chối đơn này?');">
+                    <input type="hidden" name="orderID" value="${order.orderID}" />
+                    <button class="btn btn-danger">Từ chối</button>
+                </form>
+            </c:if>
         </div>
     </body>
 </html>
