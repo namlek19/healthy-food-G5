@@ -111,7 +111,7 @@
                     <%
                         String status = order.getStatus();
                         String method = (status.startsWith("QR")) ? "QR" : "COD";
-                        String statusText = "Không xác định";
+                        String statusText = "Lỗi";
                         switch (status) {
                             case "Pending":
                             case "QRPending":
