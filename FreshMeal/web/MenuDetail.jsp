@@ -8,6 +8,9 @@
     User user = (User) session.getAttribute("user");
     int roleID = (user != null) ? user.getRoleID() : -1;
     boolean isSeller = (roleID == 4);
+    boolean isNutritionist = (roleID == 5);
+    boolean isCustomer = (roleID == 2);
+    boolean isGuest = (roleID == -1);
 %>
 <!DOCTYPE html>
 <html>
@@ -37,7 +40,7 @@
         </style>
     </head>
     <body>
-        <% if (!isSeller) { %>
+        <% if ( isCustomer || isGuest) { %>
         <jsp:include page="includes/header.jsp" />
         <% } %>
 
@@ -61,7 +64,7 @@
                                         <fmt:formatNumber value="${menu.totalPrice}" type="number" maxFractionDigits="0"/> VNĐ
                                     </h5>
                                 </div>
-                                <% if (!isSeller) { %>    
+                                <% if (isCustomer || isGuest) { %>    
                                 <div class="row mt-3 align-items-center">
                                     <div class="col-md-6 mb-2">
                                         <form action="CartServlet" method="post">
@@ -83,7 +86,19 @@
                                     </div>
 
                                 </div>
-                                <% } %>            
+                                <% } %>       
+                                <% if (isNutritionist) { %>    
+                                <div class="row mt-3 align-items-center">
+                                    <div class="col-md-6 mb-2">
+                                        <a href="requestdeletemenu?id=${menu.menuID}" class="btn btn-outline-danger w-100">Gửi yêu cầu xóa</a>
+                                    </div>
+
+                                    <div class="col-md-6 mb-2">
+                                        <a href="requestEditMenu?menuID=${menu.menuID}" class="btn btn-warning w-100">Gửi yêu cầu chỉnh sửa</a>
+                                    </div>
+                                </div>
+                                <% } %> 
+
                             </div>
                         </div>
 
@@ -106,15 +121,20 @@
                                     <a href="manageComboSeller" class="btn btn-success">&larr; Quay lại trang quản lý combo</a>
                                 </div>
                             </c:if>
+                            <c:if test="${roleID == 5}">
+                                <div class="mb-3">
+                                    <a href="menumanage" class="btn btn-success">&larr; Quay lại trang quản lý combo</a>
+                                </div>
+                            </c:if>
                         </div>
                     </div>
                 </c:otherwise>
             </c:choose>
         </div>
 
-        <% if (!isSeller) { %>
-            <jsp:include page="includes/footer.jsp" />
+        <% if (isCustomer || isGuest ) { %>
+        <jsp:include page="includes/footer.jsp" />
         <% } %>
-        
+
     </body>
 </html>

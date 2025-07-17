@@ -30,9 +30,22 @@
                     <c:forEach var="m" items="${menuList}">
                         <tr class="align-middle text-center">
                             <!--<td><img src="${m.imageURL}" width="80" style="border-radius: 8px;"></td>-->
-                            <td>${m.menuName}</td>
+                            <td>
+                                <a href="menudetail?id=${m.menuID}" class="text-success fw-semibold text-decoration-none">
+                                    ${m.menuName}
+                                </a>
+                            </td>
+
                             <td>${m.bmiCategory}</td>
-                            <td><c:out value="${productNamesMap[m.menuID]}" escapeXml="false" /></td>
+                            
+                            <td class="d-flex flex-column justify-content-center align-items-center">
+                                <c:forEach var="p" items="${m.products}">
+                                    <a href="productdetail?id=${p.productID}" class="text-success text-decoration-none mb-1">
+                                        ${p.name}
+                                    </a>
+                                </c:forEach>
+                            </td>
+
                             <td>
                                 <c:set var="status" value="${statusMap[m.menuID]}" />
 

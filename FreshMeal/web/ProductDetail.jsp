@@ -6,6 +6,9 @@
     User user = (User) session.getAttribute("user");
     int roleID = (user != null) ? user.getRoleID() : -1;
     boolean isSeller = (roleID == 4);
+    boolean isNutritionist = (roleID == 5);
+    boolean isCustomer = (roleID == 2);
+    boolean isGuest = (roleID == -1);
 %>
 
 <!DOCTYPE html>
@@ -21,12 +24,12 @@
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/css/bootstrap.min.css" rel="stylesheet">
     </head>
     <body>
-        <% if (!isSeller) { %>
+        <% if (isCustomer || isGuest ) { %>
         <jsp:include page="includes/header.jsp" />
         <% } %>
 
         <div class="container mt-4">
-            
+
             <c:choose>
                 <c:when test="${not empty error}">
                     <div class="alert alert-danger">${error}</div>
@@ -52,39 +55,41 @@
                                                 <fmt:formatNumber value="${product.price}" type="number" maxFractionDigits="0"/> VNĐ
                                             </h5>
                                         </div>
-                                        <c:choose>
-                                            <c:when test="${roleID == 4}">
-                                                <div class="col-md-4 mb-2">
-                                                    <form action="deleteProduct" method="post" onsubmit="return confirm('Bạn có chắc muốn xóa món này?');">
-                                                        <input type="hidden" name="productID" value="${product.productID}">
-                                                        <button type="submit" class="btn btn-outline-danger w-100">Xóa</button>
-                                                    </form>
-                                                </div>
-                                                <div class="col-md-4 mb-2">
-                                                    <a href="#" class="btn btn-outline-success w-100">Chỉnh sửa</a>
-                                                </div>
-                                            </c:when>
-                                            <c:otherwise>
 
-                                                <div class="col-md-4 mb-2">
-                                                    <form action="CartServlet" method="post">
-                                                        <input type="hidden" name="id" value="${product.productID}">
-                                                        <input type="hidden" name="action" value="add">
-                                                        <input type="hidden" name="redirect" value="productdetail?id=${product.productID}">
-                                                        <button type="submit" class="btn btn-outline-success w-100"
-                                                                onclick="alert('Thêm vào giỏ hàng thành công!');">Thêm vào giỏ</button>
-                                                    </form>
-                                                </div>
-                                                <div class="col-md-4 mb-2">
-                                                    <form action="CartServlet" method="post">
-                                                        <input type="hidden" name="id" value="${product.productID}">
-                                                        <input type="hidden" name="action" value="add">
-                                                        <input type="hidden" name="redirect" value="cart.jsp">
-                                                        <button type="submit" class="btn btn-success w-100">Mua ngay</button>
-                                                    </form>
-                                                </div>
-                                            </c:otherwise>
-                                        </c:choose>
+                                        <% if (isSeller) { %>   
+                                        <div class="col-md-4 mb-2">
+                                            <form action="deleteProduct" method="post" onsubmit="return confirm('Bạn có chắc muốn xóa món này?');">
+                                                <input type="hidden" name="productID" value="${product.productID}">
+                                                <button type="submit" class="btn btn-outline-danger w-100">Xóa</button>
+                                            </form>
+                                        </div>
+                                        <div class="col-md-4 mb-2">
+                                            <a href="#" class="btn btn-outline-success w-100">Chỉnh sửa</a>
+                                        </div>
+
+                                        <% } %>  
+
+
+                                        <% if (isCustomer || isGuest) { %>    
+                                        <div class="col-md-4 mb-2">
+                                            <form action="CartServlet" method="post">
+                                                <input type="hidden" name="id" value="${product.productID}">
+                                                <input type="hidden" name="action" value="add">
+                                                <input type="hidden" name="redirect" value="productdetail?id=${product.productID}">
+                                                <button type="submit" class="btn btn-outline-success w-100"
+                                                        onclick="alert('Thêm vào giỏ hàng thành công!');">Thêm vào giỏ</button>
+                                            </form>
+                                        </div>
+                                        <div class="col-md-4 mb-2">
+                                            <form action="CartServlet" method="post">
+                                                <input type="hidden" name="id" value="${product.productID}">
+                                                <input type="hidden" name="action" value="add">
+                                                <input type="hidden" name="redirect" value="cart.jsp">
+                                                <button type="submit" class="btn btn-success w-100">Mua ngay</button>
+                                            </form>
+                                        </div>
+                                        <% } %> 
+
 
                                     </div>
                                 </div>
@@ -109,6 +114,11 @@
                                     <a href="manageProductSeller" class="btn btn-success">&larr; Quay lại trang quản lý món</a>
                                 </div>
                             </c:if>
+                            <c:if test="${roleID == 5}">
+                                <div class="mb-3">
+                                    <a href="menumanage" class="btn btn-success">&larr; Quay lại trang quản lý combo</a>
+                                </div>
+                            </c:if>
                         </div>
 
                     </div>
@@ -116,7 +126,7 @@
             </c:choose>
         </div>
 
-        <% if (!isSeller) { %>
+        <% if (isCustomer || isGuest) { %>
         <jsp:include page="includes/footer.jsp" />
         <% } %>
     </body>

@@ -7,9 +7,9 @@ body {
 
 .main-container {
     max-width: 1050px;
-    margin: 38px 200px 26px auto;    /* <-- căn giữa theo chiều ngang */
+    margin: 38px 200px 26px 390px;    
     padding: 0 18px 60px 18px;
-    /* KHÔNG dùng margin-left lớn trừ khi sidebar là absolute/fixed */
+  
 }
 h2, h4, h5 {
     font-family: 'Poppins', Arial, sans-serif;

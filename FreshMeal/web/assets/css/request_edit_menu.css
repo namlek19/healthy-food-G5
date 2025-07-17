@@ -7,6 +7,14 @@ body {
     color: #333;
 }
 
+.main-container {
+    margin-left:  13% !important;  /* bỏ căn giữa */
+    margin-right: auto !important;
+    max-width: none !important; /* nếu trước đó có max-width */
+    width: 75% !important;     /* hoặc để chiều rộng tự do */
+}
+
+
 h2, h4 {
     font-weight: 700;
     color: #28a745;
