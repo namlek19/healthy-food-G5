@@ -20,7 +20,6 @@
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
     </head>
     <body style="background: #f0f7f4;">
-        <%@ include file="sidebar.jsp" %>
         <div class="main-container">
             <h2 class="text-success mb-4" style="font-weight:700;">Yêu cầu sửa Menu ID <%=menuID%></h2>
 
@@ -108,6 +107,7 @@
                     <button type="submit" class="btn btn-success btn-lg w-100 mt-2 fw-bold" style="font-size:1.15em;">
                         Gửi yêu cầu sửa
                     </button>
+                    <a href="menumanage" class="btn btn-danger btn w-100 mt-2 fw-bold">Hủy</a>
                 </div>
             </form>
 

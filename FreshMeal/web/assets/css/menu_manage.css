@@ -2,10 +2,10 @@
 
 /* Giảm chiều rộng của main-container để tránh đè lên sidebar */
 .main-container {
-    max-width: 1200px;    /* hoặc 90% nếu muốn linh hoạt */
-    margin: 20px auto 20px 360px;    /* căn giữa */
+    max-width: 1200px;   
+    margin: 20px auto 20px 310px;    
     padding: 20px;
-    background-color: #fff;   /* nhẹ nhàng, phân biệt với sidebar */
+    background-color: #fff;   
     border-radius: 10px;
     box-shadow: 0 0 10px rgba(0,0,0,0.05);
 }
@@ -22,7 +22,7 @@
     border-radius: 6px;
 }
 
-/* Giảm padding của table để đỡ chiếm không gian */
+
 .table {
     margin-bottom: 0;
 }
