@@ -18,11 +18,7 @@
     <body>
         <jsp:include page="includes/header.jsp" />
 
-        <!--        <div class="search-bar">
-                    <form action="search">
-                        <input type="text" placeholder="Searching for food..." required />        
-                    </form>
-                </div>-->
+        
 
         <section class="bmi-section">
             <div class="row bmi-background m-0 justify-content-center">
