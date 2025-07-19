@@ -44,23 +44,27 @@
                     <% } %>
 
                     <label>Quận nội thành Hà Nội <span class="required">*</span></label>
-                    <select name="district" id="district" onchange="enableAddress()" required
-                            <%= isCustomer ? "readonly" : "" %> data-default="<%= userDistrict %>">
-                        <option value="">-- Chọn quận --</option>
-                        <option <%= userDistrict.equals("Hoàn Kiếm") ? "selected" : "" %>>Hoàn Kiếm</option>
-                        <option <%= userDistrict.equals("Ba Đình") ? "selected" : "" %>>Ba Đình</option>
-                        <option <%= userDistrict.equals("Đống Đa") ? "selected" : "" %>>Đống Đa</option>
-                        <option <%= userDistrict.equals("Hai Bà Trưng") ? "selected" : "" %>>Hai Bà Trưng</option>
-                        <option <%= userDistrict.equals("Tây Hồ") ? "selected" : "" %>>Tây Hồ</option>
-                        <option <%= userDistrict.equals("Cầu Giấy") ? "selected" : "" %>>Cầu Giấy</option>
-                        <option <%= userDistrict.equals("Thanh Xuân") ? "selected" : "" %>>Thanh Xuân</option>
-                        <option <%= userDistrict.equals("Hoàng Mai") ? "selected" : "" %>>Hoàng Mai</option>
-                        <option <%= userDistrict.equals("Long Biên") ? "selected" : "" %>>Long Biên</option>
-                    </select>
+                    <div class="district-wrapper">
+                        <select name="district" id="district" onchange="enableAddress()" required
+                                data-default="<%= userDistrict %>" style="width:100%;">
+                            <option value="">-- Chọn quận --</option>
+                            <option <%= userDistrict.equals("Hoàn Kiếm") ? "selected" : "" %>>Hoàn Kiếm</option>
+                            <option <%= userDistrict.equals("Ba Đình") ? "selected" : "" %>>Ba Đình</option>
+                            <option <%= userDistrict.equals("Đống Đa") ? "selected" : "" %>>Đống Đa</option>
+                            <option <%= userDistrict.equals("Hai Bà Trưng") ? "selected" : "" %>>Hai Bà Trưng</option>
+                            <option <%= userDistrict.equals("Tây Hồ") ? "selected" : "" %>>Tây Hồ</option>
+                            <option <%= userDistrict.equals("Cầu Giấy") ? "selected" : "" %>>Cầu Giấy</option>
+                            <option <%= userDistrict.equals("Thanh Xuân") ? "selected" : "" %>>Thanh Xuân</option>
+                            <option <%= userDistrict.equals("Hoàng Mai") ? "selected" : "" %>>Hoàng Mai</option>
+                            <option <%= userDistrict.equals("Long Biên") ? "selected" : "" %>>Long Biên</option>
+                        </select>
+                        <div id="districtOverlay" class="overlay"></div>
+                    </div>
 
                     <label>Địa chỉ cụ thể <span class="required">*</span></label>
                     <textarea name="address" id="address" placeholder="Số nhà, ngõ, đường..." required
-                              data-default="<%= userAddress %>"><%= userAddress %></textarea>
+                              data-default="<%= userAddress %>" 
+                              style="width:100%;"><%= userAddress %></textarea>
 
                     <h3 style="margin: 32px 0 12px 0; color: #1b813e; font-size: 1.12rem; font-weight: bold;">Sản phẩm đã đặt</h3>
                     <div style="background: #fff; border-radius:8px; padding:18px; border:1px solid #e1f5ea; margin-bottom:16px;">
@@ -158,19 +162,24 @@
                 const useProfile = document.getElementById("useProfileAddress").checked;
                 const districtSelect = document.getElementById("district");
                 const addressTextarea = document.getElementById("address");
+                const overlay = document.getElementById("districtOverlay");
 
                 document.getElementById("addressOption").value = useProfile ? "profile" : "new";
 
                 if (useProfile) {
-                    districtSelect.disabled = true;
-                    addressTextarea.disabled = true;
                     districtSelect.value = districtSelect.getAttribute('data-default');
                     addressTextarea.value = addressTextarea.getAttribute('data-default');
+                    overlay.style.display = "block"; // overlay khóa select
+                    districtSelect.classList.add('not-editable');
+                    addressTextarea.readOnly = true;
+                    addressTextarea.classList.add('not-editable');
                 } else {
-                    districtSelect.disabled = false;
-                    addressTextarea.disabled = false;
                     districtSelect.value = "";
                     addressTextarea.value = "";
+                    overlay.style.display = "none";
+                    districtSelect.classList.remove('not-editable');
+                    addressTextarea.readOnly = false;
+                    addressTextarea.classList.remove('not-editable');
                 }
             }
 
