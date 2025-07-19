@@ -143,4 +143,27 @@ public class CartDAO extends DBContext {
             e.printStackTrace();
         }
     }
+    public void removeAllItems(int userId) {
+    int cartId = getCartIdByUser(userId);
+    if (cartId == -1) return;
+    String sql = "DELETE FROM CartItem WHERE CartID = ?";
+    try (Connection conn = getConnection();
+         PreparedStatement ps = conn.prepareStatement(sql)) {
+        ps.setInt(1, cartId);
+        ps.executeUpdate();
+    } catch (Exception e) {
+        e.printStackTrace();
+    }
+}
+public void clearGuestCart(String guestId) {
+    String sql = "DELETE FROM GuestCartItem WHERE GuestID = ?";
+    try (Connection conn = getConnection();
+         PreparedStatement ps = conn.prepareStatement(sql)) {
+        ps.setString(1, guestId);
+        ps.executeUpdate();
+    } catch (Exception e) {
+        e.printStackTrace();
+    }
+}
+
 }
