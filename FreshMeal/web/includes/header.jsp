@@ -2,18 +2,26 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
 <header class="main-header">
     <div class="container header-container">
-        <div class="logo">
-            <a href="index">
-                <img src="assets/images/logotext.png" alt="logo">
-            </a>
+        <div class="left-wrap">
+            <div class="logo">
+                <a href="index">
+                    <img src="assets/images/logotext.png" alt="logo">
+                </a>
+            </div>
+            <nav>
+                <ul class="nav gap-3">
+                    <li class="nav-item"><a href="productlistcontrol?category=" class="nav-link">MÓN ĂN</a></li>
+                    <li class="nav-item"><a href="menucus?bmi=" class="nav-link">COMBO</a></li>
+                    <li class="nav-item"><a href="blogcus" class="nav-link">BLOG</a></li>
+                </ul>
+            </nav>
         </div>
-        <nav>
-            <ul class="nav gap-3">
-                <li class="nav-item"><a href="productlistcontrol?category=" class="nav-link">MÓN ĂN</a></li>
-                <li class="nav-item"><a href="menucus?bmi=" class="nav-link">COMBO</a></li>
-                <li class="nav-item"><a href="blogcus" class="nav-link">BLOG</a></li>
-            </ul>
-        </nav>
+        <form action="search" method="get" class="search-bar">
+            <input type="text" name="keyword" placeholder="Tìm kiếm món ăn và combo..." />
+            <button type="submit" title="Tìm kiếm">
+                <i class="bi bi-search-heart"></i>
+            </button>
+        </form>
         <div class="header-right">
             <a href="cart.jsp" class="cart-btn">
                 <span class="cart-icon-wrap">

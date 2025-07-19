@@ -58,42 +58,6 @@ nav a {
     font-weight: 600;
 }
 
-.search-bar{
-    background-color: #f0fff5;
-    padding: 10px;
-}
-
-.search-bar input{
-    position: relative;
-    left: 75%;
-    color: #333;
-    font-size: 16px;
-    background: transparent;
-    width: 200px;
-    height: 20px;
-    padding: 10px;
-    border: 3px solid #2ecc71;
-    outline: none;
-    border-radius: 35px;
-    transition: all 0.5s;
-    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2),
-        0 6px 20px 0 #2ecc71;
-}
-
-.search-bar input::placeholder{
-    color: #777;
-    opacity: 0;
-    transition: opacity 150ms ease-out;
-}
-
-.search-bar input:focus::placeholder{
-    opacity: 1;
-}
-
-.search-bar input:hover{
-    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2),
-        0 6px 20px 0 #cecadf;
-}
 input:focus,
 input:not(:placeholder-shown){
     width: 250px;
@@ -169,7 +133,7 @@ footer {
 }
 
 .bmi-background {
-    background-image: url('../images/anhchoBMI.jpg'); /* ảnh nền BMI */
+    background-image: url('../images/anhchoBMI.jpg');
     background-size: cover;
     background-position: left center;
     height: 500px;
