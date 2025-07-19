@@ -4,6 +4,7 @@
  */
 package vnpay;
 
+import dal.CartDAO;
 import dal.OrderDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -57,7 +58,7 @@ public class VnpayReturn extends HttpServlet {
             }
             String signValue = Config.hashAllFields(fields);
             if (signValue.equalsIgnoreCase(vnp_SecureHash)) {
-               
+
                 String orderIdStr = request.getParameter("vnp_TxnRef");
                 int orderId = Integer.parseInt(orderIdStr);
 
@@ -66,18 +67,27 @@ public class VnpayReturn extends HttpServlet {
                 if ("00".equals(request.getParameter("vnp_TransactionStatus"))) {
                     status = "QRPending";
                     transSuccess = true;
+                    CartDAO cartDao = new CartDAO();
+                    if (orderDao.isGuestOrder(orderId)) {
+
+                        String guestId = request.getSession().getId();
+                        cartDao.clearGuestCart(guestId);
+                    } else {
+                        
+                        int userId = orderDao.getUserIdByOrderId(orderId);
+                        cartDao.clearCart(userId);
+                    }
                 } else {
                     status = "Failed";
                 }
 
-          
                 orderDao.updateOrderStatus(orderId, status);
 
                 request.setAttribute("transResult", transSuccess);
                 request.setAttribute("orderId", orderId);
                 request.getRequestDispatcher("paymentResult.jsp").forward(request, response);
             } else {
-              
+
                 System.out.println("GD KO HOP LE (invalid signature)");
                 request.setAttribute("transResult", false);
                 request.setAttribute("orderId", "");

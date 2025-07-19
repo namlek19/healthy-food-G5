@@ -147,7 +147,7 @@
             <div style="margin-top:20px;color:#ff4444;font-weight:600;">Không có yêu cầu xóa nào.</div>
             <% } %>
             <%
-                List<Menu> editRequests = dao.getMenusFromSuaMenu(); // Lấy menu từ bảng SuaMenu
+                List<Menu> editRequests = dao.getMenusFromSuaMenu(); 
             %>
 
             <h2 style="margin-top: 50px;">Danh sách Menu yêu cầu sửa</h2>

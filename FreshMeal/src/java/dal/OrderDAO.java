@@ -298,4 +298,32 @@ public class OrderDAO extends DBContext {
             e.printStackTrace();
         }
     }
+    public int getUserIdByOrderId(int orderId) {
+    String sql = "SELECT UserID FROM [Order] WHERE OrderID = ?";
+    try (Connection conn = getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+        ps.setInt(1, orderId);
+        ResultSet rs = ps.executeQuery();
+        if (rs.next()) {
+            return rs.getInt("UserID");
+        }
+    } catch (Exception e) {
+        e.printStackTrace();
+    }
+    return -1; // return -1 if not found or error
+}
+public boolean isGuestOrder(int orderId) {
+    String sql = "SELECT UserID FROM [Order] WHERE OrderID = ?";
+    try (Connection conn = getConnection();
+         PreparedStatement ps = conn.prepareStatement(sql)) {
+        ps.setInt(1, orderId);
+        ResultSet rs = ps.executeQuery();
+        if (rs.next()) {
+            return rs.getInt("UserID") == 0; // hoặc rs.wasNull() nếu UserID có thể null
+        }
+    } catch (Exception e) {
+        e.printStackTrace();
+    }
+    return false;
+}
+
 }

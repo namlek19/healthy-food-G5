@@ -103,15 +103,8 @@ public class LoginServlet extends HttpServlet {
                 if (!cartDAO.hasCart(user.getUserID())) {
                     cartDAO.createCartForUser(user.getUserID());
                 }
-                // 2. Nếu có guest_cart trong session, chuyển sang DB
-                List<CartItem> guestCart = (List<CartItem>) session.getAttribute("guest_cart");
-                if (guestCart != null && !guestCart.isEmpty()) {
-                    for (CartItem item : guestCart) {
-                        cartDAO.addOrUpdateCartItem(user.getUserID(), item.getProduct().getProductID(), item.getQuantity());
-                    }
-                    session.removeAttribute("guest_cart");
-                }
-                // 3. Luôn lấy lại cart từ DB cập nhật session (cho cart.jsp luôn chính xác)
+              
+
                 List<CartItem> dbCart = cartDAO.getCartItemsByUser(user.getUserID());
                 session.setAttribute("cart", dbCart);
 
@@ -197,15 +190,8 @@ public class LoginServlet extends HttpServlet {
             if (!cartDAO.hasCart(user.getUserID())) {
                 cartDAO.createCartForUser(user.getUserID());
             }
-            // 2. Nếu có guest_cart trong session, chuyển sang DB
-            List<CartItem> guestCart = (List<CartItem>) session.getAttribute("guest_cart");
-            if (guestCart != null && !guestCart.isEmpty()) {
-                for (CartItem item : guestCart) {
-                    cartDAO.addOrUpdateCartItem(user.getUserID(), item.getProduct().getProductID(), item.getQuantity());
-                }
-                session.removeAttribute("guest_cart");
-            }
-            // 3. Luôn lấy lại cart từ DB cập nhật session (cho cart.jsp luôn chính xác)
+            
+            
             List<CartItem> dbCart = cartDAO.getCartItemsByUser(user.getUserID());
             session.setAttribute("cart", dbCart);
             // ==== KẾT THÚC ĐOẠN ĐỒNG BỘ GIỎ HÀNG ====
