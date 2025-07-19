@@ -373,10 +373,20 @@ table tr:last-child td {
     border-bottom: none;
 }
 @media (max-width: 640px) {
-    table, tbody, tr, td, th { display: block; width: 100%;}
-    table tr { margin-bottom: 18px; }
-    table th { background: #e3fff2; }
-    table td { border: none; border-bottom: 1px solid #eee; }
+    table, tbody, tr, td, th {
+        display: block;
+        width: 100%;
+    }
+    table tr {
+        margin-bottom: 18px;
+    }
+    table th {
+        background: #e3fff2;
+    }
+    table td {
+        border: none;
+        border-bottom: 1px solid #eee;
+    }
 }
 .payment-method label {
     display: flex;
@@ -390,4 +400,24 @@ table tr:last-child td {
     accent-color: #2b9348; /* cho màu radio nếu muốn */
     width: 18px;
     height: 18px;
+}
+
+.not-editable {
+    background: #f3f3f3;
+    color: #777;
+}
+.overlay {
+    display: none;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 99;
+    cursor: not-allowed;
+}
+.district-wrapper {
+    position: relative;
+    display: inline-block;
+    width: 100%;
 }
