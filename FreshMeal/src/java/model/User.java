@@ -15,7 +15,19 @@ public class User {
     private float bmi; 
     private String bmiCategory;
     private int roleID;
-    
+    // User.java
+private String roleName;
+
+public String getRoleName() {
+    return roleName;
+}
+
+public void setRoleName(String roleName) {
+    this.roleName = roleName;
+}
+
+
+
     public User() {
     }
     

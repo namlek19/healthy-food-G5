@@ -122,7 +122,12 @@ public class LoginServlet extends HttpServlet {
                    
                     response.sendRedirect(request.getContextPath() + "/manageProductSeller");
                     
-                } else {
+                }else if (user.getRoleID() == 1) {
+                   
+                    response.sendRedirect(request.getContextPath() + "/manageUsers");
+                    
+                }
+                else {
                     // Các role khác vào homepage như thường
                     response.sendRedirect("index.jsp");
                 }
