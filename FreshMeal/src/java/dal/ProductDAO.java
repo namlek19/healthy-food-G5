@@ -187,9 +187,35 @@ public class ProductDAO extends DBContext {
         return false;
     }
 
+    public List<Product> searchProductsByName(String keyword) {
+        List<Product> list = new ArrayList<>();
+        String sql = "SELECT * FROM Product WHERE name LIKE ?";
+        try (Connection conn = getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setString(1, "%" + keyword + "%");
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                list.add(new Product(
+                        rs.getInt("productID"),
+                        rs.getString("name"),
+                        rs.getString("description"),
+                        rs.getString("nutritionInfo"),
+                        rs.getString("origin"),
+                        rs.getString("imageURL"),
+                        rs.getString("storageInstructions"),
+                        rs.getDouble("price"),
+                        rs.getInt("categoryID"),
+                        rs.getInt("calories")
+                ));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
+
     public static void main(String[] args) {
         ProductDAO dao = new ProductDAO();
-        List<Product> list = dao.getAllProduct();
+        List<Product> list = dao.searchProductsByName("nước");
         for (Product o : list) {
             System.out.println(o);
         }

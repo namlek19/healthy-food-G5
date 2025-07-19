@@ -118,6 +118,9 @@
 
         <h3 class="text-success text-center">Món ăn mới nhất</h3>
         <div class="row">
+            <c:if test="${empty newestProducts}">
+                <div class="alert alert-warning">Không có món ăn nào được tìm thấy.</div>
+            </c:if>
             <c:forEach var="p" items="${newestProducts}">
                 <div class="col-md-3 mb-4">
                     <div class="card h-100 shadow-sm">
@@ -137,7 +140,7 @@
         <h3 class="text-success text-center ">Combo mới nhất</h3>
         <div class="row">
             <c:if test="${empty newestMenus}">
-                <div class="alert alert-warning">Không có combo nào (status 3 hoặc 4) được tìm thấy.</div>
+                <div class="alert alert-warning">Không có combo nào được tìm thấy.</div>
             </c:if>
             <c:forEach var="menu" items="${newestMenus}">
                 <div class="col-md-3 mb-4">

@@ -77,7 +77,8 @@ public class MenuDAO extends DBContext {
         }
         return list;
     }
-private List<Product> getProductsInMenu(int menuID, Connection conn) throws SQLException {
+
+    private List<Product> getProductsInMenu(int menuID, Connection conn) throws SQLException {
         List<Product> list = new ArrayList<>();
         String sql = "SELECT p.* FROM Product p JOIN MenuProduct mp ON p.ProductID = mp.ProductID WHERE mp.MenuID = ?";
         try (PreparedStatement ps = conn.prepareStatement(sql)) {
@@ -145,7 +146,7 @@ private List<Product> getProductsInMenu(int menuID, Connection conn) throws SQLE
                         rs.getInt("NutritionistID")
                 );
                 m.setProducts(getProductsInMenu(m.getMenuID(), conn));
-double total = 0;
+                double total = 0;
                 for (Product p : m.getProducts()) {
                     total += p.getPrice();
                 }
@@ -218,7 +219,7 @@ double total = 0;
                         rs.getInt("MenuID"),
                         rs.getString("MenuName"),
                         rs.getString("Description"),
-rs.getString("ImageURL"),
+                        rs.getString("ImageURL"),
                         rs.getString("BMICategory"),
                         rs.getInt("NutritionistID")
                 );
@@ -235,6 +236,7 @@ rs.getString("ImageURL"),
         }
         return list;
     }
+
     public List<Menu> getMenusByStatuses34() {
         List<Menu> list = new ArrayList<>();
         String query = "SELECT * FROM Menu WHERE Status IN (3, 4) ORDER BY MenuID DESC";
@@ -262,6 +264,7 @@ rs.getString("ImageURL"),
         }
         return list;
     }
+
     public List<Menu> getMenusByNutritionist(int nutritionistID) {
         List<Menu> list = new ArrayList<>();
         String query = "SELECT * FROM Menu WHERE NutritionistID = ?";
@@ -293,7 +296,7 @@ rs.getString("ImageURL"),
 
     public Map<Integer, Integer> getStatusMapByNutritionist(int nutritionistID) {
         Map<Integer, Integer> map = new HashMap<>();
-String sql = "SELECT MenuID, Status FROM Menu WHERE NutritionistID = ?";
+        String sql = "SELECT MenuID, Status FROM Menu WHERE NutritionistID = ?";
         try (Connection conn = getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setInt(1, nutritionistID);
             ResultSet rs = ps.executeQuery();
@@ -368,7 +371,7 @@ String sql = "SELECT MenuID, Status FROM Menu WHERE NutritionistID = ?";
         } catch (Exception e) {
             e.printStackTrace();
         }
-return emails;
+        return emails;
     }
 
     public boolean deleteMenuWithResult(int menuID) {
@@ -438,7 +441,7 @@ return emails;
                 }
 
                 // Xóa bảng sửa
-try (PreparedStatement ps5 = conn.prepareStatement("DELETE FROM SuaMenuProduct WHERE MenuID = ?")) {
+                try (PreparedStatement ps5 = conn.prepareStatement("DELETE FROM SuaMenuProduct WHERE MenuID = ?")) {
                     ps5.setInt(1, menuID);
                     ps5.executeUpdate();
                 }
@@ -518,7 +521,7 @@ try (PreparedStatement ps5 = conn.prepareStatement("DELETE FROM SuaMenuProduct W
 
     private List<Product> getProductsFromSuaMenu(int menuId) {
         List<Product> products = new ArrayList<>();
-String sql = "SELECT p.ProductID, p.Name, p.Description, p.ImageURL, p.Price "
+        String sql = "SELECT p.ProductID, p.Name, p.Description, p.ImageURL, p.Price "
                 + "FROM Product p "
                 + "JOIN SuaMenuProduct smp ON p.ProductID = smp.ProductID "
                 + "WHERE smp.MenuID = ?";
@@ -587,7 +590,7 @@ String sql = "SELECT p.ProductID, p.Name, p.Description, p.ImageURL, p.Price "
             ps.setInt(5, menuID);
             ps.executeUpdate();
             return true;
-} catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return false;
@@ -631,22 +634,55 @@ String sql = "SELECT p.ProductID, p.Name, p.Description, p.ImageURL, p.Price "
         }
         return ids;
     }
-    
+
     public String getUserNameByID(int userID) {
-    String sql = "SELECT fullName FROM Users WHERE userID = ?";
-    try (Connection conn = getConnection();
-         PreparedStatement ps = conn.prepareStatement(sql)) {
-        ps.setInt(1, userID);
-        ResultSet rs = ps.executeQuery();
-        if (rs.next()) {
-            return rs.getString("fullName");
+        String sql = "SELECT fullName FROM Users WHERE userID = ?";
+        try (Connection conn = getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, userID);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                return rs.getString("fullName");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-    } catch (Exception e) {
-        e.printStackTrace();
+        return "Unknown";
     }
-    return "Unknown";
-}
 
-    
-
+    public List<Menu> searchMenusByName(String keyword) {
+        List<Menu> list = new ArrayList<>();
+        String sql = "SELECT * FROM Menu WHERE (Status = 3 OR Status = 4) AND MenuName LIKE ?";
+        try (Connection conn = getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setString(1, "%" + keyword + "%");
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                Menu m = new Menu(
+                        rs.getInt("MenuID"),
+                        rs.getString("MenuName"),
+                        rs.getString("Description"),
+                        rs.getString("ImageURL"),
+                        rs.getString("BMICategory"),
+                        rs.getInt("NutritionistID")
+                );
+                m.setProducts(getProductsInMenu(m.getMenuID(), conn));
+                
+                double total = 0;
+                for (Product p : m.getProducts()) {
+                    total += p.getPrice();
+                }
+                m.setTotalPrice(total);
+                list.add(m);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
+    public static void main(String[] args) {
+        MenuDAO dao = new MenuDAO();
+        List<Menu> list = dao.searchMenusByName("rồng");
+        for (Menu o : list) {
+            System.out.println(o);
+        }
+    }
 }
