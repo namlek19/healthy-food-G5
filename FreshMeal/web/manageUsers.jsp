@@ -51,37 +51,38 @@
                 </thead>
                 <tbody>
                     <% if (users.isEmpty()) { %>
-                    <tr>
-                        <td colspan="5" style="text-align:center;color:gray;">Không có người dùng nào.</td>
-                    </tr>
+                    <tr><td colspan="5" style="text-align:center;color:gray;">Không có người dùng nào.</td></tr>
                     <% } else {
-            for (User u : users) { %>
+                        for (User u : users) {
+                            if (u.getRoleID() == 1) continue; // Ẩn admin khỏi danh sách
+                    %>
                     <tr>
-                        <td><%= u.getUserID() %></td>
+                        <td><%= u.getUserID()-1 %></td>
                         <td><%= u.getFullName() %></td>
                         <td><%= u.getEmail() %></td>
-                        <td><%= u.getRoleName() %></td> <!-- Lấy từ DB thông qua JOIN -->
+                        <td><%= u.getRoleName() %></td>
                         <td>
                             <form action="UpdateUserRoleServlet" method="post">
                                 <input type="hidden" name="userId" value="<%= u.getUserID() %>"/>
                                 <select name="role">
-                                    <option value="1" <%= (u.getRoleID() == 1) ? "selected" : "" %>>Admin</option>
-                                    <option value="2" <%= (u.getRoleID() == 2) ? "selected" : "" %>>Customer</option>
-                                    <option value="3" <%= (u.getRoleID() == 3) ? "selected" : "" %>>Manager</option>
-                                    <option value="4" <%= (u.getRoleID() == 4) ? "selected" : "" %>>Seller</option>
-                                    <option value="5" <%= (u.getRoleID() == 5) ? "selected" : "" %>>Nutritionist</option>
-                                    <option value="6" <%= (u.getRoleID() == 6) ? "selected" : "" %>>Shipper</option>
+                                    <!-- Không hiển thị Admin trong dropdown chỉnh sửa -->
+                                    <option value="2" <%= u.getRoleID() == 2 ? "selected" : "" %>>Customer</option>
+                                    <option value="3" <%= u.getRoleID() == 3 ? "selected" : "" %>>Manager</option>
+                                    <option value="4" <%= u.getRoleID() == 4 ? "selected" : "" %>>Nutritionist</option>
+                                    <option value="5" <%= u.getRoleID() == 5 ? "selected" : "" %>>Seller</option>
+                                    <option value="6" <%= u.getRoleID() == 6 ? "selected" : "" %>>Shipper</option>
                                 </select>
                                 <button type="submit">Cập nhật</button>
                             </form>
                         </td>
                     </tr>
-                    <%  } } %>
+                    <% } } %>
                 </tbody>
             </table>
+
             <div class="create-account-container">
                 <h3>Tạo tài khoản mới</h3>
-                <form class="create-account-form" action="CreateUserServlet" method="post">
+                <form class="create-account-form" action="CreateUserServlet" method="post" autocomplete="off">
 
                     <div class="form-row">
                         <label for="fullName">Họ tên:</label>
@@ -92,7 +93,6 @@
                         <label for="email">Email:</label>
                         <input type="email" id="email" name="email" required autocomplete="off">
                     </div>
-
 
                     <div class="form-row">
                         <label for="city">Thành phố:</label>
@@ -164,7 +164,6 @@
                         </select>
                     </div>
 
-
                     <div class="form-row">
                         <label for="district">Quận:</label>
                         <input type="text" id="district" name="district">
@@ -182,8 +181,8 @@
 
                     <div class="form-row">
                         <label for="role">Vai trò:</label>
-                        <select id="role" name="role">
-                            <option value="1">Admin</option>
+                        <select id="role" name="role" required>
+                            <!-- Không cho chọn Admin khi tạo tài khoản mới -->
                             <option value="2">Customer</option>
                             <option value="3">Manager</option>
                             <option value="4">Nutritionist</option>
@@ -197,8 +196,6 @@
                     </div>
                 </form>
             </div>
-
-
         </div>
 
     </body>

@@ -77,14 +77,14 @@ public class RequestDeleteMenuServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+
         int menuID = Integer.parseInt(request.getParameter("menuID"));
         String reason = request.getParameter("reason");
         int userID = (Integer) request.getSession().getAttribute("userID");
 
-        
         if (reason == null || reason.trim().isEmpty()) {
             request.setAttribute("errorMessage", "Bạn phải nhập lý do xóa thực đơn!");
-            request.setAttribute("menuID", menuID); // giữ lại ID để form hiển thị đúng
+            request.setAttribute("menuID", menuID);
             request.getRequestDispatcher("request_delete_reason.jsp").forward(request, response);
             return;
         }
@@ -95,6 +95,9 @@ public class RequestDeleteMenuServlet extends HttpServlet {
         boolean updated = dao.updateMenuStatus(menuID, 4);
 
         if (updated) {
+            // XÓA bản ghi yêu cầu sửa của menu này (nếu có)
+            dao.deleteRequestEditMenu(menuID);
+
             // Gửi mail cho tất cả manager
             String menuName = dao.getMenuById(menuID).getMenuName();
             String userName = dao.getUserNameByID(userID);
@@ -103,8 +106,7 @@ public class RequestDeleteMenuServlet extends HttpServlet {
                     + menuName + "\" (MenuID: " + menuID + ")\n"
                     + "Lý do: " + reason;
 
-            List<String> managerEmails = dao.getAllManagerEmails(); // lấy danh sách email
-
+            List<String> managerEmails = dao.getAllManagerEmails();
             for (String email : managerEmails) {
                 SendMail.send(email, subject, content, false);
             }

@@ -143,10 +143,10 @@
         <servlet-class>controller.ManageUsersServlet</servlet-class>
     </servlet>
     <servlet>
-
         <servlet-name>CreateUserServlet</servlet-name>
         <servlet-class>controller.CreateUserServlet</servlet-class>
-
+    </servlet>    
+    <servlet>
         <servlet-name>EditProductSellerServlet</servlet-name>
         <servlet-class>controller.EditProductSellerServlet</servlet-class>
 
@@ -292,13 +292,12 @@
         <url-pattern>/manageUsers</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-
         <servlet-name>CreateUserServlet</servlet-name>
         <url-pattern>/CreateUserServlet</url-pattern>
-
+    </servlet-mapping>
+    <servlet-mapping>
         <servlet-name>EditProductSellerServlet</servlet-name>
         <url-pattern>/editProductSeller</url-pattern>
-
     </servlet-mapping>
     <session-config>
         <session-timeout>30</session-timeout>

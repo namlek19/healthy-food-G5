@@ -110,7 +110,6 @@ public class UpdateOrderStatusServlet extends HttpServlet {
                     + "<p>- <b>Địa chỉ:</b> " + order.getDeliveryAddress() + ", " + order.getDistrict() + "</p>"
                     + "<p>- <b>Tổng tiền:</b> " + String.format("%,.0f", order.getTotalAmount()) + " đ</p>"
                     + "<p>- <b>Đơn hàng của bạn gồm có:</b> " + productList.toString() + "</p>"
-                    + "<p>- <b>Phương thức thanh toán:</b> COD (Thanh toán khi nhận hàng)</p>"
                     + "<p>- <b>Trạng thái:</b> " + statusText + "</p>"
                     + "<p style=\"margin-top:12px;\"><i>Cảm ơn quý khách!</i></p>";
 
