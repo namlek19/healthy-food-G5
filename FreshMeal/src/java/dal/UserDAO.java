@@ -359,6 +359,39 @@ public List<User> getAllUsers() {
     }
     return list;
 }
+public boolean insertUser(User user) {
+    Connection conn = null;
+    PreparedStatement ps = null;
+    try {
+        String query = "INSERT INTO Users (FullName, Email, PasswordHash, City, District, Address, RoleID) " +
+                       "VALUES (?, ?, ?, ?, ?, ?, ?)";
+        conn = db.getConnection();
+        ps = conn.prepareStatement(query);
+
+        ps.setString(1, user.getFullName());
+        ps.setString(2, user.getEmail());
+        ps.setString(3, user.getPasswordHash());
+        ps.setString(4, user.getCity());
+        ps.setString(5, user.getDistrict());
+        ps.setString(6, user.getAddress());
+        ps.setInt(7, user.getRoleID());
+
+        int rows = ps.executeUpdate();
+        return rows > 0;
+
+    } catch (Exception e) {
+        System.out.println("Insert User Error: " + e.getMessage());
+        return false;
+    } finally {
+        try {
+            if (ps != null) ps.close();
+            if (conn != null) conn.close();
+        } catch (SQLException e) {
+            System.out.println("Close conn error: " + e.getMessage());
+        }
+    }
+}
+
 
 
 }
