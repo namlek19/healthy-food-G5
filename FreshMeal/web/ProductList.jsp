@@ -21,12 +21,6 @@
     <body>
         <jsp:include page="includes/header.jsp" />
 
-<!--        <div class="search-bar">
-            <form action="search">
-                <input type="text" placeholder="Searching for food..." required />        
-            </form>
-        </div>-->
-
         <div class="container">
             <form method="get" action="productlistcontrol">
                 <div class="row justify-content-center g-3 mb-4">
@@ -73,6 +67,17 @@
                     </div>
                 </c:if>
             </c:forEach>
+
+            <div class="container mt-4 d-flex justify-content-center">
+                <ul class="pagination">
+                    <c:forEach var="i" begin="1" end="${totalPages}">
+                        <li class="page-item ${i == page ? 'active' : ''}">
+                            <a class="page-link" href="productlistcontrol?category=${category}&page=${i}">${i}</a>
+                        </li>
+                    </c:forEach>
+                </ul>
+            </div>
+
         </div>       
         <jsp:include page="includes/footer.jsp" />
     </body>

@@ -93,6 +93,15 @@
                     </div>
                 </c:if>
             </c:forEach>
+            <div class="container mt-4 d-flex justify-content-center">
+                <ul class="pagination">
+                    <c:forEach var="i" begin="1" end="${totalPages}">
+                        <li class="page-item ${i == page ? 'active' : ''}">
+                            <a class="page-link" href="menucus?page=${i}&bmi=${bmi}">${i}</a>
+                        </li>
+                    </c:forEach>
+                </ul>
+            </div>
             <c:if test="${empty menuList}">
                 <div class="alert alert-info text-center mt-3">Chưa có thực đơn nào cho nhóm BMI này!</div>
             </c:if>

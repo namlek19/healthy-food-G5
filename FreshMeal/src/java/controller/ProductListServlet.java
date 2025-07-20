@@ -1,4 +1,3 @@
-
 package controller;
 
 import dal.ProductDAO;
@@ -13,31 +12,34 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.util.List;
 
 public class ProductListServlet extends HttpServlet {
-   
- 
-    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-    throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet ProductListServlet</title>");  
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet ProductListServlet at " + request.getContextPath () + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
-        }
-    } 
+
+    private static final int PAGE_SIZE = 9;
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
-    throws ServletException, IOException {
-         String category = request.getParameter("category");
+            throws ServletException, IOException {
+        String category = request.getParameter("category");
+        String strPage = request.getParameter("page");
+        int page = 1;
+        try {
+            page = Integer.parseInt(strPage);
+        } catch (Exception e) {
+        }
+
+        if (page < 1) {
+            page = 1;
+        }
 
         ProductDAO dao = new ProductDAO();
-        List<Product> productList = dao.getProductByCategory(category);
+        int totalProducts = dao.countProductByCategory(category);
+        int totalPages = (int) Math.ceil((double) totalProducts / PAGE_SIZE);
+
+        if (page > totalPages && totalPages > 0) {
+            page = totalPages;
+        }
+
+        int offset = (page - 1) * PAGE_SIZE;
+
+        List<Product> productList = dao.getProductByCategoryPaging(category, offset, PAGE_SIZE);
 
         String categoryName;
         switch (category != null ? category : "") {
@@ -59,7 +61,10 @@ public class ProductListServlet extends HttpServlet {
 
         request.setAttribute("productList", productList);
         request.setAttribute("categoryName", categoryName);
+        request.setAttribute("category", category);
+        request.setAttribute("page", page);
+        request.setAttribute("totalPages", totalPages);
         request.getRequestDispatcher("ProductList.jsp").forward(request, response);
     }
-    
+
 }

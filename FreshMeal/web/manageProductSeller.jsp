@@ -9,19 +9,6 @@
         <title>Quản lý món ăn</title>
         <link rel="stylesheet" href="assets/css/blog.css">
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
-        <style>
-            .product-card {
-                border: 1px solid #ddd;
-                border-radius: 10px;
-                padding: 16px;
-                margin-bottom: 20px;
-            }
-            .product-img {
-                max-height: 150px;
-                object-fit: cover;
-                border-radius: 8px;
-            }
-        </style>
     </head>
     <body>
         <div class="d-flex">
@@ -29,7 +16,7 @@
                 <jsp:param name="currentPage" value="manageproductseller" />
             </jsp:include>
 
-            <div style="margin-left: 250px; padding: 20px;">
+            <div style="margin-left: 250px; padding: 20px; width: 1250px">
                 <h3 class="text-success">Danh sách món ăn</h3>
                 <c:if test="${param.error == 'containedInMenu'}">
                     <div class="alert alert-danger">Không thể xóa! Món này đang nằm trong một combo.</div>
@@ -44,7 +31,7 @@
                             <th>#</th>
                             <th>Tên món</th>
                             <th>Calories (kcal)</th>
-                            <th>Giá (VNĐ)</th>
+                            <th>Giá</th>
                             <th>Xuất xứ</th>
                             <th>Hành động</th>
                         </tr>
@@ -52,10 +39,10 @@
                     <tbody>
                         <c:forEach var="p" items="${productList}" varStatus="loop">
                             <tr>
-                                <td>${loop.index + 1}</td>
+                                <td>${offset + loop.index + 1}</td>
                                 <td>${p.name}</td>
                                 <td>${p.calories}</td>
-                                <td><fmt:formatNumber value="${p.price}" type="number" maxFractionDigits="0"/></td>
+                                <td><fmt:formatNumber value="${p.price}" type="number" maxFractionDigits="0"/> VNĐ</td>
                                 <td>${p.origin}</td>
                                 <td>
                                     <a href="productdetail?id=${p.productID}" class="btn btn-outline-success btn-sm">Xem chi tiết</a>
@@ -64,7 +51,37 @@
                         </c:forEach>
                     </tbody>
                 </table>
-            </div>
+                <c:if test="${totalPages > 1}">    
+                    <ul class="pagination justify-content-end">
+
+                        <li class="page-item ${pageIndex == 1 ? 'disabled' : ''}">
+                            <a class="page-link"
+                               href="manageProductSeller?page=${pageIndex - 1}"
+                               tabindex="-1"
+                               aria-disabled="${pageIndex == 1 ? 'true' : 'false'}">
+                                Trước
+                            </a>
+                        </li>
+
+
+                        <c:forEach var="i" begin="1" end="${totalPages}">
+                            <li class="page-item ${i == pageIndex ? 'active' : ''}">
+                                <a class="page-link" href="manageProductSeller?page=${i}">${i}</a>
+                            </li>
+                        </c:forEach>
+
+
+                        <li class="page-item ${pageIndex == totalPages ? 'disabled' : ''}">
+                            <a class="page-link"
+                               href="manageProductSeller?page=${pageIndex + 1}"
+                               aria-disabled="${pageIndex == totalPages ? 'true' : 'false'}">
+                                Sau
+                            </a>
+                        </li>
+                    </ul>
+                </c:if>
+            </div>    
         </div>
-    </body>
+    </div>
+</body>
 </html>
