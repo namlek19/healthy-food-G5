@@ -80,26 +80,51 @@ public class EditProductSellerServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        try {
-            int productID = Integer.parseInt(request.getParameter("productID"));
-            String name = request.getParameter("name");
-            String description = request.getParameter("description");
-            int calories = Integer.parseInt(request.getParameter("calories"));
-            String nutritionInfo = request.getParameter("nutritionInfo");
-            String origin = request.getParameter("origin");
-            String imageURL = request.getParameter("imageURL");
-            String storageInstructions = request.getParameter("storageInstructions");
-            double price = Double.parseDouble(request.getParameter("price"));
-            int categoryID = Integer.parseInt(request.getParameter("categoryID"));
+        request.setCharacterEncoding("UTF-8");
+        int productID = Integer.parseInt(request.getParameter("productID"));
+        String name = request.getParameter("name");
+        String description = request.getParameter("description");
+        String nutritionInfo = request.getParameter("nutritionInfo");
+        String origin = request.getParameter("origin");
+        String imageURL = request.getParameter("imageURL");
+        String storageInstructions = request.getParameter("storageInstructions");
+        String caloriesStr = request.getParameter("calories");
+        String priceStr = request.getParameter("price");
+        int categoryID = Integer.parseInt(request.getParameter("categoryID"));
 
-            Product p = new Product(productID, name, description, nutritionInfo, origin, imageURL, storageInstructions, price, categoryID, calories);
-            dao.updateProduct(p);
-            response.sendRedirect("manageProductSeller?success=updated");
-        } catch (Exception e) {
-            e.printStackTrace();
-            request.setAttribute("error", "Cập nhật thất bại!");
-            request.getRequestDispatcher("editProductSeller.jsp").forward(request, response);
+        String errorMessage = null;
+
+        if (name == null || name.trim().isEmpty()
+                || description == null || description.trim().isEmpty()
+                || nutritionInfo == null || nutritionInfo.trim().isEmpty()
+                || origin == null || origin.trim().isEmpty()
+                || imageURL == null || imageURL.trim().isEmpty()
+                || storageInstructions == null || storageInstructions.trim().isEmpty()) {
+            errorMessage = "Các trường Tên món, Mô tả, Thông tin dinh dưỡng, Nguồn gốc, Ảnh và Hướng dẫn bảo quản không được để trống!";
+        } else {
+            try {
+                int calories = Integer.parseInt(caloriesStr);
+                double price = Double.parseDouble(priceStr);
+
+                if (calories <= 0 || price <= 0) {
+                    errorMessage = "Calories và Giá phải lớn hơn 0!";
+                } else {
+                    // Hợp lệ → cập nhật sản phẩm
+                    Product p = new Product(productID, name, description, nutritionInfo, origin, imageURL, storageInstructions, price, categoryID, calories);
+                    dao.updateProduct(p);
+                    response.sendRedirect("manageProductSeller?success=updated");
+                    return;
+                }
+            } catch (NumberFormatException e) {
+                errorMessage = "Calories và Giá phải là số hợp lệ!";
+            }
         }
+
+        // Nếu có lỗi → gán lại product cũ và forward lại trang
+        Product oldProduct = dao.getProductById(productID);
+        request.setAttribute("product", oldProduct);
+        request.setAttribute("errorMessage", errorMessage);
+        request.getRequestDispatcher("editProductSeller.jsp").forward(request, response);
     }
 
     /**

@@ -13,6 +13,10 @@
 
         <div class="form-container">
             <h2>Chỉnh sửa món</h2>
+            <c:if test="${not empty errorMessage}">
+                <div class="alert alert-danger">${errorMessage}</div>
+            </c:if>
+
             <form action="editProductSeller" method="post">
                 <input type="hidden" name="productID" value="${product.productID}" />
 

@@ -13,6 +13,10 @@
 
         <div class="form-container">
             <h2>Thêm món mới</h2>
+            <c:if test="${not empty errorMessage}">
+                <div class="alert alert-danger">${errorMessage}</div>
+            </c:if>
+
             <form action="addProductSeller" method="post">
                 <div class="mb-3">
                     <label class="form-label">Tên món:</label>
