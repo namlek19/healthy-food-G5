@@ -767,6 +767,24 @@ public class MenuDAO extends DBContext {
         return list;
     }
 
+    public void deleteRequestEditMenu(int menuID) {
+        String deleteSuaMenuProduct = "DELETE FROM SuaMenuProduct WHERE MenuID = ?";
+        String deleteSuaMenu = "DELETE FROM SuaMenu WHERE MenuID = ?";
+        try (Connection conn = getConnection()) {
+            
+            try (PreparedStatement ps1 = conn.prepareStatement(deleteSuaMenuProduct)) {
+                ps1.setInt(1, menuID);
+                ps1.executeUpdate();
+            }
+            try (PreparedStatement ps2 = conn.prepareStatement(deleteSuaMenu)) {
+                ps2.setInt(1, menuID);
+                ps2.executeUpdate();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     public static void main(String[] args) {
         MenuDAO dao = new MenuDAO();
         List<Menu> list = dao.searchMenusByName("rồng");

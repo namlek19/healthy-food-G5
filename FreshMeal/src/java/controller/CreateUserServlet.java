@@ -1,26 +1,16 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
- */
 package controller;
 
 import dal.UserDAO;
 import java.io.IOException;
-import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
-import jakarta.servlet.http.HttpServlet;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.*;
 import model.User;
 
-/**
- *
- * @author admin
- */
 public class CreateUserServlet extends HttpServlet {
 
     private final UserDAO userDAO = new UserDAO();
 
+    @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
@@ -43,14 +33,18 @@ public class CreateUserServlet extends HttpServlet {
         user.setAddress(address);
         user.setRoleID(roleID);
 
-        boolean success = userDAO.insertUser(user);
-        if (success) {
-            request.setAttribute("message", "Tạo tài khoản thành công!");
+        if (userDAO.isEmailExists(email)) {
+            request.setAttribute("error", "Email đã tồn tại. Vui lòng chọn email khác.");
         } else {
-            request.setAttribute("error", "Tạo tài khoản thất bại!");
+            boolean success = userDAO.insertUser(user);
+            if (success) {
+                request.setAttribute("message", "Tạo tài khoản thành công!");
+            } else {
+                request.setAttribute("error", "Tạo tài khoản thất bại!");
+            }
         }
-        request.setAttribute("users", userDAO.getAllUsers()); // Load lại danh sách user
-        request.getRequestDispatcher("manageUsers.jsp").forward(request, response);
 
+        request.setAttribute("users", userDAO.getAllUsers());
+        request.getRequestDispatcher("manageUsers.jsp").forward(request, response);
     }
 }
