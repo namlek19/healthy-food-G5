@@ -139,7 +139,7 @@ public class MenuPostServlet extends HttpServlet {
 
 // Gửi mail cho tất cả manager
         for (String email : menuDAO.getAllManagerEmails()) {
-            SendMail.send(email, subject, content);
+            SendMail.send(email, subject, content, false);
         }
 
 //        response.sendRedirect("menupost");

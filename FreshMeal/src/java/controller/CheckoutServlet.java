@@ -12,6 +12,7 @@ import java.util.Date;
 
 @WebServlet("/checkout")
 public class CheckoutServlet extends HttpServlet {
+
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String fullname = request.getParameter("fullname");
@@ -59,6 +60,37 @@ public class CheckoutServlet extends HttpServlet {
         if ("cod".equals(method)) {
             int orderId = orderDAO.createOrder(order, cart);
 
+            // ✅ Sau khi tạo order, gửi email xác nhận
+            try {
+                StringBuilder productList = new StringBuilder();
+                for (CartItem item : cart) {
+                    productList.append(item.getProduct().getName())
+                            .append(" (SL: ")
+                            .append(item.getQuantity())
+                            .append("), ");
+                }
+                if (productList.length() > 0) {
+                    productList.setLength(productList.length() - 2); // Xóa dấu phẩy cuối
+                }
+
+                String subject = "Bạn đã đặt hàng thành công - Mã đơn hàng: " + orderId;
+
+                // Dùng HTML
+                String content = ""
+                        + "<p>- <b>Tên khách hàng:</b> " + fullname + "</p>"
+                        + "<p>- <b>Địa chỉ:</b> " + address + ", " + district + "</p>"
+                        + "<p>- <b>Tổng tiền:</b> " + String.format("%,.0f", total) + " đ</p>"
+                        + "<p>- <b>Đơn hàng của bạn gồm có:</b> " + productList.toString() + "</p>"
+                        + "<p>- <b>Phương thức thanh toán:</b> COD (Thanh toán khi nhận hàng)</p>"
+                        + "<p>- <b>Trạng thái:</b> Pending (Đang chờ duyệt)</p>"
+                        + "<p style=\"margin-top:12px;\"><i>Cảm ơn quý khách!</i></p>";
+
+                controller.SendMail.send(email, subject, content, true); // Thêm tham số isHtml = true
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+            // Xóa giỏ hàng sau khi đặt thành công
             session.removeAttribute("cart");
             session.removeAttribute("guest_cart");
 
@@ -70,6 +102,7 @@ public class CheckoutServlet extends HttpServlet {
                     e.printStackTrace();
                 }
             }
+
             session.setAttribute("orderId", orderId);
             response.sendRedirect("success.jsp");
         } else if ("vnpay".equals(method)) {

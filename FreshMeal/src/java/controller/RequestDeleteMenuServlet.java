@@ -106,7 +106,7 @@ public class RequestDeleteMenuServlet extends HttpServlet {
             List<String> managerEmails = dao.getAllManagerEmails(); // lấy danh sách email
 
             for (String email : managerEmails) {
-                SendMail.send(email, subject, content);
+                SendMail.send(email, subject, content, false);
             }
         }
 

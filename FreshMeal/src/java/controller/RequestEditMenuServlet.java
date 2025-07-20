@@ -136,7 +136,7 @@ public class RequestEditMenuServlet extends HttpServlet {
                 + "Lý do: " + reason;
 
         for (String email : dao.getAllManagerEmails()) {
-            SendMail.send(email, subject, content);
+            SendMail.send(email, subject, content, false);
         }
 
         response.sendRedirect("menumanage");
