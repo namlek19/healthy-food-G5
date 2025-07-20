@@ -10,7 +10,7 @@
     <body>
         <jsp:include page="includes/sidebarSeller.jsp" />
 
-        <div class="container" style="margin-left: 270px; padding-top: 30px;">
+        <div class="container" style="margin-left: 270px; padding-top: 30px; width: 1250px">
             <h3 class="text-success mb-4">Chi tiết Order #${order.orderID}</h3>
 
             <p><strong>Tên người mua:</strong> <c:out value="${order.receiverName}" default="null" /></p>
@@ -45,7 +45,7 @@
             <h5 class="mt-3">
                 Tổng tiền: <span class="text-danger fw-bold">${order.totalAmount}đ</span>
                 <c:if test="${order.status == 'QRPending'}">
-                    <span class="badge bg-success ms-2">Đã thanh toán QR</span>
+                    <span class="badge bg-success ms-2">Đã thanh toán</span>
                     <small class="text-muted">*Đã thanh toán, không được hủy đơn. Vui lòng xác nhận và liên hệ khách hàng nếu có vấn đề</smail>
                 </c:if>
             </h5>

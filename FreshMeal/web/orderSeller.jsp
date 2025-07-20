@@ -11,7 +11,7 @@
     <body>
         <jsp:include page="includes/sidebarSeller.jsp"/>
 
-        <div class="container" style="margin-left: 270px; padding-top: 30px;">
+        <div class="container" style="margin-left: 270px; padding-top: 30px; width: 1250px">
 
             <c:if test="${not empty sessionScope.msg}">
                 <div class="alert alert-info">${sessionScope.msg}</div>
@@ -33,7 +33,7 @@
                 <tbody>
                     <c:forEach var="o" items="${pendingOrders}" varStatus="loop">
                         <tr>
-                            <td>${loop.index + 1}</td>
+                            <td>${(pageCOD - 1) * 3 + loop.index + 1}</td>
                             <td>${o.receiverName}</td>
                             <td><strong>
                                     <fmt:formatDate value="${o.orderDate}" pattern="HH:mm" />
@@ -43,18 +43,33 @@
                                     <fmt:formatDate value="${o.orderDate}" pattern="dd/MM/yyyy" />
                                 </strong>
                             </td>
-                            <td>${o.totalAmount}đ</td>
+                            <td><fmt:formatNumber value="${o.totalAmount}" type="number" maxFractionDigits="0"/> VNĐ</td>
                             <td>
-                                <a href="orderDetail?orderID=${o.orderID}" class="btn btn-outline-info btn-sm">Xem chi tiết</a>
+                                <a href="orderDetail?orderID=${o.orderID}" class="btn btn-outline-success btn-sm">Xem chi tiết</a>
                             </td>
                         </tr>
                     </c:forEach>
                 </tbody>
             </table>
+            <div class="d-flex justify-content-end mb-3">
+                <ul class="pagination">
+                    <li class="page-item ${pageCOD == 1 ? 'disabled' : ''}">
+                        <a class="page-link" href="orderSeller?pageCOD=${pageCOD - 1}&pageQR=${pageQR}" tabindex="-1">Previous</a>
+                    </li>
+                    <c:forEach var="i" begin="1" end="${totalPageCOD}">
+                        <li class="page-item ${i == pageCOD ? 'active' : ''}">
+                            <a class="page-link" href="orderSeller?pageCOD=${i}&pageQR=${pageQR}">${i}</a>
+                        </li>
+                    </c:forEach>
+                    <li class="page-item ${pageCOD == totalPageCOD ? 'disabled' : ''}">
+                        <a class="page-link" href="orderSeller?pageCOD=${pageCOD + 1}&pageQR=${pageQR}">Next</a>
+                    </li>
+                </ul>
+            </div>
             <c:if test="${empty pendingOrders}">
                 <div class="alert alert-info text-center">Hiện chưa có đơn hàng COD nào đang chờ xử lý.</div>
             </c:if>
-            <h3 class="mb-4 text-success">Danh sách đơn hàng đã thanh toán QR</h3>
+            <h3 class="mb-4 text-success">Danh sách đơn hàng đã thanh toán online</h3>
 
             <table class="table table-bordered table-hover align-middle">
                 <thead class="table-success">
@@ -69,7 +84,7 @@
                 <tbody>
                     <c:forEach var="o" items="${pendingQROrders}" varStatus="loop">
                         <tr>
-                            <td>${loop.index + 1}</td>
+                            <td>${(pageQR - 1) * 3 + loop.index + 1}</td>
                             <td>${o.receiverName}</td>
                             <td><strong>
                                     <fmt:formatDate value="${o.orderDate}" pattern="HH:mm" />
@@ -79,17 +94,31 @@
                                     <fmt:formatDate value="${o.orderDate}" pattern="dd/MM/yyyy" />
                                 </strong>
                             </td>
-                            <td>${o.totalAmount}đ</td>
+                            <td><fmt:formatNumber value="${o.totalAmount}" type="number" maxFractionDigits="0"/> VNĐ</td>
                             <td>
-                                <a href="orderDetail?orderID=${o.orderID}" class="btn btn-outline-info btn-sm">Xem chi tiết</a>
+                                <a href="orderDetail?orderID=${o.orderID}" class="btn btn-outline-success btn-sm">Xem chi tiết</a>
                             </td>
                         </tr>
                     </c:forEach>
                 </tbody>
             </table>
-
+            <div class="d-flex justify-content-end mb-3">
+                <ul class="pagination">
+                    <li class="page-item ${pageQR == 1 ? 'disabled' : ''}">
+                        <a class="page-link" href="orderSeller?pageCOD=${pageCOD}&pageQR=${pageQR-1}" tabindex="-1">Previous</a>
+                    </li>
+                    <c:forEach var="i" begin="1" end="${totalPageQR}">
+                        <li class="page-item ${i == pageQR ? 'active' : ''}">
+                            <a class="page-link" href="orderSeller?pageCOD=${pageCOD}&pageQR=${i}">${i}</a>
+                        </li>
+                    </c:forEach>
+                    <li class="page-item ${pageQR == totalPageQR ? 'disabled' : ''}">
+                        <a class="page-link" href="orderSeller?pageCOD=${pageCOD}&pageQR=${pageQR+1}">Next</a>
+                    </li>
+                </ul>
+            </div>
             <c:if test="${empty pendingQROrders}">
-                <div class="alert alert-info text-center">Hiện chưa có đơn hàng QR nào đang chờ xử lý.</div>
+                <div class="alert alert-info text-center">Hiện chưa có đơn hàng đã thanh toán nào đang chờ xử lý.</div>
             </c:if>
         </div>
     </body>

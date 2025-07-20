@@ -212,6 +212,107 @@ public class ProductDAO extends DBContext {
         }
         return list;
     }
+    //Đoạn này tui làm phân trang @@
+
+    public List<Product> getAllProductPaging(int offset, int pageSize) {
+        List<Product> list = new ArrayList<>();
+        String sql = "SELECT * FROM Product ORDER BY ProductID OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";
+        try (Connection conn = getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, offset);
+            ps.setInt(2, pageSize);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                list.add(new Product(
+                        rs.getInt("productID"),
+                        rs.getString("name"),
+                        rs.getString("description"),
+                        rs.getString("nutritionInfo"),
+                        rs.getString("origin"),
+                        rs.getString("imageURL"),
+                        rs.getString("storageInstructions"),
+                        rs.getDouble("price"),
+                        rs.getInt("categoryID"),
+                        rs.getInt("calories")
+                ));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
+
+    public List<Product> getProductByCategoryPaging(String categoryId, int offset, int pageSize) {
+        List<Product> list = new ArrayList<>();
+        String sql;
+        if (categoryId == null || categoryId.isEmpty()) {
+            sql = "SELECT * FROM Product ORDER BY ProductID OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";
+        } else {
+            sql = "SELECT * FROM Product WHERE categoryID = ? ORDER BY ProductID OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";
+        }
+
+        try (Connection conn = getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+            int idx = 1;
+            if (categoryId != null && !categoryId.isEmpty()) {
+                ps.setInt(idx++, Integer.parseInt(categoryId));
+            }
+            ps.setInt(idx++, offset);
+            ps.setInt(idx, pageSize);
+
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                list.add(new Product(
+                        rs.getInt("productID"),
+                        rs.getString("name"),
+                        rs.getString("description"),
+                        rs.getString("nutritionInfo"),
+                        rs.getString("origin"),
+                        rs.getString("imageURL"),
+                        rs.getString("storageInstructions"),
+                        rs.getDouble("price"),
+                        rs.getInt("categoryID"),
+                        rs.getInt("calories")
+                ));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
+
+    public int countAllProduct() {
+        String sql = "SELECT COUNT(*) FROM Product";
+        try (Connection conn = getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                return rs.getInt(1);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+
+    public int countProductByCategory(String categoryId) {
+        String sql;
+        if (categoryId == null || categoryId.isEmpty()) {
+            sql = "SELECT COUNT(*) FROM Product";
+        } else {
+            sql = "SELECT COUNT(*) FROM Product WHERE categoryID = ?";
+        }
+        try (Connection conn = getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+            if (categoryId != null && !categoryId.isEmpty()) {
+                ps.setInt(1, Integer.parseInt(categoryId));
+            }
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                return rs.getInt(1);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+
 
     public static void main(String[] args) {
         ProductDAO dao = new ProductDAO();

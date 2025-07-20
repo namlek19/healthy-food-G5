@@ -32,6 +32,7 @@ public class OrderDAO extends DBContext {
         }
         return list;
     }
+
     public List<Order> getAllCODOrdersByShipperID(int shipperId) {
         List<Order> list = new ArrayList<>();
         String sql = "SELECT * FROM [Order] WHERE ShipperID = ? AND (Status = 'Confirmed' OR Status = 'Delivering') ORDER BY OrderDate DESC";
@@ -61,6 +62,7 @@ public class OrderDAO extends DBContext {
 
         return list;
     }
+
     public List<Order> getAllQROrdersByShipperID(int shipperId) {
         List<Order> list = new ArrayList<>();
         String sql = "SELECT * FROM [Order] WHERE ShipperID = ? AND (Status = 'QRConfirmed' OR Status = 'QRDelivering') ORDER BY OrderDate DESC";
@@ -102,7 +104,7 @@ public class OrderDAO extends DBContext {
                 order.setOrderID(rs.getInt("OrderID"));
                 order.setUserID(rs.getInt("UserID"));
                 order.setReceiverName(rs.getString("ReceiverName"));
-                order.setPhone(rs.getString("Phone")); 
+                order.setPhone(rs.getString("Phone"));
                 order.setDeliveryAddress(rs.getString("DeliveryAddress"));
                 order.setDistrict(rs.getString("District"));
                 order.setTotalAmount(rs.getDouble("TotalAmount"));
@@ -129,6 +131,7 @@ public class OrderDAO extends DBContext {
             e.printStackTrace();
         }
     }
+
     public void deleteOrder(int orderId) {
         String deleteItemsSql = "DELETE FROM OrderItem WHERE OrderID = ?";
         String deleteOrderSql = "DELETE FROM [Order] WHERE OrderID = ?";
@@ -160,7 +163,7 @@ public class OrderDAO extends DBContext {
                 order.setOrderID(rs.getInt("OrderID"));
                 order.setUserID(rs.getInt("UserID"));
                 order.setReceiverName(rs.getString("ReceiverName"));
-                order.setPhone(rs.getString("Phone")); 
+                order.setPhone(rs.getString("Phone"));
                 order.setDeliveryAddress(rs.getString("DeliveryAddress"));
                 order.setDistrict(rs.getString("District"));
                 order.setTotalAmount(rs.getDouble("TotalAmount"));
@@ -214,7 +217,7 @@ public class OrderDAO extends DBContext {
             }
 
             psOrder.setString(2, order.getReceiverName());
-            psOrder.setString(3, order.getPhone()); 
+            psOrder.setString(3, order.getPhone());
             psOrder.setString(4, order.getDeliveryAddress());
             psOrder.setString(5, order.getDistrict());
             psOrder.setDouble(6, order.getTotalAmount());
@@ -298,32 +301,76 @@ public class OrderDAO extends DBContext {
             e.printStackTrace();
         }
     }
-    public int getUserIdByOrderId(int orderId) {
-    String sql = "SELECT UserID FROM [Order] WHERE OrderID = ?";
-    try (Connection conn = getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
-        ps.setInt(1, orderId);
-        ResultSet rs = ps.executeQuery();
-        if (rs.next()) {
-            return rs.getInt("UserID");
-        }
-    } catch (Exception e) {
-        e.printStackTrace();
-    }
-    return -1; // return -1 if not found or error
-}
-public boolean isGuestOrder(int orderId) {
-    String sql = "SELECT UserID FROM [Order] WHERE OrderID = ?";
-    try (Connection conn = getConnection();
-         PreparedStatement ps = conn.prepareStatement(sql)) {
-        ps.setInt(1, orderId);
-        ResultSet rs = ps.executeQuery();
-        if (rs.next()) {
-            return rs.getInt("UserID") == 0; // hoặc rs.wasNull() nếu UserID có thể null
-        }
-    } catch (Exception e) {
-        e.printStackTrace();
-    }
-    return false;
-}
 
+    public int getUserIdByOrderId(int orderId) {
+        String sql = "SELECT UserID FROM [Order] WHERE OrderID = ?";
+        try (Connection conn = getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, orderId);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                return rs.getInt("UserID");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return -1;
+    }
+
+    public boolean isGuestOrder(int orderId) {
+        String sql = "SELECT UserID FROM [Order] WHERE OrderID = ?";
+        try (Connection conn = getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, orderId);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                return rs.getInt("UserID") == 0;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    public int countOrdersByStatus(String status) {
+        String sql = "SELECT COUNT(*) FROM [Order] WHERE Status = ?";
+        try (Connection conn = getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setString(1, status);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                return rs.getInt(1);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+
+    public List<Order> getOrdersByStatusPaging(String status, int offset, int pageSize) {
+        List<Order> orders = new ArrayList<>();
+        String sql = "SELECT * FROM [Order] WHERE Status = ? ORDER BY OrderDate DESC OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";
+        try (Connection conn = getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setString(1, status);
+            ps.setInt(2, offset);
+            ps.setInt(3, pageSize);
+
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                Order order = new Order();
+                order.setOrderID(rs.getInt("OrderID"));
+                order.setUserID(rs.getInt("UserID"));
+                order.setReceiverName(rs.getString("ReceiverName"));
+                order.setPhone(rs.getString("Phone"));
+                order.setDeliveryAddress(rs.getString("DeliveryAddress"));
+                order.setDistrict(rs.getString("District"));
+                order.setTotalAmount(rs.getDouble("TotalAmount"));
+                order.setOrderDate(rs.getTimestamp("OrderDate"));
+                order.setStatus(rs.getString("Status"));
+                order.setEmail(rs.getString("Email"));
+                order.setItems(getOrderItems(order.getOrderID()));
+                orders.add(order);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return orders;
+    }
 }
