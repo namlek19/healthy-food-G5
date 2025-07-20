@@ -9,7 +9,7 @@ public class OrderItem {
     private int quantity;
     private double price;
 
-    // ===== Constructors =====
+   
     public OrderItem() {}
 
     public OrderItem(int orderItemID, int orderID, int productID, String productName, String imageUrl, int quantity, double price) {
