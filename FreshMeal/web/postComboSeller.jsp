@@ -10,7 +10,7 @@
     <body>
         <jsp:include page="includes/sidebarSeller.jsp" />
 
-        <div class="container" style="margin-left: 270px; padding-top: 30px;">
+        <div class="container" style="margin-left: 270px; padding-top: 30px; width: 1250px">
             <h3 class="mb-4 text-success">Danh sách combo chờ đăng</h3>
             <c:if test="${not empty sessionScope.msg}">
                 <div class="alert alert-info">${sessionScope.msg}</div>

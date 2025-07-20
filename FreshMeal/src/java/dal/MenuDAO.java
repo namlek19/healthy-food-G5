@@ -665,7 +665,7 @@ public class MenuDAO extends DBContext {
                         rs.getInt("NutritionistID")
                 );
                 m.setProducts(getProductsInMenu(m.getMenuID(), conn));
-                
+
                 double total = 0;
                 for (Product p : m.getProducts()) {
                     total += p.getPrice();
@@ -678,6 +678,95 @@ public class MenuDAO extends DBContext {
         }
         return list;
     }
+
+    // làm pagination @.@
+    public int countMenusByBMICategory(String bmi) {
+        String sql = "SELECT COUNT(*) FROM Menu WHERE Status IN (3,4)"
+                + (bmi == null || bmi.isEmpty() ? "" : " AND BMICategory = ?");
+        try (Connection conn = getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+            if (bmi != null && !bmi.isEmpty()) {
+                ps.setString(1, bmi);
+            }
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                return rs.getInt(1);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+
+    public List<Menu> getMenusByBMICategoryPaging(String bmi, int offset, int pageSize) {
+        List<Menu> list = new ArrayList<>();
+        String sql = "SELECT * FROM Menu WHERE Status IN (3,4)"
+                + (bmi == null || bmi.isEmpty() ? "" : " AND BMICategory = ?")
+                + " ORDER BY MenuID DESC OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";
+        try (Connection conn = getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+            int idx = 1;
+            if (bmi != null && !bmi.isEmpty()) {
+                ps.setString(idx++, bmi);
+            }
+            ps.setInt(idx++, offset);
+            ps.setInt(idx, pageSize);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                Menu m = new Menu(
+                        rs.getInt("MenuID"), rs.getString("MenuName"), rs.getString("Description"),
+                        rs.getString("ImageURL"), rs.getString("BMICategory"), rs.getInt("NutritionistID")
+                );
+                m.setProducts(getProductsInMenu(m.getMenuID(), conn));
+                double total = 0;
+                for (Product p : m.getProducts()) {
+                    total += p.getPrice();
+                }
+                m.setTotalPrice(total);
+                list.add(m);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
+
+    public int countAllMenusByStatuses34() {
+        String sql = "SELECT COUNT(*) FROM Menu WHERE Status IN (3,4)";
+        try (Connection conn = getConnection(); PreparedStatement ps = conn.prepareStatement(sql); ResultSet rs = ps.executeQuery()) {
+            if (rs.next()) {
+                return rs.getInt(1);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+
+    public List<Menu> getMenusByStatuses34Paging(int offset, int pageSize) {
+        List<Menu> list = new ArrayList<>();
+        String sql = "SELECT * FROM Menu WHERE Status IN (3,4) ORDER BY MenuID DESC OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";
+        try (Connection conn = getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, offset);
+            ps.setInt(2, pageSize);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                Menu m = new Menu(
+                        rs.getInt("MenuID"), rs.getString("MenuName"), rs.getString("Description"),
+                        rs.getString("ImageURL"), rs.getString("BMICategory"), rs.getInt("NutritionistID")
+                );
+                m.setProducts(getProductsInMenu(m.getMenuID(), conn));
+                double total = 0;
+                for (Product p : m.getProducts()) {
+                    total += p.getPrice();
+                }
+                m.setTotalPrice(total);
+                list.add(m);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
+
     public static void main(String[] args) {
         MenuDAO dao = new MenuDAO();
         List<Menu> list = dao.searchMenusByName("rồng");

@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
- */
 package controller;
 
 import dal.MenuDAO;
@@ -16,28 +12,22 @@ import jakarta.servlet.http.HttpServletResponse;
 
 public class MenuCusServlet extends HttpServlet {
 
-    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet MenuCusServlet</title>");
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet MenuCusServlet at " + request.getContextPath() + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
-        }
-    }
+    private static final int PAGE_SIZE = 6;
 
     @Override
-
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String bmi = request.getParameter("bmi");
+        String strPage = request.getParameter("page");
+        int page = 1;
+        try {
+            page = Integer.parseInt(strPage);
+        } catch (Exception e) {
+        }
+        if (page < 1) {
+            page = 1;
+        }
+
         String categoryName;
         if (bmi == null || bmi.isEmpty()) {
             categoryName = "Tất cả thực đơn";
@@ -61,18 +51,21 @@ public class MenuCusServlet extends HttpServlet {
         }
 
         MenuDAO dao = new MenuDAO();
-        List<Menu> menuList;
-        if (bmi == null || bmi.isEmpty()) {
-            menuList = new ArrayList<>();
-            menuList.addAll(dao.getMenusByStatusesAndBMICategory(Arrays.asList(3, 4), "Underweight"));
-            menuList.addAll(dao.getMenusByStatusesAndBMICategory(Arrays.asList(3, 4), "Normal"));
-            menuList.addAll(dao.getMenusByStatusesAndBMICategory(Arrays.asList(3, 4), "Overweight"));
-            menuList.addAll(dao.getMenusByStatusesAndBMICategory(Arrays.asList(3, 4), "Obese"));
-        } else {
-            menuList = dao.getMenusByStatusesAndBMICategory(Arrays.asList(3, 4), bmi);
+        int totalMenus = dao.countMenusByBMICategory(bmi);
+        int totalPages = (int) Math.ceil((double) totalMenus / PAGE_SIZE);
+        if (page > totalPages && totalPages > 0) {
+            page = totalPages;
         }
+        int offset = (page - 1) * PAGE_SIZE;
+
+        List<Menu> menuList = dao.getMenusByBMICategoryPaging(bmi, offset, PAGE_SIZE);
+
         request.setAttribute("menuList", menuList);
         request.setAttribute("categoryName", categoryName);
+        request.setAttribute("bmi", bmi); // giữ cho link phân trang
+        request.setAttribute("page", page);
+        request.setAttribute("totalPages", totalPages);
+
         request.getRequestDispatcher("MenuCus.jsp").forward(request, response);
     }
 }
