@@ -64,7 +64,7 @@
                                             </form>
                                         </div>
                                         <div class="col-md-4 mb-2">
-                                            <a href="#" class="btn btn-outline-success w-100">Chỉnh sửa</a>
+                                            <a href="editProductSeller?id=${product.productID}" class="btn btn-outline-success w-100">Chỉnh sửa</a>
                                         </div>
 
                                         <% } %>  

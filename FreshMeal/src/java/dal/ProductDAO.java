@@ -312,6 +312,26 @@ public class ProductDAO extends DBContext {
         }
         return 0;
     }
+    
+    public void updateProduct(Product p) {
+    String sql = "UPDATE Product SET Name=?, Description=?, Calories=?, NutritionInfo=?, Origin=?, ImageURL=?, StorageInstructions=?, Price=?, CategoryID=? WHERE ProductID=?";
+    try (Connection conn = getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+        ps.setString(1, p.getName());
+        ps.setString(2, p.getDescription());
+        ps.setInt(3, p.getCalories());
+        ps.setString(4, p.getNutritionInfo());
+        ps.setString(5, p.getOrigin());
+        ps.setString(6, p.getImageURL());
+        ps.setString(7, p.getStorageInstructions());
+        ps.setDouble(8, p.getPrice());
+        ps.setInt(9, p.getCategoryID());
+        ps.setInt(10, p.getProductID());
+        ps.executeUpdate();
+    } catch (Exception e) {
+        e.printStackTrace();
+    }
+}
+
 
 
     public static void main(String[] args) {

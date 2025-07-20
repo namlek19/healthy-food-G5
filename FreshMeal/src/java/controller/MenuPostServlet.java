@@ -94,21 +94,18 @@ public class MenuPostServlet extends HttpServlet {
         request.setAttribute("productList", productList);
         request.setAttribute("currentPage", "menupost");
 
-        
         if (selectedProductIDsStr == null || selectedProductIDsStr.trim().isEmpty()) {
             request.setAttribute("errorMessage", "Bạn phải chọn ít nhất một món ăn!");
             request.getRequestDispatcher("menu_post.jsp").forward(request, response);
             return;
         }
 
-        
         if (imageURL == null || imageURL.trim().isEmpty()) {
             request.setAttribute("errorMessage", "Bạn phải chọn ảnh cho thực đơn!");
             request.getRequestDispatcher("menu_post.jsp").forward(request, response);
             return;
         }
 
-        
         if (menuName == null || menuName.trim().isEmpty()
                 || description == null || description.trim().isEmpty()) {
             request.setAttribute("errorMessage", "Tên thực đơn và mô tả không được để trống!");
@@ -132,6 +129,17 @@ public class MenuPostServlet extends HttpServlet {
             if (!pid.isEmpty()) { // tránh lỗi nếu có phần tử rỗng
                 menuDAO.addMenuProduct(menuID, Integer.parseInt(pid));
             }
+        }
+
+        String userName = menuDAO.getUserNameByID(nutritionistID);
+
+// Tạo tiêu đề và nội dung theo yêu cầu
+        String subject = "Yêu cầu duyệt combo mới từ Nutritionist " + userName + " (UserID: " + nutritionistID + ")";
+        String content = "Nutritionist " + userName + " (UserID: " + nutritionistID + ") đã gửi yêu cầu duyệt combo mới tên \"" + menuName + "\"";
+
+// Gửi mail cho tất cả manager
+        for (String email : menuDAO.getAllManagerEmails()) {
+            SendMail.send(email, subject, content);
         }
 
 //        response.sendRedirect("menupost");
