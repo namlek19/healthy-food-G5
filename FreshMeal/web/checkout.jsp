@@ -30,7 +30,13 @@
                            value="<%= user != null ? user.getEmail() : "" %>">
 
                     <label>Số điện thoại <span class="required">*</span></label>
-                    <input type="text" name="phone" id="phone" pattern="[0-9]{10,11}" title="Số điện thoại từ 10–11 chữ số" required>
+                    <span id="phoneError" style="color: red; font-size: 0.9rem; display: none;">
+                        Vui lòng nhập số điện thoại đúng để chúng tôi liên lạc.
+                    </span>
+                    <input type="text" name="phone" id="phone"
+                           pattern="0[0-9]{9,10}"
+                           title="Số điện thoại bắt đầu bằng 0 và có 10–11 chữ số" required>
+
 
                     <% if (isCustomer) { %>
                     <!-- BẮT ĐẦU: Chọn địa chỉ -->
@@ -122,6 +128,8 @@
         <script>
             function validateCheckout() {
                 const email = document.getElementById("email").value.trim();
+                const phone = document.getElementById("phone").value.trim();
+                const phoneError = document.getElementById("phoneError");
                 const addressOptionInput = document.querySelector('input[name="addressOption"]:checked');
                 const addressOption = addressOptionInput ? addressOptionInput.value : "new";
                 const district = document.getElementById("district").value;
@@ -133,8 +141,18 @@
                 ];
 
                 const emailRegex = /^[a-zA-Z0-9._%+-]+@(gmail\.com|fpt\.edu\.vn|yahoo\.com)$/;
+                const phoneRegex = /^0[0-9]{9,10}$/;
+
+                phoneError.style.display = "none";
+
                 if (!emailRegex.test(email)) {
                     alert("Vui lòng nhập địa chỉ email hợp lệ.");
+                    return false;
+                }
+
+                if (!phoneRegex.test(phone)) {
+                    phoneError.style.display = "block";
+                    document.getElementById("phone").focus();
                     return false;
                 }
 
@@ -143,14 +161,14 @@
                     return false;
                 }
 
-                if (addressOption === 'new') {
-                    if (address === "") {
-                        alert("Vui lòng nhập địa chỉ cụ thể.");
-                        return false;
-                    }
+                if (addressOption === 'new' && address === "") {
+                    alert("Vui lòng nhập địa chỉ cụ thể.");
+                    return false;
                 }
+
                 return true;
             }
+
 
 
             function enableAddress() {

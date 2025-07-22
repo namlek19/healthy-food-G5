@@ -18,24 +18,7 @@
         <meta charset="UTF-8">
         <title>Quản lý đơn hàng - Shipper</title>
         <link rel="stylesheet" href="assets/css/shipper.css">
-        <style>
-            .item-table {
-                width: 95%;
-                margin: 10px auto 30px;
-                border-collapse: collapse;
-                border: 1px solid #ccc;
-            }
-            .item-table th, .item-table td {
-                border: 1px solid #ddd;
-                padding: 8px;
-            }
-            .item-table th {
-                background-color: #f2f2f2;
-            }
-            .product-img {
-                width: 50px;
-            }
-        </style>
+      
     </head>
     <body>
 

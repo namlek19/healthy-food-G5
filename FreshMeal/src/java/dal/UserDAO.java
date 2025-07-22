@@ -404,6 +404,8 @@ public class UserDAO {
         }
     }
 
+
+
     public boolean isEmailExists(String email) {
         Connection conn = null;
         PreparedStatement ps = null;

@@ -54,7 +54,7 @@
                     <tr><td colspan="5" style="text-align:center;color:gray;">Không có người dùng nào.</td></tr>
                     <% } else {
                         for (User u : users) {
-                            if (u.getRoleID() == 1) continue; // Ẩn admin khỏi danh sách
+                            if (u.getRoleID() == 1) continue; 
                     %>
                     <tr>
                         <td><%= u.getUserID()-1 %></td>
@@ -182,7 +182,7 @@
                     <div class="form-row">
                         <label for="role">Vai trò:</label>
                         <select id="role" name="role" required>
-                            <!-- Không cho chọn Admin khi tạo tài khoản mới -->
+
                             <option value="2">Customer</option>
                             <option value="3">Manager</option>
                             <option value="4">Nutritionist</option>
