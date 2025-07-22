@@ -52,7 +52,7 @@
             <h2>Danh sách Menu chờ duyệt</h2>
             <table class="table-menus">
                 <tr>
-                    <th>ID</th>
+                    <th>STT</th>
                     <th>Tên Menu</th>
                     <th>Sản phẩm</th>
                     <th>Mô tả</th>
@@ -60,9 +60,9 @@
                     <th>Tổng giá</th>
                     <th>Thao tác</th>
                 </tr>
-                <% for (Menu m : pendingMenus) { %>
+                <% int stt = 1; for (Menu m : pendingMenus) { %>
                 <tr>
-                    <td><%= m.getMenuID() %></td>
+                    <td><%= stt++ %></td>
                     <td><%= m.getMenuName() %></td>
                     <td class="product-list">
                         <% for (Product p : m.getProducts()) { %>
@@ -101,7 +101,7 @@
             <h2 style="margin-top: 50px;">Danh sách Menu yêu cầu xóa</h2>
             <table class="table-menus">
                 <tr>
-                    <th>ID</th>
+                    <th>STT</th>
                     <th>Tên Menu</th>
                     <th>Sản phẩm</th>
                     <th>Mô tả</th>
@@ -109,9 +109,10 @@
                     <th>Tổng giá</th>
                     <th>Thao tác</th>
                 </tr>
-                <% for (Menu m : deleteRequests) { %>
+                <% int stt2 = 1; for (Menu m : deleteRequests) { %>
                 <tr>
-                    <td><%= m.getMenuID() %></td>
+                    <td><%= stt2++ %></td>
+
                     <td><%= m.getMenuName() %></td>
                     <td class="product-list">
                         <% for (Product p : m.getProducts()) { %>
@@ -153,16 +154,17 @@
             <h2 style="margin-top: 50px;">Danh sách Menu yêu cầu sửa</h2>
             <table class="table-menus">
                 <tr>
-                    <th>ID</th>
+                    <th>STT</th>
                     <th>Tên Menu</th>
                     <th>Sản phẩm</th>
                     <th>Mô tả</th>
                     <th>Nutritionist</th>
                     <th>Thao tác</th>
                 </tr>
-                <% for (Menu m : editRequests) { %>
+                <% int stt3 = 1; for (Menu m : editRequests) { %>
                 <tr>
-                    <td><%= m.getMenuID() %></td>
+                    <td><%= stt3++ %></td>
+
                     <td><%= m.getMenuName() %></td>
                     <td class="product-list">
                         <% for (Product p : m.getProducts()) { %>

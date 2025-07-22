@@ -38,19 +38,37 @@ public class ConfirmOrderServlet extends HttpServlet {
                 productList.setLength(productList.length() - 2); // Xóa dấu phẩy cuối
             }
 
-            String subject = "Đã xác nhận đơn hàng của bạn - Mã đơn hàng: " + orderID;
+            // Gửi email
+            String subject;
+            String content;
 
-            // Nội dung HTML
-            String content = ""
-                    + "<p>- <b>Tên khách hàng:</b> " + order.getReceiverName() + "</p>"
-                    + "<p>- <b>Địa chỉ:</b> " + order.getDeliveryAddress() + ", " + order.getDistrict() + "</p>"
-                    + "<p>- <b>Tổng tiền:</b> " + String.format("%,.0f", order.getTotalAmount()) + " đ</p>"
-                    + "<p>- <b>Đơn hàng của bạn gồm có:</b> " + productList.toString() + "</p>"
-                    + "<p>- <b>Phương thức thanh toán:</b> COD (Thanh toán khi nhận hàng)</p>"
-                    + "<p>- <b>Trạng thái:</b> Confirmed (Đã xác nhận)</p>"
-                    + "<p style=\"margin-top:12px;\"><i>Cảm ơn quý khách!</i></p>";
+            if ("QRPending".equalsIgnoreCase(currentStatus)) {
+                // Trường hợp phần QR
+                subject = "Đơn hàng của bạn đã được xác nhận - Mã đơn hàng: " + orderID;
 
-            // Gửi mail
+                content = ""
+                        + "<p>- <b>Tên khách hàng:</b> " + order.getReceiverName() + "</p>"
+                        + "<p>- <b>Địa chỉ:</b> " + order.getDeliveryAddress() + ", " + order.getDistrict() + "</p>"
+                        + "<p>- <b>Tổng tiền:</b> " + String.format("%,.0f", order.getTotalAmount()) + " đ</p>"
+                        + "<p>- <b>Đơn hàng của bạn gồm có:</b> " + productList.toString() + "</p>"
+                        + "<p>- <b>Phương thức thanh toán:</b> Thanh toán Online</p>"
+                        + "<p>- <b>Trạng thái:</b> Đã xác nhận </p>"
+                        + "<p style=\"margin-top:12px;\"><i>Cảm ơn quý khách!</i></p>";
+
+            } else {
+                // Trường hợp thường
+                subject = "Đơn hàng của bạn đã được xác nhận - Mã đơn hàng: " + orderID;
+
+                content = ""
+                        + "<p>- <b>Tên khách hàng:</b> " + order.getReceiverName() + "</p>"
+                        + "<p>- <b>Địa chỉ:</b> " + order.getDeliveryAddress() + ", " + order.getDistrict() + "</p>"
+                        + "<p>- <b>Tổng tiền:</b> " + String.format("%,.0f", order.getTotalAmount()) + " đ</p>"
+                        + "<p>- <b>Đơn hàng của bạn gồm có:</b> " + productList.toString() + "</p>"
+                        + "<p>- <b>Phương thức thanh toán:</b> COD (Thanh toán khi nhận hàng)</p>"
+                        + "<p>- <b>Trạng thái:</b> Confirmed (Đã xác nhận)</p>"
+                        + "<p style=\"margin-top:12px;\"><i>Cảm ơn quý khách!</i></p>";
+            }
+
             SendMail.send(order.getEmail(), subject, content, true);
 
             response.sendRedirect("orderSeller?message=confirmed");
