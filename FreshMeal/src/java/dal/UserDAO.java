@@ -391,6 +391,33 @@ public boolean insertUser(User user) {
         }
     }
 }
+public boolean isEmailExists(String email) {
+    Connection conn = null;
+    PreparedStatement ps = null;
+    ResultSet rs = null;
+
+    try {
+        String query = "SELECT 1 FROM Users WHERE Email = ?";
+        conn = db.getConnection();  // giống như insertUser()
+        ps = conn.prepareStatement(query);
+        ps.setString(1, email);
+        rs = ps.executeQuery();
+        return rs.next(); 
+
+    } catch (Exception e) {
+        System.out.println("Check Email Exists Error: " + e.getMessage());
+        return false;
+    } finally {
+        try {
+            if (rs != null) rs.close();
+            if (ps != null) ps.close();
+            if (conn != null) conn.close();
+        } catch (SQLException e) {
+            System.out.println("Close conn error: " + e.getMessage());
+        }
+    }
+}
+
 
 
 
