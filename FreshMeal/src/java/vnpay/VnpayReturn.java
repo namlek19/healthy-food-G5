@@ -16,8 +16,10 @@ import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.Enumeration;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import model.Order;
+import model.OrderItem;
 
 /**
  *
@@ -73,10 +75,43 @@ public class VnpayReturn extends HttpServlet {
                         String guestId = request.getSession().getId();
                         cartDao.clearGuestCart(guestId);
                     } else {
-                        
+
                         int userId = orderDao.getUserIdByOrderId(orderId);
                         cartDao.clearCart(userId);
                     }
+
+                    try {
+                        Order order = orderDao.getOrderById(orderId);
+                        // Lấy danh sách sp, ví dụ:
+                        List<OrderItem> items = orderDao.getOrderItems(orderId);
+
+                        StringBuilder productList = new StringBuilder();
+                        for (OrderItem item : items) {
+                            productList.append(item.getProductName())
+                                    .append(" (SL: ")
+                                    .append(item.getQuantity())
+                                    .append("), ");
+                        }
+                        if (productList.length() > 0) {
+                            productList.setLength(productList.length() - 2); // xóa dấu phẩy cuối
+                        }
+
+                        String subject = "Bạn đã đặt hàng thành công - Mã đơn hàng: " + orderId;
+
+                        String content = ""
+                                + "<p>- <b>Tên khách hàng:</b> " + order.getReceiverName() + "</p>"
+                                + "<p>- <b>Địa chỉ:</b> " + order.getDeliveryAddress() + ", " + order.getDistrict() + "</p>"
+                                + "<p>- <b>Tổng tiền:</b> " + String.format("%,.0f", order.getTotalAmount()) + " đ</p>"
+                                + "<p>- <b>Đơn hàng của bạn gồm có:</b> " + productList.toString() + "</p>"
+                                + "<p>- <b>Phương thức thanh toán:</b> Thanh toán trực tuyến (Đã thanh toán)</p>"
+                                + "<p>- <b>Trạng thái:</b> Pending (Đang chờ duyệt)</p>"
+                                + "<p style=\"margin-top:12px;\"><i>Cảm ơn quý khách!</i></p>";
+
+                        controller.SendMail.send(order.getEmail(), subject, content, true);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+
                 } else {
                     status = "Failed";
                 }
