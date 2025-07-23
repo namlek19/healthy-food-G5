@@ -771,7 +771,7 @@ public class MenuDAO extends DBContext {
         String deleteSuaMenuProduct = "DELETE FROM SuaMenuProduct WHERE MenuID = ?";
         String deleteSuaMenu = "DELETE FROM SuaMenu WHERE MenuID = ?";
         try (Connection conn = getConnection()) {
-            
+
             try (PreparedStatement ps1 = conn.prepareStatement(deleteSuaMenuProduct)) {
                 ps1.setInt(1, menuID);
                 ps1.executeUpdate();
@@ -784,22 +784,36 @@ public class MenuDAO extends DBContext {
             e.printStackTrace();
         }
     }
-    
-    public String getEmailByUserId(int userId) {
-    String sql = "SELECT email FROM Users WHERE userID = ?";
-    try (Connection con = getConnection();
-         PreparedStatement ps = con.prepareStatement(sql)) {
-        ps.setInt(1, userId);
-        ResultSet rs = ps.executeQuery();
-        if (rs.next()) {
-            return rs.getString("email");
-        }
-    } catch (Exception e) {
-        e.printStackTrace();
-    }
-    return null;
-}
 
+    public String getEmailByUserId(int userId) {
+        String sql = "SELECT email FROM Users WHERE userID = ?";
+        try (Connection con = getConnection(); PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setInt(1, userId);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                return rs.getString("email");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public List<String> getEmailsByRoleId(int roleId) {
+        List<String> emails = new ArrayList<>();
+        String sql = "SELECT email FROM Users WHERE roleID = ?";
+        try (Connection con = getConnection(); PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setInt(1, roleId);
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    emails.add(rs.getString("email"));
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return emails;
+    }
 
     public static void main(String[] args) {
         MenuDAO dao = new MenuDAO();
