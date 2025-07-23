@@ -784,6 +784,22 @@ public class MenuDAO extends DBContext {
             e.printStackTrace();
         }
     }
+    
+    public String getEmailByUserId(int userId) {
+    String sql = "SELECT email FROM Users WHERE userID = ?";
+    try (Connection con = getConnection();
+         PreparedStatement ps = con.prepareStatement(sql)) {
+        ps.setInt(1, userId);
+        ResultSet rs = ps.executeQuery();
+        if (rs.next()) {
+            return rs.getString("email");
+        }
+    } catch (Exception e) {
+        e.printStackTrace();
+    }
+    return null;
+}
+
 
     public static void main(String[] args) {
         MenuDAO dao = new MenuDAO();

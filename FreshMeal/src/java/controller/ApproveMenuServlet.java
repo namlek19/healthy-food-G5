@@ -7,12 +7,13 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
-
+import model.Menu;
 
 public class ApproveMenuServlet extends HttpServlet {
+
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
-        throws ServletException, IOException {
+            throws ServletException, IOException {
 
         String menuIdRaw = request.getParameter("menuId");
         String action = request.getParameter("action");
@@ -22,15 +23,25 @@ public class ApproveMenuServlet extends HttpServlet {
         boolean updated = false;
         String msg = "";
 
+        Menu menu = dao.getMenuById(menuId);
+        String menuName = menu.getMenuName();
+        int nutritionistId = menu.getNutritionistID();
+        String nutritionistEmail = dao.getEmailByUserId(nutritionistId); // bạn cần tạo
+
         switch (action) {
             case "approve":
-                updated = dao.updateMenuStatus(menuId, 2); 
+                updated = dao.updateMenuStatus(menuId, 2);
                 msg = updated ? "Duyệt menu thành công!" : "Duyệt menu thất bại!";
                 break;
 
             case "reject":
                 updated = dao.deleteMenuWithResult(menuId);
                 msg = updated ? "Đã từ chối menu!" : "Từ chối menu thất bại!";
+                if (updated) {
+                    String subject = "Manager đã từ chối yêu cầu duyệt combo của bạn: \"" + menuName + "\" - ID " + menuId;
+                    String content = "Xin chào,\n\nManager đã từ chối yêu cầu duyệt combo của bạn: \"" + menuName + "\" - ID " + menuId;
+                    SendMail.send(nutritionistEmail, subject, content, false);
+                }
                 break;
 
             case "approveDeleteRequest":
@@ -39,8 +50,13 @@ public class ApproveMenuServlet extends HttpServlet {
                 break;
 
             case "rejectDeleteRequest":
-                updated = dao.updateMenuStatus(menuId, 3); 
+                updated = dao.updateMenuStatus(menuId, 3);
                 msg = updated ? "Đã từ chối yêu cầu xóa." : "Không thể cập nhật lại trạng thái!";
+                if (updated) {
+                    String subject = "Manager đã từ chối yêu cầu xóa combo của bạn: \"" + menuName + "\" - ID " + menuId;
+                    String content = "Xin chào,\n\nManager đã từ chối yêu cầu xóa combo của bạn: \"" + menuName + "\" - ID " + menuId;
+                    SendMail.send(nutritionistEmail, subject, content, false);
+                }
                 break;
 
             case "approveEditRequest":
@@ -51,6 +67,11 @@ public class ApproveMenuServlet extends HttpServlet {
             case "rejectEditRequest":
                 updated = dao.rejectSuaMenuWithResult(menuId);
                 msg = updated ? "Đã từ chối chỉnh sửa!" : "Từ chối chỉnh sửa thất bại!";
+                if (updated) {
+                    String subject = "Manager đã từ chối yêu cầu sửa combo của bạn: \"" + menuName + "\" - ID " + menuId;
+                    String content = "Xin chào,\n\nManager đã từ chối yêu cầu sửa combo của bạn: \"" + menuName + "\" - ID " + menuId;
+                    SendMail.send(nutritionistEmail, subject, content, false);
+                }
                 break;
 
             default:
