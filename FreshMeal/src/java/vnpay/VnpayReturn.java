@@ -108,6 +108,24 @@ public class VnpayReturn extends HttpServlet {
                                 + "<p style=\"margin-top:12px;\"><i>Cảm ơn quý khách!</i></p>";
 
                         controller.SendMail.send(order.getEmail(), subject, content, true);
+
+                        try {
+                            dal.UserDAO userDAO = new dal.UserDAO(); // Tạo mới UserDAO
+                            List<String> sellerEmails = userDAO.getEmailsByRoleId(4); // Tạo hàm này như đã hướng dẫn
+
+                            String sellerSubject = "Đã có Order cần bạn xác nhận - Mã order: " + orderId;
+                            String sellerContent = ""
+                                    + "<p>- <b>Tên người đặt order:</b> " + order.getReceiverName() + "</p>"
+                                    + "<p>- <b>Tổng tiền và Loại đơn hàng:</b> " + String.format("%,.0f", order.getTotalAmount()) + " đ</p>"
+                                    + "<p>- <b>Loại đơn hàng:</b> Thanh toán trực tuyến(Đã thanh toán)</p>";
+
+                            for (String sellerEmail : sellerEmails) {
+                                controller.SendMail.send(sellerEmail, sellerSubject, sellerContent, true);
+                            }
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+
                     } catch (Exception e) {
                         e.printStackTrace();
                     }

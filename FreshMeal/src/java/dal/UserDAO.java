@@ -404,8 +404,6 @@ public class UserDAO {
         }
     }
 
-
-
     public boolean isEmailExists(String email) {
         Connection conn = null;
         PreparedStatement ps = null;
@@ -437,6 +435,38 @@ public class UserDAO {
                 System.out.println("Close conn error: " + e.getMessage());
             }
         }
+    }
+
+    public List<String> getEmailsByRoleId(int roleId) {
+        List<String> emails = new ArrayList<>();
+        String sql = "SELECT email FROM Users WHERE roleID = ?";
+        try (Connection con = db.getConnection(); PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setInt(1, roleId);
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    emails.add(rs.getString("email"));
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return emails;
+    }
+
+    public String getEmailByUserId(int userId) {
+        String email = null;
+        String sql = "SELECT email FROM Users WHERE userID = ?";
+        try (Connection con = db.getConnection(); PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setInt(1, userId);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    email = rs.getString("email");
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return email;
     }
 
 }

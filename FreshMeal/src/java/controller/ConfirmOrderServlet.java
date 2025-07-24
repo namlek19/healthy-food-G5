@@ -71,6 +71,27 @@ public class ConfirmOrderServlet extends HttpServlet {
 
             SendMail.send(order.getEmail(), subject, content, true);
 
+            try {
+                dal.UserDAO userDAO = new dal.UserDAO(); // cần có UserDAO
+                String shipperEmail = userDAO.getEmailByUserId(shipperID); // bạn cần viết hàm này
+
+                String shipperSubject = "Bạn có đơn hàng cần giao - Mã đơn hàng: " + orderID;
+                String shipperContent = ""
+                        + "<p>- <b>Tên khách hàng:</b> " + order.getReceiverName() + "</p>"
+                        + "<p>- <b>Địa chỉ:</b> " + order.getDeliveryAddress() + ", " + order.getDistrict() + "</p>"
+                        + "<p>- <b>Số điện thoại:</b> " + order.getPhone() + "</p>";
+
+                if ("QRPending".equalsIgnoreCase(currentStatus)) {
+                    shipperContent += "<p>- <b>Loại đơn hàng:</b> Thanh toán trực tuyến (Đã thanh toán)</p>";
+                } else {
+                    shipperContent += "<p>- <b>Loại đơn hàng:</b> COD (Thanh toán khi nhận hàng)</p>";
+                }
+
+                SendMail.send(shipperEmail, shipperSubject, shipperContent, true);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
             response.sendRedirect("orderSeller?message=confirmed");
         } catch (Exception e) {
             e.printStackTrace();
