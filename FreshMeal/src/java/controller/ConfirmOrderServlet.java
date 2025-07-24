@@ -76,10 +76,24 @@ public class ConfirmOrderServlet extends HttpServlet {
                 String shipperEmail = userDAO.getEmailByUserId(shipperID); // bạn cần viết hàm này
 
                 String shipperSubject = "Bạn có đơn hàng cần giao - Mã đơn hàng: " + orderID;
+
+                // Ghép chi tiết đơn hàng
+                productList.setLength(0);
+                for (OrderItem item : order.getItems()) {
+                    productList.append(item.getProductName())
+                            .append(" (SL: ")
+                            .append(item.getQuantity())
+                            .append("), ");
+                }
+                if (productList.length() > 0) {
+                    productList.setLength(productList.length() - 2); // Xóa dấu phẩy cuối
+                }
+
                 String shipperContent = ""
                         + "<p>- <b>Tên khách hàng:</b> " + order.getReceiverName() + "</p>"
                         + "<p>- <b>Địa chỉ:</b> " + order.getDeliveryAddress() + ", " + order.getDistrict() + "</p>"
-                        + "<p>- <b>Số điện thoại:</b> " + order.getPhone() + "</p>";
+                        + "<p>- <b>Số điện thoại:</b> " + order.getPhone() + "</p>"
+                        + "<p>- <b>Chi tiết đơn hàng gồm có:</b> " + productList.toString() + "</p>";
 
                 if ("QRPending".equalsIgnoreCase(currentStatus)) {
                     shipperContent += "<p>- <b>Loại đơn hàng:</b> Thanh toán trực tuyến (Đã thanh toán)</p>";
