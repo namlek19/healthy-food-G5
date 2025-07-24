@@ -60,7 +60,7 @@ public class CheckoutServlet extends HttpServlet {
         if ("cod".equals(method)) {
             int orderId = orderDAO.createOrder(order, cart);
 
-            // ✅ Sau khi tạo order, gửi email xác nhận
+            // ✅ Gửi mail cho customer
             try {
                 StringBuilder productList = new StringBuilder();
                 for (CartItem item : cart) {
@@ -75,7 +75,6 @@ public class CheckoutServlet extends HttpServlet {
 
                 String subject = "Bạn đã đặt hàng thành công - Mã đơn hàng: " + orderId;
 
-                // Dùng HTML
                 String content = ""
                         + "<p>- <b>Tên khách hàng:</b> " + fullname + "</p>"
                         + "<p>- <b>Địa chỉ:</b> " + address + ", " + district + "</p>"
@@ -85,7 +84,25 @@ public class CheckoutServlet extends HttpServlet {
                         + "<p>- <b>Trạng thái:</b> Pending (Đang chờ duyệt)</p>"
                         + "<p style=\"margin-top:12px;\"><i>Cảm ơn quý khách!</i></p>";
 
-                controller.SendMail.send(email, subject, content, true); // Thêm tham số isHtml = true
+                controller.SendMail.send(email, subject, content, true); // isHtml=true
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+            // ✅ Gửi mail cho tất cả seller có roleId=4
+            try {
+                dal.UserDAO userDAO = new dal.UserDAO(); // Tạo mới UserDAO
+                List<String> sellerEmails = userDAO.getEmailsByRoleId(4); // Tạo hàm này trong UserDAO
+
+                String sellerSubject = "Đã có Order cần bạn xác nhận - Mã order: " + orderId;
+                String sellerContent = ""
+                        + "<p>- <b>Tên người đặt order:</b> " + fullname + "</p>"
+                        + "<p>- <b>Tổng tiền:</b> " + String.format("%,.0f", total) + " đ</p>"
+                        + "<p>- <b>Loại đơn hàng:</b> COD(Thanh toán khi nhận hàng)</p>";
+
+                for (String sellerEmail : sellerEmails) {
+                    controller.SendMail.send(sellerEmail, sellerSubject, sellerContent, true);
+                }
             } catch (Exception e) {
                 e.printStackTrace();
             }
