@@ -57,7 +57,7 @@
                             if (u.getRoleID() == 1) continue; 
                     %>
                     <tr>
-                        <td><%= u.getUserID()-1 %></td>
+                        <td><%= u.getUserID() %></td>
                         <td><%= u.getFullName() %></td>
                         <td><%= u.getEmail() %></td>
                         <td><%= u.getRoleName() %></td>
@@ -68,8 +68,8 @@
                                     <!-- Không hiển thị Admin trong dropdown chỉnh sửa -->
                                     <option value="2" <%= u.getRoleID() == 2 ? "selected" : "" %>>Customer</option>
                                     <option value="3" <%= u.getRoleID() == 3 ? "selected" : "" %>>Manager</option>
-                                    <option value="4" <%= u.getRoleID() == 4 ? "selected" : "" %>>Nutritionist</option>
-                                    <option value="5" <%= u.getRoleID() == 5 ? "selected" : "" %>>Seller</option>
+                                    <option value="4" <%= u.getRoleID() == 4 ? "selected" : "" %>>Seller</option>
+                                    <option value="5" <%= u.getRoleID() == 5 ? "selected" : "" %>>Nutritionist</option>
                                     <option value="6" <%= u.getRoleID() == 6 ? "selected" : "" %>>Shipper</option>
                                 </select>
                                 <button type="submit">Cập nhật</button>
