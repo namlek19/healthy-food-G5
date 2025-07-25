@@ -33,6 +33,86 @@ public class OrderDAO extends DBContext {
         return list;
     }
 
+    public int countAllOrders() {
+        int count = 0;
+        String sql = "SELECT COUNT(*) FROM [Order]";
+        try (Connection conn = getConnection(); PreparedStatement ps = conn.prepareStatement(sql); ResultSet rs = ps.executeQuery()) {
+
+            if (rs.next()) {
+                count = rs.getInt(1);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return count;
+    }
+
+    public List<Order> getOrdersPaging(int offset, int limit) {
+        List<Order> list = new ArrayList<>();
+        String sql = "SELECT * FROM [Order] ORDER BY OrderDate DESC OFFSET ? ROWS FETCH NEXT ? ROWS ONLY;";
+        // Câu trên dùng cú pháp phân trang bên SQL Server 2012+ (nếu bạn dùng DB khác cần sửa phù hợp)
+        try (Connection conn = getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setInt(1, offset);
+            ps.setInt(2, limit);
+
+            ResultSet rs = ps.executeQuery();
+            OrderItemDAO itemDAO = new OrderItemDAO();
+
+            while (rs.next()) {
+                Order order = new Order();
+                order.setOrderID(rs.getInt("OrderID"));
+                order.setUserID(rs.getInt("UserID"));
+                order.setReceiverName(rs.getString("ReceiverName"));
+                order.setPhone(rs.getString("Phone"));
+                order.setDeliveryAddress(rs.getString("DeliveryAddress"));
+                order.setDistrict(rs.getString("District"));
+                order.setTotalAmount(rs.getDouble("TotalAmount"));
+                order.setOrderDate(rs.getTimestamp("OrderDate"));
+                order.setStatus(rs.getString("Status"));
+                order.setEmail(rs.getString("Email"));
+
+                // Lấy các OrderItems của đơn hàng này
+                List<OrderItem> items = itemDAO.getItemsByOrderId(order.getOrderID());
+                order.setItems(items);
+
+                list.add(order);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
+
+    public List<Order> getAllOrdersWithItems() {
+        List<Order> list = new ArrayList<>();
+        String sql = "SELECT * FROM [Order] ORDER BY OrderDate DESC";
+        try (Connection conn = getConnection(); PreparedStatement ps = conn.prepareStatement(sql); ResultSet rs = ps.executeQuery()) {
+            OrderItemDAO itemDAO = new OrderItemDAO();
+            while (rs.next()) {
+                Order order = new Order();
+                order.setOrderID(rs.getInt("OrderID"));
+                order.setUserID(rs.getInt("UserID"));
+                order.setReceiverName(rs.getString("ReceiverName"));
+                order.setPhone(rs.getString("Phone"));
+                order.setDeliveryAddress(rs.getString("DeliveryAddress"));
+                order.setDistrict(rs.getString("District"));
+                order.setTotalAmount(rs.getDouble("TotalAmount"));
+                order.setOrderDate(rs.getTimestamp("OrderDate"));
+                order.setStatus(rs.getString("Status"));
+                order.setEmail(rs.getString("Email"));
+
+                List<OrderItem> items = itemDAO.getItemsByOrderId(order.getOrderID());
+                order.setItems(items);
+
+                list.add(order);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
+
     public List<Order> getAllCODOrdersByShipperID(int shipperId) {
         List<Order> list = new ArrayList<>();
         String sql = "SELECT * FROM [Order] WHERE ShipperID = ? AND (Status = 'Confirmed' OR Status = 'Delivering') ORDER BY OrderDate DESC";

@@ -84,11 +84,12 @@
                             <input type="hidden" name="action" value="approve" />
                             <button type="submit" class="btn-approve" onclick="return confirm('Bạn chắc chắn DUYỆT menu này?')">Duyệt</button>
                         </form>
-                        <form action="approveMenu" method="post" style="display:inline">
+                        <form action="rejectMenuReason" method="get" style="display:inline">
                             <input type="hidden" name="menuId" value="<%= m.getMenuID() %>" />
-                            <input type="hidden" name="action" value="reject" />
+                            <input type="hidden" name="action" value="reject" /> 
                             <button type="submit" class="btn-reject" onclick="return confirm('Bạn muốn TỪ CHỐI menu này?')">Từ chối</button>
                         </form>
+
                     </td>
                 </tr>
                 <% } %>
@@ -134,7 +135,7 @@
                             <input type="hidden" name="action" value="approveDeleteRequest" />
                             <button type="submit" class="btn-approve" onclick="return confirm('Xác nhận xóa menu này khỏi hệ thống?')">Đồng ý</button>
                         </form>
-                        <form action="approveMenu" method="post" style="display:inline">
+                        <form action="rejectMenuReason" method="get" style="display:inline">
                             <input type="hidden" name="menuId" value="<%= m.getMenuID() %>" />
                             <input type="hidden" name="action" value="rejectDeleteRequest" />
                             <button type="submit" class="btn-reject" onclick="return confirm('Từ chối xóa, giữ lại menu?')">Từ chối</button>
@@ -185,7 +186,7 @@
                             <input type="hidden" name="action" value="approveEditRequest" />
                             <button type="submit" class="btn-approve" onclick="return confirm('Đồng ý áp dụng các sửa đổi của menu này?')">Đồng ý</button>
                         </form>
-                        <form action="approveMenu" method="post" style="display:inline">
+                        <form action="rejectMenuReason" method="get" style="display:inline">
                             <input type="hidden" name="menuId" value="<%= m.getMenuID() %>" />
                             <input type="hidden" name="action" value="rejectEditRequest" />
                             <button type="submit" class="btn-reject" onclick="return confirm('Từ chối sửa đổi của menu này?')">Từ chối</button>

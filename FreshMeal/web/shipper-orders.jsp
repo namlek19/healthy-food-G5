@@ -9,6 +9,7 @@
 
     List<Order> orders = (List<Order>) request.getAttribute("orders");
     if (orders == null) orders = Collections.emptyList();
+
     List<Order> QRorders = (List<Order>) request.getAttribute("QRorders");
     if (QRorders == null) QRorders = Collections.emptyList();
 %>
@@ -18,7 +19,6 @@
         <meta charset="UTF-8">
         <title>Quản lý đơn hàng - Shipper</title>
         <link rel="stylesheet" href="assets/css/shipper.css">
-      
     </head>
     <body>
 
@@ -41,6 +41,7 @@
             <div class="error-message"><%= request.getAttribute("error") %></div>
             <% } %>
 
+            <!-- ======= COD Orders Table ======= -->
             <table class="styled-table">
                 <thead>
                     <tr>
@@ -49,15 +50,14 @@
                         <th>Địa chỉ</th>
                         <th>Ngày đặt</th>
                         <th>Tổng tiền</th>
+                        <th>Chi tiết món</th>
                         <th>Trạng thái</th>
                         <th>Cập nhật</th>
                     </tr>
                 </thead>
                 <tbody>
                     <% if (orders.isEmpty()) { %>
-                    <tr>
-                        <td colspan="7" style="text-align:center;color:gray;">Không có đơn hàng nào để hiển thị.</td>
-                    </tr>
+                    <tr><td colspan="8" style="text-align:center;color:gray;">Không có đơn hàng nào để hiển thị.</td></tr>
                     <% } else {
                         for (Order o : orders) {
                     %>
@@ -68,22 +68,17 @@
                         <td><%= new java.text.SimpleDateFormat("dd/MM/yyyy HH:mm").format(o.getOrderDate()) %></td>
                         <td><%= String.format("%,.0f", o.getTotalAmount()) %> đ</td>
                         <td>
+                            <% for (OrderItem item : o.getItems()) { %>
+                            <div><%= item.getProductName() %>, số lượng: <%= item.getQuantity() %></div>
+                            <% } %>
+
+                        </td>
+                        <td>
                             <form action="UpdateOrderStatusServlet" method="post">
                                 <select name="status" <%= "Delivered".equals(o.getStatus()) ? "disabled" : "" %>>
-                                    <option value="Confirmed"
-                                            <%= "Confirmed".equals(o.getStatus()) ? "selected" : "" %>
-                                            <%= !"Confirmed".equals(o.getStatus()) ? "disabled" : "" %>>
-                                        Đã xác nhận
-                                    </option>
-                                    <option value="Delivering"
-                                            <%= "Delivering".equals(o.getStatus()) ? "selected" : "" %>
-                                            <%= "Delivered".equals(o.getStatus()) ? "disabled" : "" %>>
-                                        Đang giao
-                                    </option>
-                                    <option value="Delivered"
-                                            <%= "Delivered".equals(o.getStatus()) ? "selected" : "" %>>
-                                        Đã giao
-                                    </option>
+                                    <option value="Confirmed" <%= "Confirmed".equals(o.getStatus()) ? "selected" : "" %> <%= !"Confirmed".equals(o.getStatus()) ? "disabled" : "" %>>Đã xác nhận</option>
+                                    <option value="Delivering" <%= "Delivering".equals(o.getStatus()) ? "selected" : "" %> <%= "Delivered".equals(o.getStatus()) ? "disabled" : "" %>>Đang giao</option>
+                                    <option value="Delivered" <%= "Delivered".equals(o.getStatus()) ? "selected" : "" %>>Đã giao</option>
                                 </select>
                         </td>
                         <td>
@@ -92,40 +87,12 @@
                             </form>
                         </td>
                     </tr>
-
-                    <!-- Bảng sản phẩm -->
-                    <tr>
-                        <td colspan="7">
-                            <table class="item-table">
-                                <thead>
-                                    <tr>
-                                        <th>Tên sản phẩm</th>
-                                        <th>Ảnh</th>
-                                        <th>Số lượng</th>
-                                        <th>Giá</th>
-                                        <th>Thành tiền</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <% for (OrderItem item : o.getItems()) { %>
-                                    <tr>
-                                        <td><%= item.getProductName() %></td>
-                                        <td><img src="<%= item.getImageUrl() %>" class="product-img"></td>
-                                        <td><%= item.getQuantity() %></td>
-                                        <td><%= String.format("%,.0f", item.getPrice()) %> đ</td>
-                                        <td><%= String.format("%,.0f", item.getQuantity() * item.getPrice()) %> đ</td>
-                                    </tr>
-                                    <% } %>
-                                </tbody>
-                            </table>
-                        </td>
-                    </tr>
                     <% }} %>
                 </tbody>
             </table>
 
+            <!-- ======= QR Orders Table ======= -->
             <h2>Đơn hàng đã thanh toán QR cần giao</h2>
-
             <table class="styled-table">
                 <thead>
                     <tr>
@@ -134,15 +101,14 @@
                         <th>Địa chỉ</th>
                         <th>Ngày đặt</th>
                         <th>Tổng tiền</th>
+                        <th>Chi tiết món</th>
                         <th>Trạng thái</th>
                         <th>Cập nhật</th>
                     </tr>
                 </thead>
                 <tbody>
                     <% if (QRorders.isEmpty()) { %>
-                    <tr>
-                        <td colspan="7" style="text-align:center;color:gray;">Không có đơn hàng nào để hiển thị.</td>
-                    </tr>
+                    <tr><td colspan="8" style="text-align:center;color:gray;">Không có đơn hàng nào để hiển thị.</td></tr>
                     <% } else {
                         for (Order o : QRorders) {
                     %>
@@ -153,57 +119,23 @@
                         <td><%= new java.text.SimpleDateFormat("dd/MM/yyyy HH:mm").format(o.getOrderDate()) %></td>
                         <td><%= String.format("%,.0f", o.getTotalAmount()) %> đ</td>
                         <td>
+                            <% for (OrderItem item : o.getItems()) { %>
+                            <div><%= item.getProductName() %>, số lượng: <%= item.getQuantity() %></div>
+                            <% } %>
+
+                        </td>
+                        <td>
                             <form action="UpdateOrderStatusServlet" method="post">
                                 <select name="status" <%= "QRDelivered".equals(o.getStatus()) ? "disabled" : "" %>>
-                                    <option value="QRConfirmed"
-                                            <%= "QRConfirmed".equals(o.getStatus()) ? "selected" : "" %>
-                                            <%= !"QRConfirmed".equals(o.getStatus()) ? "disabled" : "" %>>
-                                        Đã xác nhận
-                                    </option>
-                                    <option value="QRDelivering"
-                                            <%= "QRDelivering".equals(o.getStatus()) ? "selected" : "" %>
-                                            <%= "QRDelivered".equals(o.getStatus()) ? "disabled" : "" %>>
-                                        Đang giao
-                                    </option>
-                                    <option value="QRDelivered"
-                                            <%= "QRDelivered".equals(o.getStatus()) ? "selected" : "" %>>
-                                        Đã giao
-                                    </option>
-                                </select>   
-                                
+                                    <option value="QRConfirmed" <%= "QRConfirmed".equals(o.getStatus()) ? "selected" : "" %> <%= !"QRConfirmed".equals(o.getStatus()) ? "disabled" : "" %>>Đã xác nhận</option>
+                                    <option value="QRDelivering" <%= "QRDelivering".equals(o.getStatus()) ? "selected" : "" %> <%= "QRDelivered".equals(o.getStatus()) ? "disabled" : "" %>>Đang giao</option>
+                                    <option value="QRDelivered" <%= "QRDelivered".equals(o.getStatus()) ? "selected" : "" %>>Đã giao</option>
+                                </select>
                         </td>
                         <td>
                             <input type="hidden" name="orderId" value="<%= o.getOrderID() %>"/>
                             <button type="submit">Cập nhật</button>
                             </form>
-                        </td>
-                    </tr>
-
-
-                    <tr>
-                        <td colspan="7">
-                            <table class="item-table">
-                                <thead>
-                                    <tr>
-                                        <th>Tên sản phẩm</th>
-                                        <th>Ảnh</th>
-                                        <th>Số lượng</th>
-                                        <th>Giá</th>
-                                        <th>Thành tiền</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <% for (OrderItem item : o.getItems()) { %>
-                                    <tr>
-                                        <td><%= item.getProductName() %></td>
-                                        <td><img src="<%= item.getImageUrl() %>" class="product-img"></td>
-                                        <td><%= item.getQuantity() %></td>
-                                        <td><%= String.format("%,.0f", item.getPrice()) %> đ</td>
-                                        <td><%= String.format("%,.0f", item.getQuantity() * item.getPrice()) %> đ</td>
-                                    </tr>
-                                    <% } %>
-                                </tbody>
-                            </table>
                         </td>
                     </tr>
                     <% }} %>

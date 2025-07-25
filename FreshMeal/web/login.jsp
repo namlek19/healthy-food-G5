@@ -15,6 +15,12 @@
     <title>FreshMeal - Login & Sign Up</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="assets/css/loginstyle.css">
+    <link rel="stylesheet" href="assets/css/style.css">
+        <link rel="stylesheet" href="assets/css/header-user.css"> 
+        <link rel="stylesheet" href="assets/css/footer.css">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
+        <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://accounts.google.com/gsi/client" async defer></script>
     <style>
         .popup {
@@ -104,29 +110,10 @@
     </div>
     <div id="overlay" class="overlay"></div>
 
-    <div class="container">
-        <header class="header">
-            <div class="logo">
-                <img src="assets/images/logoreal.png" alt="FreshMeal">
-            </div>
-            <nav class="nav-links">
-                <a href="index">Home</a>
-                <a href="#">Order</a>
-                <a href="#">Blog</a>
-                <a href="#">About Us</a>
-            </nav>
-            <div class="auth-buttons">
-                <a href="login.jsp" class="auth-button login-button">Log in</a>
-                <a href="login.jsp?action=signup" class="auth-button signup-button">Sign up</a>
-            </div>
-        </header>
-    </div>
+    <jsp:include page="includes/header.jsp" />
 
 
     <div class="container">
-        <div class="breadcrumb">
-            <a href="index.jsp">Home</a> > <%= request.getParameter("action") != null && request.getParameter("action").equals("signup") ? "Sign up" : "Log in" %>
-        </div>
 
         <div class="auth-container">
             <%-- Display success message if present --%>
@@ -348,7 +335,7 @@
             .then(res => res.json())
             .then(data => {
                 if (data.success) {
-                    window.location.href = 'index.jsp';
+                    window.location.href = 'index';
                 } else {
                     alert(data.message || 'Failed to sign in with Google.');
                 }
@@ -359,5 +346,6 @@
     
 
     </script>
+    <jsp:include page="includes/footer.jsp" />
 </body>
 </html> 

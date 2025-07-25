@@ -21,10 +21,8 @@ body {
     align-items: center;
 }
 
-.navbar-left h1 {
-    font-size: 22px;
-    font-weight: bold;
-    color: white;
+.navbar-left img {
+    height: 60px;
 }
 
 .navbar-right span {
@@ -34,11 +32,11 @@ body {
 
 .navbar-right a {
     text-decoration: none;
-    background-color: #ffffff;
+    background-color: white;
     color: #2ecc71;
     padding: 6px 12px;
     border-radius: 4px;
-    border: 1px solid #ffffff;
+    border: 1px solid white;
     transition: all 0.3s ease;
 }
 
@@ -60,7 +58,7 @@ body {
     color: #27ae60;
 }
 
-/* TABLE */
+/* MAIN ORDER TABLE */
 .styled-table {
     width: 100%;
     border-collapse: collapse;
@@ -68,6 +66,7 @@ body {
     border-radius: 8px;
     overflow: hidden;
     box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    margin-bottom: 30px;
 }
 
 .styled-table thead tr {
@@ -109,6 +108,57 @@ body {
     color: gray;
 }
 
+/* ITEM TABLE WRAPPER */
+.item-table-wrapper {
+    margin-top: 10px;
+}
+
+/* ITEM TABLE */
+.item-table-wrapper .item-table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: white;
+    color: black;
+    border: 1px solid black;
+}
+
+.item-table-wrapper .item-table thead tr {
+    background-color: white !important;
+    color: black !important;
+    text-align: left;
+    font-weight: bold;
+    border-bottom: 1px solid black;
+}
+
+.item-table-wrapper .item-table th,
+.item-table-wrapper .item-table td {
+    padding: 10px 16px;
+    border: 1px solid black;
+}
+
+.item-table-wrapper .item-table tbody tr:hover {
+    background-color: white; /* Không đổi màu khi hover */
+}
+
+/* THÔNG BÁO */
+.success-message {
+    padding: 10px 15px;
+    background-color: #e8fbe9;
+    border: 1px solid #27ae60;
+    color: #27ae60;
+    margin-bottom: 15px;
+    border-radius: 4px;
+}
+
+.error-message {
+    padding: 10px 15px;
+    background-color: #ffecec;
+    border: 1px solid #e74c3c;
+    color: #e74c3c;
+    margin-bottom: 15px;
+    border-radius: 4px;
+}
+
 /* RESPONSIVE */
 @media (max-width: 768px) {
     .styled-table thead {
@@ -137,37 +187,4 @@ body {
         font-weight: bold;
         text-align: left;
     }
-    /* ITEM TABLE - sản phẩm theo đơn hàng */
-.item-table {
-    width: 100%;
-    border-collapse: collapse;
-    background-color: white;
-    border-radius: 8px;
-    overflow: hidden;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-    margin-top: 20px;
-}
-
-.item-table thead tr {
-    background-color: #2ecc71; /* xanh lá giống bảng lớn */
-    color: #ffffff;
-    text-align: left;
-    font-weight: bold;
-}
-
-.item-table th, .item-table td {
-    padding: 12px 16px;
-    border-bottom: 1px solid #eee;
-}
-
-.item-table tbody tr:hover {
-    background-color: #f0fff5;
-}
-
-.item-table img {
-    width: 60px;
-    height: auto;
-    border-radius: 4px;
-}
-
 }
