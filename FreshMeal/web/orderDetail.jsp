@@ -35,7 +35,9 @@
                             <td>${loop.index + 1}</td>
                             <td>${item.productName}</td>
                             <td>${item.quantity}</td>
-                            <td>${item.price}đ</td>
+                            <td>
+                            <fmt:formatNumber value="${item.price}" type="number" maxFractionDigits="0"/> VNĐ
+                            </td>
                             <td><a class="btn btn-sm btn-outline-info" href="productdetail?id=${item.productID}">Xem món</a></td>
                         </tr>
                     </c:forEach>
@@ -43,7 +45,8 @@
             </table>
 
             <h5 class="mt-3">
-                Tổng tiền: <span class="text-danger fw-bold">${order.totalAmount}đ</span>
+                Tổng tiền:
+                <span class="text-danger fw-bold"><fmt:formatNumber value="${order.totalAmount}" type="number" maxFractionDigits="0"/> VNĐ</span>
                 <c:if test="${order.status == 'QRPending'}">
                     <span class="badge bg-success ms-2">Đã thanh toán</span>
                     <small class="text-muted">*Đã thanh toán, không được hủy đơn. Vui lòng xác nhận và liên hệ khách hàng nếu có vấn đề</smail>

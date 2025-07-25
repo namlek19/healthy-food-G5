@@ -46,7 +46,12 @@
         <li class="menu-category-title">Order</li>
         <li>
             <a href="orderSeller" class="${currentPage eq 'orderSeller' ? 'active' : ''}">
-                <i class="fas fa-plus-circle menu-icon"></i> Danh sách Order
+                <i class="fas fa-plus-circle menu-icon"></i> Order Cần duyệt
+            </a>
+        </li>
+        <li>
+            <a href="orderManager" class="${currentPage eq 'orderManager' ? 'active' : ''}">
+                <i class="fas fa-list-alt menu-icon"></i> Tất cả Order
             </a>
         </li>
     </ul>

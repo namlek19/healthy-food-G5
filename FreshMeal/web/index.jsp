@@ -145,7 +145,7 @@
             <c:forEach var="menu" items="${newestMenus}">
                 <div class="col-md-3 mb-4">
                     <div class="card h-100 shadow-sm">
-                        <img src="${menu.imageURL}" class="card-img-top menu-card-img" alt="${menu.menuName}">
+                        <img src="${menu.imageURL}" class="card-img-top menu-card-img" alt="${menu.menuName}" style="height: 300px">
                         <div class="card-body d-flex flex-column">
                             <h5 class="card-title text-success text-truncate">${menu.menuName}</h5>
                             <p class="card-text text-truncate">${menu.description}</p>

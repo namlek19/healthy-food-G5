@@ -129,7 +129,7 @@ public class LoginServlet extends HttpServlet {
                 }
                 else {
                     // Các role khác vào homepage như thường
-                    response.sendRedirect("index.jsp");
+                    response.sendRedirect("index");
                 }
 
             } else {

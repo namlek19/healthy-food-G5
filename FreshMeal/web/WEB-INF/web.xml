@@ -154,6 +154,10 @@
         <servlet-name>RejectReasonServlet</servlet-name>
         <servlet-class>controller.RejectReasonServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>OrderManagerServlet</servlet-name>
+        <servlet-class>controller.OrderManagerServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>LoginServlet</servlet-name>
         <url-pattern>/login</url-pattern>
@@ -305,6 +309,10 @@
     <servlet-mapping>
         <servlet-name>RejectReasonServlet</servlet-name>
         <url-pattern>/rejectMenuReason</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>OrderManagerServlet</servlet-name>
+        <url-pattern>/orderManager</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>30</session-timeout>
