@@ -8,6 +8,13 @@
     </div>
     
     <ul class="sidebar-menu">
+        <li class="menu-category-title">CHUNG</li>
+        <li>
+            <a href="profile.jsp" class="${currentPage eq 'profile' ? 'active' : ''}">
+                <i class="fas fa-user-circle menu-icon"></i> Hồ sơ
+            </a>
+        </li>
+
         <li class="menu-category-title">Món ăn</li>
         <li>
             <a href="addProductSeller.jsp" class="${currentPage eq 'addproduct' ? 'active' : ''}">
